@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>멤버십 해지 신청 | 브랜드경제신문 기자단</title>
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<!-- [2026-10-21 사장 지시] 해지 신청서. 푸터의 작은 링크로만 들어온다. 사유를 단계별로 묻고, 제출 내용은 시트 '해지요청' 탭에 쌓인다.
+     제출만으로 해지되지 않는다. 담당자가 연락한 뒤 확정한다(접수 시각 = 해지 신청일). 전화·문자·이메일 해지도 그대로 받는다. -->
+<style>
+:root{--ink:#141414;--mute:#595959;--line:#D6D3CB;--paper:#F7F4EC;--rep:#0B6B3A;--rep-l:#E7F2EC;--err:#B3261E}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font-family:"Pretendard Variable",Pretendard,system-ui,sans-serif;font-size:16px;line-height:1.6;word-break:keep-all;overflow-wrap:break-word}
+a{color:inherit}
+:focus-visible{outline:3px solid #111;outline-offset:2px;border-radius:8px}
+[hidden]{display:none!important}
+.hp{position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden}
+header{background:#fff;border-bottom:1px solid var(--line)}
+header .in{max-width:640px;margin:0 auto;padding:12px 16px;display:flex;align-items:center;gap:8px;font-weight:800}
+header img{height:28px;width:auto}
+main{max-width:640px;margin:0 auto;padding:24px 16px 64px}
+h1{font-size:24px;line-height:1.35;margin:0 0 8px;letter-spacing:-.02em}
+h2{font-size:19px;margin:0 0 12px;letter-spacing:-.02em}
+.lead{color:var(--mute);margin:0 0 20px}
+.steps{display:flex;gap:6px;margin:0 0 20px;padding:0;list-style:none}
+.steps li{flex:1;height:6px;border-radius:99px;background:var(--line)}
+.steps li.on{background:var(--rep)}
+.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:20px 16px}
+label.t{display:block;font-weight:700;margin-top:16px}
+label.t:first-child{margin-top:0}
+.fld{display:block;margin-top:6px;width:100%;min-height:48px;border-radius:12px;border:1px solid #8A8A8A;background:#fff;padding:10px 12px;font:inherit}
+textarea.fld{min-height:110px;resize:vertical}
+.fld[aria-invalid="true"]{border:2px solid var(--err)}
+.hint{margin:4px 0 0;font-size:13px;color:var(--mute)}
+.ferr{margin:4px 0 0;font-size:13px;font-weight:700;color:var(--err)}
+.ferr:empty{display:none}
+.opts{display:grid;gap:8px;margin-top:8px}
+.opt{display:flex;align-items:flex-start;gap:10px;min-height:52px;padding:12px 14px;border:1px solid #BDBDBD;border-radius:12px;background:#fff;cursor:pointer}
+.opt:has(input:checked){border:2px solid var(--rep);background:var(--rep-l);padding:11px 13px}
+.opt input{margin-top:3px;width:20px;height:20px;flex:none;accent-color:var(--rep)}
+.box{margin-top:16px;padding:14px;border-radius:12px;background:var(--paper);font-size:15px}
+.box ul{margin:6px 0 0;padding-left:20px}
+.row{display:flex;gap:8px;margin-top:20px}
+.btn{flex:1;min-height:52px;border-radius:12px;border:1px solid #8A8A8A;background:#fff;font:inherit;font-weight:800;cursor:pointer;color:var(--ink);text-decoration:none;display:flex;align-items:center;justify-content:center;text-align:center;padding:0 12px}
+.btn.main{background:var(--rep);border-color:var(--rep);color:#fff}
+.btn.quiet{background:#fff;color:var(--mute);font-weight:600}
+.btn[disabled]{opacity:.5;cursor:not-allowed}
+.done{text-align:center}
+.done b.no{display:inline-block;margin-top:6px;font-size:18px}
+footer{max-width:640px;margin:0 auto;padding:0 16px 32px;font-size:13px;color:var(--mute)}
+</style>
+</head>
+<body>
+<header><div class="in"><a href="/" aria-label="브랜드경제신문 기자단 홈"><img src="img/h20230814091122_bf69e5.webp" alt="브랜드경제신문" width="122" height="28"></a> 기자단</div></header>
+<main>
+  <h1>멤버십 해지 신청</h1>
+  <p class="lead">해지 전에 몇 가지만 여쭤볼게요. 더 나은 서비스를 만드는 데 쓰여요.</p>
+  <ol class="steps" aria-label="진행 단계"><li class="on"></li><li></li><li></li></ol>
+
+  <form id="f" novalidate>
+    <input class="hp" name="website" tabindex="-1" autocomplete="off" aria-hidden="true">
+
+    <!-- 1단계: 사유 -->
+    <section class="card" data-step="1">
+      <h2>1. 해지하시려는 가장 큰 이유가 무엇인가요?</h2>
+      <div class="opts" role="radiogroup" aria-label="해지 사유">
+        <label class="opt"><input type="radio" name="reason" value="쓸 시간이 없음"><span>기사를 쓸 시간이 없어요</span></label>
+        <label class="opt"><input type="radio" name="reason" value="기대한 효과가 없음"><span>기대한 효과가 없었어요</span></label>
+        <label class="opt"><input type="radio" name="reason" value="비용 부담"><span>이용료가 부담돼요</span></label>
+        <label class="opt"><input type="radio" name="reason" value="쓰는 방법이 어려움"><span>기사 쓰고 올리는 방법이 어려워요</span></label>
+        <label class="opt"><input type="radio" name="reason" value="승인·게재 불만"><span>기사 확인·게재 과정이 불편했어요</span></label>
+        <label class="opt"><input type="radio" name="reason" value="기타"><span>기타</span></label>
+      </div>
+      <p class="ferr" id="e-reason"></p>
+      <label class="t" for="detail" id="detail-q">어떤 점 때문인지 자세히 알려 주세요</label>
+      <textarea class="fld" id="detail" name="detail" maxlength="1000" aria-describedby="detail-h e-detail"></textarea>
+      <p class="hint" id="detail-h">10자 이상 적어 주세요.</p>
+      <p class="ferr" id="e-detail"></p>
+      <div class="row"><a class="btn" href="/">해지 안 할래요</a><button type="button" class="btn main" data-next="2">다음</button></div>
+    </section>
+
+    <!-- 2단계: 다시 묻기 -->
+    <section class="card" data-step="2" hidden>
+      <h2>2. 무엇이 달라지면 계속 이용하시겠어요?</h2>
+      <label class="t" for="back">바라는 점 (선택)</label>
+      <textarea class="fld" id="back" name="back" maxlength="500" placeholder="예: 기사 쓰는 법을 더 알려 주면 좋겠어요"></textarea>
+      <div class="box">
+        <b>해지하면 이렇게 돼요</b>
+        <ul>
+          <li>새 기사를 더 올릴 수 없어요.</li>
+          <li>오픈엑스 복지몰 이용이 끝나요.</li>
+          <li>1년 회원은 헬로벨 렌탈 회원 혜택도 끝나요.</li>
+          <li>이미 실린 기사는 그대로 남아요.</li>
+        </ul>
+      </div>
+      <label class="opt" style="margin-top:16px"><input type="checkbox" name="call" value="Y"><span>해지하기 전에 담당자와 먼저 통화해 볼게요</span></label>
+      <div class="row"><button type="button" class="btn quiet" data-prev="1">이전</button><button type="button" class="btn main" data-next="3">다음</button></div>
+    </section>
+
+    <!-- 3단계: 본인 확인 + 최종 확인 -->
+    <section class="card" data-step="3" hidden>
+      <h2>3. 본인 확인</h2>
+      <label class="t" for="name">이름</label>
+      <input class="fld" id="name" name="name" autocomplete="name" maxlength="40">
+      <p class="ferr" id="e-name"></p>
+      <label class="t" for="phone">연락처</label>
+      <input class="fld" id="phone" name="phone" inputmode="tel" autocomplete="tel" maxlength="20" placeholder="010-0000-0000">
+      <p class="ferr" id="e-phone"></p>
+      <label class="t" for="who">기자단 아이디 또는 가입 이메일</label>
+      <input class="fld" id="who" name="who" maxlength="120">
+      <p class="ferr" id="e-who"></p>
+      <p class="t" style="margin-bottom:0">이용 중인 상품</p>
+      <div class="opts" role="radiogroup" aria-label="이용 중인 상품">
+        <label class="opt"><input type="radio" name="plan" value="월간"><span>월간 (매달 자동결제)</span></label>
+        <label class="opt"><input type="radio" name="plan" value="1년"><span>1년 일시불</span></label>
+      </div>
+      <p class="ferr" id="e-plan"></p>
+      <div class="box" id="rule-month" hidden>월간은 이미 결제한 달은 환불되지 않고, 다음 결제일 전날까지 그대로 이용할 수 있어요. 다음 결제일 전날까지 신청해야 다음 결제부터 청구되지 않아요.</div>
+      <div class="box" id="rule-year" hidden>1년은 이용한 기간 등을 뺀 금액을 돌려드리고, 남은 기간 이용료의 10%가 위약금으로 빠져요. 자세한 계산은 <a href="refund.html" target="_blank" rel="noopener">환불정책</a>을 따라요.</div>
+      <label class="opt" style="margin-top:16px"><input type="checkbox" name="agree" value="Y"><span>위 내용을 확인했어요. 담당자가 연락드린 뒤 해지가 확정되는 것도 알고 있어요.</span></label>
+      <p class="ferr" id="e-agree"></p>
+      <div class="row"><button type="button" class="btn quiet" data-prev="2">이전</button><button type="submit" class="btn main" id="go">해지 신청하기</button></div>
+      <p class="ferr" id="e-send" role="alert"></p>
+    </section>
+  </form>
+
+  <section class="card done" id="done" hidden>
+    <h2>해지 신청이 접수됐어요</h2>
+    <p>접수번호<br><b class="no" id="no"></b></p>
+    <p>평일 업무시간에 담당자가 연락드린 뒤 해지를 확정해요.<br>신청한 날짜를 기준으로 처리하니 걱정하지 않으셔도 돼요.</p>
+    <a class="btn" href="/" style="margin-top:16px">처음 화면으로</a>
+  </section>
+</main>
+<footer>전화·문자·이메일로도 해지를 신청할 수 있어요: 010-7382-1097 · leejm208585@openxgroup.co.kr</footer>
+
+<script>
+(function () {
+  var SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxPac_qwfiW7pf0NvfCQr4Vyr9bLXWjq4KYFwclAmy2buZFajcD9AKsBcbd5BD0SCu9zA/exec';
+  var f = document.getElementById('f');
+  var steps = f.querySelectorAll('[data-step]'), dots = document.querySelectorAll('.steps li');
+  var Q = { '쓸 시간이 없음': '언제쯤이면 다시 쓸 수 있을 것 같은지, 어떤 점이 바빴는지 알려 주세요',
+    '기대한 효과가 없음': '어떤 효과를 기대하셨고, 실제로는 어땠는지 알려 주세요',
+    '비용 부담': '어느 정도 금액이면 계속 이용하실 수 있을지 알려 주세요',
+    '쓰는 방법이 어려움': '어느 단계가 가장 어려웠는지 알려 주세요',
+    '승인·게재 불만': '어떤 기사에서 어떤 점이 불편했는지 알려 주세요',
+    '기타': '해지하시려는 이유를 자세히 알려 주세요' };
+  function val(n) { var e = f.querySelector('[name="' + n + '"]:checked'); return e ? e.value : ''; }
+  function err(id, m, el) { document.getElementById('e-' + id).textContent = m || ''; if (el) el.setAttribute('aria-invalid', m ? 'true' : 'false'); return !m; }
+  function show(n) {
+    steps.forEach(function (s) { s.hidden = s.getAttribute('data-step') !== String(n); });
+    dots.forEach(function (d, i) { d.classList.toggle('on', i < n); });
+    window.scrollTo(0, 0);
+  }
+  f.addEventListener('change', function (e) {
+    if (e.target.name === 'reason') document.getElementById('detail-q').textContent = Q[e.target.value] || Q['기타'];
+    if (e.target.name === 'plan') { document.getElementById('rule-month').hidden = e.target.value !== '월간'; document.getElementById('rule-year').hidden = e.target.value !== '1년'; }
+  });
+  function check1() {
+    var a = err('reason', val('reason') ? '' : '이유를 하나 골라 주세요.');
+    var d = document.getElementById('detail');
+    var b = err('detail', d.value.trim().length >= 10 ? '' : '10자 이상 적어 주세요.', d);
+    return a && b;
+  }
+  function digits(v) { var d = String(v || '').replace(/\D/g, ''); if (d.indexOf('82') === 0 && d.length === 12) d = '0' + d.slice(2); return d; }
+  function check3() {
+    var n = document.getElementById('name'), p = document.getElementById('phone'), w = document.getElementById('who');
+    var ok = err('name', n.value.trim() ? '' : '이름을 적어 주세요.', n);
+    ok = err('phone', /^01[016789]\d{7,8}$/.test(digits(p.value)) ? '' : '휴대폰 번호를 확인해 주세요.', p) && ok;
+    ok = err('who', w.value.trim() ? '' : '아이디나 가입 이메일을 적어 주세요.', w) && ok;
+    ok = err('plan', val('plan') ? '' : '상품을 골라 주세요.') && ok;
+    ok = err('agree', f.agree.checked ? '' : '확인에 체크해 주세요.') && ok;
+    return ok;
+  }
+  f.addEventListener('click', function (e) {
+    var nx = e.target.closest('[data-next]'), pv = e.target.closest('[data-prev]');
+    if (nx) { if (nx.getAttribute('data-next') === '2' && !check1()) return; show(+nx.getAttribute('data-next')); }
+    if (pv) show(+pv.getAttribute('data-prev'));
+  });
+  var cid = 'c' + Date.now().toString(36) + Math.random().toString(36).slice(2, 8);
+  f.addEventListener('submit', function (e) {
+    e.preventDefault();
+    if (!check3()) return;
+    var go = document.getElementById('go'); go.disabled = true; go.textContent = '보내는 중…'; err('send', '');
+    var data = { action: 'cancel_request', cid: cid, website: f.website.value, reason: val('reason'), detail: f.detail.value.trim(),
+      back: f.back.value.trim(), call: f.call.checked ? 'Y' : '', name: f.name.value.trim(), phone: digits(f.phone.value),
+      who: f.who.value.trim(), plan: val('plan'), agree: 'Y' };
+    var ctl = typeof AbortController === 'function' ? new AbortController() : null;
+    var timer = setTimeout(function () { if (ctl) ctl.abort(); }, 20000);
+    fetch(SHEET_ENDPOINT, { method: 'POST', body: new URLSearchParams(data), signal: ctl ? ctl.signal : undefined })
+      .then(function (r) { return r.text(); })
+      .then(function (t) {
+        clearTimeout(timer);
+        var j = JSON.parse(t);
+        if (!j.ok) throw new Error(j.error || 'fail');
+        f.hidden = true; document.querySelector('.steps').hidden = true; document.querySelector('.lead').hidden = true;
+        document.getElementById('no').textContent = j.receipt || '';
+        document.getElementById('done').hidden = false; window.scrollTo(0, 0);
+      })
+      .catch(function (x) {
+        clearTimeout(timer);
+        go.disabled = false; go.textContent = '해지 신청하기';
+        err('send', x && x.message === 'phone' ? '휴대폰 번호를 확인해 주세요.' : '접수하지 못했어요. 잠시 뒤 다시 시도하거나 전화·문자·이메일로 신청해 주세요.');
+      });
+  });
+})();
+</script>
+</body>
+</html>

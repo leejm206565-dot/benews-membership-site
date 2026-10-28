@@ -1,0 +1,298 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>카드 자동결제 등록 | 브랜드경제신문 기자단</title>
+<meta name="description" content="브랜드경제신문 기자단 월간 멤버십 카드 자동결제 등록 확인 페이지입니다.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+html{-webkit-text-size-adjust:100%}
+body{font-size:16px;line-height:1.6;word-break:keep-all;overflow-wrap:break-word;overflow-x:hidden}
+h1,h2,h3{word-break:keep-all;text-wrap:balance;letter-spacing:-.02em}
+:focus-visible{outline:3px solid #111;outline-offset:2px;border-radius:8px}
+[hidden]{display:none!important}
+[tabindex="-1"]:focus{outline:none}
+.spin{width:22px;height:22px;border-radius:50%;border:3px solid #CFE3D7;border-top-color:#0B6B3A;animation:sp 0.8s linear infinite;flex:none}
+@keyframes sp{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.spin{animation-duration:2.4s}}
+</style>
+<link rel="stylesheet" href="css/payflow.css"><!-- [payflow_1020] 미리 구운 Tailwind(속도). 새 클래스를 쓰면 output/tools/bake_payflow_css.py 실행 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-DYTK9ENDKF"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-DYTK9ENDKF',{page_location:location.origin+location.pathname});</script>
+</head>
+<body class="bg-paper text-ink font-sans antialiased">
+<header class="sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-line">
+  <div class="max-w-2xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between gap-3">
+    <a href="/" class="flex items-center gap-3 min-h-[44px]">
+      <img src="img/h20230814091122_bf69e5.webp" alt="브랜드경제신문" width="350" height="80" class="h-7 w-auto">
+      <span class="hidden sm:inline text-[13px] text-mute">운영: 주식회사 오픈엑스</span>
+    </a>
+    <a href="tel:010-7382-1097" class="inline-flex items-center min-h-[44px] px-3 rounded-full border border-ink text-[14px] font-bold whitespace-nowrap hover:bg-paper">전화 문의</a>
+  </div>
+</header>
+
+<noscript><p style="background:#FFF3C4;color:#5C4600;font-weight:700;text-align:center;padding:10px 16px">이 화면은 자바스크립트가 켜져 있어야 보낼 수 있습니다. 브라우저 설정을 확인하시거나 010-7382-1097로 연락 주세요.</p></noscript>
+<main class="max-w-2xl mx-auto px-4 sm:px-6 pt-6 pb-14 md:pt-10">
+  <p id="bs-kicker" class="text-[13px] md:text-[14px] font-bold text-rep">브랜드경제신문 기자단 · 카드 자동결제</p>
+
+  <div id="v-wait" class="mt-6 rounded-2xl bg-white p-5 md:p-6 shadow-soft" role="status">
+    <p class="flex items-center gap-3 text-[18px] font-bold"><span class="spin" aria-hidden="true"></span>카드 등록과 첫 결제를 처리하고 있습니다…</p>
+    <p class="mt-2 text-[14px] text-mute">창을 닫지 말고 잠시만 기다려 주세요. (최대 1분)</p>
+  </div>
+
+  <div id="v-ok" hidden tabindex="-1">
+    <div class="mt-6 rounded-2xl border-2 border-rep bg-white p-5 md:p-6 shadow-soft">
+      <p class="inline-flex items-center gap-2 rounded-full bg-rep-soft text-rep text-[14px] font-extrabold px-3 py-1">카드 등록 · 첫 결제 완료</p>
+      <h1 class="mt-3 text-[26px] md:text-[32px] font-extrabold leading-tight">결제가 완료되었습니다</h1>
+      <dl class="mt-4 grid grid-cols-[auto_1fr] gap-x-4 gap-y-1 text-[15px]">
+        <dt class="text-mute">상품</dt><dd class="font-bold">기자단 멤버십 · 월간</dd>
+        <dt class="text-mute">결제 금액</dt><dd class="font-bold">55,000원 (VAT 포함)</dd>
+        <dt class="text-mute">등록 카드</dt><dd class="font-bold" id="o-card"></dd>
+        <dt class="text-mute">다음 결제일</dt><dd class="font-bold" id="o-next"></dd>
+        <dt class="text-mute">접수번호</dt><dd class="font-bold tracking-wide" id="o-rc"></dd>
+      </dl>
+      <p class="mt-3 text-[13px] text-mute">매월 같은 날 자동 결제됩니다. 해지는 언제든 010-7382-1097로 알려 주세요.</p>
+      <div class="mt-5 rounded-xl bg-rep-soft p-4">
+        <p class="text-[16px] font-extrabold">다음: 회원 등록 1단계 (필수)</p>
+        <p class="mt-1 text-[14px]">이름·휴대폰·이메일·희망 아이디를 한 번에 적으면 아이디 발급이 진행됩니다. 1분이면 끝납니다.</p>
+      </div>
+      <a id="go-reg" href="register.html" class="mt-4 flex items-center justify-center w-full min-h-[56px] rounded-xl bg-rep hover:bg-rep-dark text-white text-[18px] font-extrabold">회원 등록 시작하기</a>
+      <p class="mt-2 text-[14px] text-mute" id="auto" aria-live="polite"></p>
+      <button type="button" id="stay" class="inline-flex items-center min-h-[44px] text-[14px] underline text-mute">자동 이동 멈추기</button>
+    </div>
+  </div>
+
+  <!-- [fix1019b] 오픈미디어 월간 정기결제 완료: 회원 등록(기자단용) 대신 담당자 연락 안내 -->
+  <div id="v-om" hidden tabindex="-1">
+    <div class="mt-6 rounded-2xl border-2 border-om bg-white p-5 md:p-6 shadow-soft">
+      <p class="inline-flex items-center gap-2 rounded-full bg-om-soft text-om text-[14px] font-extrabold px-3 py-1">카드 등록 · 첫 결제 완료</p>
+      <h1 class="mt-3 text-[26px] md:text-[32px] font-extrabold leading-tight">결제가 완료되었습니다</h1>
+      <p class="mt-2 text-[17px] font-bold text-om">아래에 담당자 연락용 이름·휴대폰을 남겨 주세요.</p>
+      <dl class="mt-4 grid grid-cols-[auto_1fr] gap-x-4 gap-y-1 text-[15px]">
+        <dt class="text-mute">상품</dt><dd class="font-bold">오픈미디어 · 월간 정기결제</dd>
+        <dt class="text-mute">결제 금액</dt><dd class="font-bold">220,000원 (VAT 포함)</dd>
+        <dt class="text-mute">등록 카드</dt><dd class="font-bold" id="m-card"></dd>
+        <dt class="text-mute">다음 결제일</dt><dd class="font-bold" id="m-next"></dd>
+        <dt class="text-mute">접수번호</dt><dd class="font-bold tracking-wide" id="m-rc"></dd>
+      </dl>
+      <!-- [payflow_1020] 결제 전에는 이름·휴대폰을 받지 않는다 → 결제 직후 담당자 연락용 정보 -->
+      <form id="om-contact" onsubmit="if(!window.__formReady){alert('화면을 불러오는 중 문제가 생겼습니다. 새로고침하거나 010-7382-1097로 연락 주세요.');}return false;" class="mt-5 rounded-xl border-2 border-om p-4" novalidate>
+        <p class="text-[16px] font-extrabold">담당자 연락용 정보 <span class="text-[#B3261E]">(필수)</span></p>
+        <p class="mt-1 text-[14px] text-mute">담당자가 이 번호로 연락드려 이용 기간·비용 구조를 안내하고, 신문사 정보를 받은 뒤 계약서를 보내 드립니다.</p>
+        <div style="position:absolute;left:-9999px;width:1px;height:1px;overflow:hidden" aria-hidden="true"><label>웹사이트<input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
+        <div class="mt-3 grid sm:grid-cols-2 gap-3">
+          <label class="block"><span class="text-[14px] font-bold">이름</span><input name="name" class="mt-1 block w-full min-h-[48px] rounded-xl border border-[#8A8A8A] bg-white px-3 text-[16px]" required autocomplete="name" maxlength="30"></label>
+          <label class="block"><span class="text-[14px] font-bold">휴대폰</span><input name="phone" class="mt-1 block w-full min-h-[48px] rounded-xl border border-[#8A8A8A] bg-white px-3 text-[16px]" type="tel" inputmode="tel" required autocomplete="tel" maxlength="13" placeholder="010-0000-0000"></label>
+        </div>
+        <label class="mt-3 flex items-start gap-2 min-h-[44px] py-1 text-[15px]"><input type="checkbox" name="agree" value="Y" class="mt-1 w-5 h-5 shrink-0 accent-[#1457A8]"><span><b>개인정보 수집·이용에 동의합니다(필수)</b></span></label>
+        <details class="text-[13px] text-mute"><summary class="inline-flex items-center min-h-[44px] underline cursor-pointer">내용 보기</summary><p class="pb-2 leading-relaxed">수집자: 주식회사 오픈엑스 / 항목: 이름, 휴대폰 번호 / 목적: 오픈미디어 정기결제 회원 연락(이용 기간·비용 구조 안내, 신문사 정보 받기, 계약서 발송) / 보유 기간: 계약 종료 시까지(관계 법령에 따라 보존해야 하는 정보는 그 기간) / 동의를 거부할 수 있으나 거부하면 담당자 연락이 어렵습니다. 자세한 내용은 <a href="privacy.html" target="_blank" rel="noopener" class="underline font-bold">개인정보처리방침</a>을 확인해 주세요.</p></details>
+        <p id="oc-err" class="mt-1 text-[14px] font-bold text-[#B3261E]" role="alert"></p>
+        <button type="submit" class="mt-2 w-full min-h-[52px] rounded-xl bg-om hover:bg-om-dark text-white text-[17px] font-extrabold disabled:opacity-60">연락처 보내기</button>
+      </form>
+      <p id="oc-ok" class="mt-5 rounded-xl bg-om-soft p-4 text-[15px] font-bold" role="status" tabindex="-1" hidden>연락처가 등록되었습니다. 담당자가 곧 연락드립니다.</p>
+      <div class="mt-5 rounded-xl bg-om-soft p-4">
+        <p class="text-[16px] font-extrabold">다음 순서</p>
+        <ol class="mt-2 list-decimal pl-5 text-[14px] space-y-1 leading-relaxed">
+          <li>담당자가 위에 남겨 주신 번호로 연락드립니다(발신 010-7382-1097, 평일 10:00~17:30).</li>
+          <li>이용 기간과 비용 구조를 안내드리고, 신문사 이름·도메인·디자인 스킨 등 신문사 정보를 받습니다.</li>
+          <li>계약서를 별도로 보내 드립니다.</li>
+          <li>신문사 제작 → 신문사 활동 개시 (약 7일 소요). 인터넷신문 등록 절차는 담당자가 안내해 드립니다(처리 기간은 관할 기관에 따름).</li>
+        </ol>
+      </div>
+      <p class="mt-3 text-[13px] text-mute">오픈미디어는 24개월 약정 서비스입니다. 2회차는 신문사 제작 완료일부터 1개월이 되는 날 결제되고, 이후 매월 그 날짜에 같은 카드로 자동 결제됩니다. 세부 조건은 계약서를 따릅니다. 문의 010-7382-1097 (접수번호를 알려 주세요)</p>
+      <a href="/" class="mt-4 flex items-center justify-center w-full min-h-[52px] rounded-xl border-2 border-om bg-white text-om text-[16px] font-bold">처음 화면으로</a>
+    </div>
+  </div>
+
+  <div id="v-ng" hidden tabindex="-1">
+    <div class="mt-6 rounded-2xl border border-[#B3261E] bg-[#FDECEA] p-5 md:p-6">
+      <h1 class="text-[22px] md:text-[26px] font-extrabold leading-tight" id="ng-title">결제가 완료되지 않았습니다</h1>
+      <p class="mt-2 text-[15px]" id="ng-msg"></p>
+      <p class="mt-2 text-[13px] text-mute" id="ng-code"></p>
+    </div>
+    <button type="button" id="ng-retry" class="mt-4 flex items-center justify-center w-full min-h-[52px] rounded-xl bg-rep hover:bg-rep-dark text-white text-[17px] font-extrabold" hidden>같은 카드로 다시 결제하기</button>
+    <a id="ng-main" href="/#reporter" class="mt-2 flex items-center justify-center w-full min-h-[48px] rounded-xl border-2 border-rep bg-white text-rep text-[16px] font-bold">다른 카드로 다시 등록하기</a>
+    <p class="mt-3 text-[14px] text-mute">문의 <a class="underline font-bold text-ink" href="tel:010-7382-1097">010-7382-1097</a> (접수번호를 알려 주세요)</p>
+  </div>
+</main>
+
+<footer class="bg-white text-[13px] text-mute border-t border-line">
+  <div class="max-w-2xl mx-auto px-4 sm:px-6 py-8 space-y-2">
+    <p class="flex flex-wrap gap-x-1 text-[14px] text-ink"><a href="terms.html" class="inline-flex items-center min-h-[44px] underline">이용약관</a><span class="inline-flex items-center" aria-hidden="true">·</span><a href="refund.html" class="inline-flex items-center min-h-[44px] underline">환불정책</a><span class="inline-flex items-center" aria-hidden="true">·</span><a href="privacy.html" class="inline-flex items-center min-h-[44px] underline font-bold">개인정보처리방침</a></p>
+    <p class="font-bold text-ink">주식회사 오픈엑스</p>
+    <p>대표이사 김미진 · 사업자등록번호 310-81-34293 · 통신판매업신고 제 2024-서울마포-0817호 · 호스팅 서비스 제공자 Netlify, Inc.</p>
+    <p>서울특별시 마포구 성암로 330, 8층 808호 (상암동, DMC첨단산업센터)</p>
+    <p>기자단 문의 010-7382-1097</p>
+    <p>고객 문의 이메일 <a class="underline" href="mailto:leejm208585@openxgroup.co.kr">leejm208585@openxgroup.co.kr</a></p>
+    <p>브랜드경제신문은 주식회사 오픈엑스가 운영하는 언론사입니다.</p>
+  </div>
+</footer>
+
+<script>
+/* 월간 카드 자동결제(빌링) 등록 성공 리다이렉트: billing-success.html?customerKey=..&authKey=..
+   → 서버 action=billing_issue(빌링키 발급 + 첫 달 55,000원 결제, 금액은 서버 표) → 회원 등록 1단계.
+   authKey 는 일회성이라 읽은 뒤 주소창에서 지운다(이 탭 sessionStorage 에만 잠시 둠). */
+const SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxPac_qwfiW7pf0NvfCQr4Vyr9bLXWjq4KYFwclAmy2buZFajcD9AKsBcbd5BD0SCu9zA/exec';
+(function () {
+  var PHONE = '010-7382-1097';
+  var $ = function (s) { return document.querySelector(s); };
+  var qs = new URLSearchParams(location.search);
+  var ck = String(qs.get('customerKey') || ''), ak = String(qs.get('authKey') || '');
+  if (ck && ak) {
+    try { sessionStorage.setItem('bx:bill', JSON.stringify({ ck: ck, ak: ak })); } catch (e) {}
+    try { history.replaceState(null, '', location.pathname); } catch (e) {}
+  } else {
+    try { var o = JSON.parse(sessionStorage.getItem('bx:bill') || 'null'); if (o) { ck = o.ck; ak = o.ak; } } catch (e) {}
+  }
+  var m = /^((?:BE|OM)-\d{4}-\d{4})-[0-9a-f-]{36}$/.exec(ck);
+  var rc = m ? m[1] : '';
+  // [fix1019b] 로컬 미리보기 전용(localhost·127.0.0.1): demo=1&r=접수번호 → 서버 호출 없이 완료 화면만
+  var demo = qs.get('demo') === '1' && /^(localhost|127\.0\.0\.1)$/.test(location.hostname);
+  if (demo && /^(BE|OM)-\d{4}-\d{4}$/.test(String(qs.get('r') || '').toUpperCase())) rc = String(qs.get('r')).toUpperCase();
+  var isOM = /^OM-/.test(rc), TRACK = isOM ? 'openmedia' : 'reporter', HOME = isOM ? '/#om-start' : '/#reporter';
+  if (isOM) { $('#bs-kicker').textContent = '오픈미디어 · 카드 자동결제'; $('#bs-kicker').className = 'text-[13px] md:text-[14px] font-bold text-om'; document.title = '오픈미디어 결제 완료 | 주식회사 오픈엑스'; }
+  var again = 'pay.html?r=' + encodeURIComponent(rc) + '&p=' + (isOM ? 'om_month' : 'month');
+  function regUrl() { return 'register.html?r=' + encodeURIComponent(rc) + '&p=month'; }
+  function show(id) { ['v-wait', 'v-ok', 'v-om', 'v-ng'].forEach(function (x) { $('#' + x).hidden = x !== id; }); try { $('#' + id).focus({ preventScroll: true }); } catch (e) {} }
+
+  var timer = null;
+  function ok(j) {
+    try { sessionStorage.removeItem('bx:bill'); sessionStorage.setItem('bx:billdone:' + rc, JSON.stringify({ card: j.card || '', next: j.next || '' })); } catch (e) {}
+    try { if (ck) sessionStorage.setItem('bx:proof:' + rc, ck); } catch (e) {}   // [payflow_1020] 결제 증빙(고객키): 결제한 이 탭만 안다
+    if (isOM) {   // [fix1019b] 오픈미디어: 회원 등록으로 보내지 않는다
+      $('#m-card').textContent = j.card || '등록하신 카드'; $('#m-next').textContent = j.next || '신문사 제작 완료 1개월 후 (제작 완료 시 안내)'; $('#m-rc').textContent = rc;
+      show('v-om'); omContact(); return;
+    }
+    $('#o-card').textContent = j.card || '등록하신 카드';
+    $('#o-next').textContent = j.next || '';
+    $('#o-rc').textContent = rc;
+    $('#go-reg').href = regUrl();
+    show('v-ok');
+    var n = 3;
+    (function tick() {
+      if (n <= 0) { location.replace(regUrl()); return; }
+      $('#auto').textContent = n + '초 뒤 회원 등록 화면으로 자동 이동합니다.';
+      n--; timer = setTimeout(tick, 1000);
+    })();
+  }
+  /* [payflow_1020] 오픈미디어: 결제 후 담당자 연락용 이름·휴대폰 (action=contact, 결제된 접수번호에만 저장) */
+  function omContact() {
+    var f = $('#om-contact'), E = f.elements, err = $('#oc-err');
+    var doneKey = 'bx:omcontact:' + rc;
+    try { if (sessionStorage.getItem(doneKey)) { f.hidden = true; $('#oc-ok').hidden = false; return; } } catch (e) {}
+    if (f._on) return; f._on = true;
+    function digits(v) { var d = String(v || '').replace(/\D/g, ''); if (d.indexOf('82') === 0 && d.length === 12) d = '0' + d.slice(2); return d; }
+    function seq(r) { var up = true, dn = true; for (var i = 1; i < r.length; i++) { var df = r.charCodeAt(i) - r.charCodeAt(i - 1); if (df !== 1) up = false; if (df !== -1) dn = false; } return up || dn; }
+    function phoneOk(d) { if (!/^010\d{8}$/.test(d) || d === '01073821097') return false; var r = d.slice(3); return !(/^(\d)\1+$/.test(r) || seq(r) || r.charAt(0) === '0'); }
+    function fmt(d) { if (d.length < 4) return d; if (d.length < 8) return d.slice(0, 3) + '-' + d.slice(3); return d.slice(0, 3) + '-' + d.slice(3, 7) + '-' + d.slice(7, 11); }
+    E.phone.addEventListener('input', function () { var v = E.phone.value; if (/^\+/.test(v)) return; var nf = fmt(v.replace(/\D/g, '').slice(0, 11)); if (nf !== v) E.phone.value = nf; });
+    var cid = '';
+    window.__formReady = true;   // [paybtn_1020] 폼 JS 준비 완료(없으면 form onsubmit 이 기본 제출을 막고 안내)
+    f.addEventListener('submit', function (e) {
+      e.preventDefault();
+      if (E.website.value) return;
+      err.textContent = '';
+      var name = E.name.value.trim(), d = digits(E.phone.value);
+      if (!name) { err.textContent = '이름을 입력해 주세요.'; E.name.focus(); return; }
+      if (!phoneOk(d)) { err.textContent = '010으로 시작하는 11자리 휴대폰 번호를 확인해 주세요.'; E.phone.focus(); return; }
+      if (!E.agree.checked) { err.textContent = '개인정보 수집·이용에 동의해 주세요.'; E.agree.focus(); return; }
+      E.phone.value = fmt(d);
+      var btn = f.querySelector('button[type=submit]'), label = btn.textContent;
+      function okDone() { try { sessionStorage.setItem(doneKey, '1'); } catch (x) {} f.hidden = true; var o = $('#oc-ok'); o.hidden = false; try { o.focus({ preventScroll: true }); } catch (x) {} }
+      if (demo) { okDone(); return; }
+      if (!cid) cid = Date.now().toString(36) + Math.random().toString(36).slice(2);
+      var proof = ''; try { proof = sessionStorage.getItem('bx:proof:' + rc) || ck || ''; } catch (x) { proof = ck || ''; }
+      btn.disabled = true; btn.textContent = '보내는 중…';
+      var data = { action: 'contact', track: 'openmedia', r: rc, name: name, phone: fmt(d), agree: 'Y', proof: proof, cid: cid, website: '' };
+      postOnce(data).catch(function () { return new Promise(function (r) { setTimeout(r, 1500); }).then(function () { return postOnce(data); }); })
+        .then(function (j) {
+          btn.disabled = false; btn.textContent = label;
+          if (j.ok) { okDone(); return; }
+          err.textContent = ({
+            phone: '휴대폰 번호를 다시 확인해 주세요.', name: '이름을 확인해 주세요.', agree: '개인정보 수집·이용에 동의해 주세요.',
+            mismatch: '이 결제에는 이미 다른 번호가 등록되어 있습니다. ' + PHONE + '로 접수번호 ' + rc + '를 알려 주세요.',
+            unpaid: '결제가 아직 확인되지 않았습니다. 잠시 뒤 다시 보내 주세요.',
+            rate: '짧은 시간에 요청이 많았습니다. 잠시 뒤 다시 보내 주세요.'
+          })[j.error] || '등록이 확인되지 않았습니다. 다시 보내거나 ' + PHONE + '로 접수번호 ' + rc + '를 알려 주세요.';
+        })
+        .catch(function () { btn.disabled = false; btn.textContent = label; err.textContent = '응답을 받지 못했습니다. 다시 보내거나 ' + PHONE + '로 접수번호 ' + rc + '를 알려 주세요.'; });
+    });
+  }
+  $('#stay').addEventListener('click', function () { clearTimeout(timer); $('#auto').textContent = '자동 이동을 멈췄습니다. 위 버튼을 눌러 회원 등록을 진행해 주세요.'; this.hidden = true; });
+
+  var retryMode = 'issue';
+  function ng(title, msg, code, opt) {
+    opt = opt || {};
+    $('#ng-title').textContent = title;
+    $('#ng-msg').textContent = msg;
+    $('#ng-code').textContent = code ? '오류 코드: ' + code : '';
+    $('#ng-retry').hidden = !opt.retry;
+    if (opt.retry) { retryMode = opt.retry; $('#ng-retry').textContent = opt.retryLabel || '같은 카드로 다시 결제하기'; }
+    $('#ng-main').href = opt.href || again;
+    $('#ng-main').textContent = opt.label || '다른 카드로 다시 등록하기';
+    show('v-ng');
+  }
+
+  function postOnce(data) {
+    var ctl = typeof AbortController === 'function' ? new AbortController() : null;
+    return new Promise(function (resolve, reject) {
+      var t = setTimeout(function () { if (ctl) ctl.abort(); reject(new Error('timeout')); }, 70000);   // 토스 자동결제 승인은 최대 60초
+      fetch(SHEET_ENDPOINT, { method: 'POST', body: new URLSearchParams(data), signal: ctl ? ctl.signal : undefined })
+        .then(function (res) { return res.text(); })
+        .then(function (tx) { clearTimeout(t); var j; try { j = JSON.parse(tx); } catch (e) { throw new Error('nojson'); } if (!j || typeof j.ok !== 'boolean') throw new Error('nojson'); resolve(j); })
+        .catch(function (e) { clearTimeout(t); reject(e); });
+    });
+  }
+
+  function handle(j) {
+    if (j.ok) { ok(j); return; }
+    switch (j.error) {
+      case 'issue':
+        ng('카드 등록이 완료되지 않았습니다', (j.message || '카드 등록 중 문제가 생겼습니다.') + ' 결제는 진행되지 않았습니다.', j.code, { label: '카드 다시 등록하기' }); return;
+      case 'setup':
+        ng('결제 설정을 확인하고 있습니다', '저희 쪽 결제 설정 문제로 카드 등록이 끝나지 않았습니다(요금은 청구되지 않았습니다). 담당자가 바로 확인합니다. 급하시면 ' + PHONE + '로 접수번호 ' + rc + '를 알려 주세요.', j.code, { href: '/', label: '홈으로' }); return;
+      case 'charge':
+        ng('카드는 등록됐지만 첫 결제가 승인되지 않았습니다', (j.message || '카드사에서 결제를 승인하지 않았습니다.') + ' 요금은 청구되지 않았습니다. 같은 카드로 다시 시도하거나 다른 카드로 등록해 주세요.', j.code, { retry: 'retry' }); return;
+      case 'pending':
+        ng('결제 결과를 아직 받지 못했습니다', '잠시 뒤 [결제 확인 다시 시도]를 눌러 주세요. 다시 눌러도 두 번 결제되지 않습니다.', j.code || 'PENDING', { retry: 'retry', retryLabel: '결제 확인 다시 시도' }); return;
+      case 'rate':
+        ng('잠시 뒤 다시 시도해 주세요', '짧은 시간에 너무 많이 시도했습니다. 10분쯤 뒤에 다시 눌러 주세요.', 'RATE', { retry: 'retry' }); return;
+      case 'canceled':
+        ng(isOM ? '해지된 신청입니다' : '해지된 멤버십입니다', '이 신청은 해지되어 결제하지 않았습니다. 문의 ' + PHONE, '', { href: HOME, label: '신청 화면으로 가기' }); return;
+      case 'disabled':
+        ng('카드 자동결제 연결을 준비하고 있습니다', PHONE + '로 접수번호 ' + rc + '를 알려 주시면 바로 처리해 드립니다. 결제는 진행되지 않았습니다.', 'DISABLED', { retry: 'issue', retryLabel: '다시 시도' }); return;
+      case 'notfound': case 'param':
+        ng('신청 정보를 찾지 못했습니다', '카드 등록 정보가 신청과 맞지 않아 결제하지 않았습니다. 처음부터 다시 진행해 주세요.', 'NOT_FOUND', { href: HOME, label: '신청 화면으로 가기' }); return;
+      case 'plan':
+        ng('월간 상품이 아닙니다', '이 신청은 1년 상품이라 카드 자동결제를 하지 않았습니다. 1년 결제 화면으로 이동해 주세요.', 'PLAN', { href: 'pay.html?r=' + encodeURIComponent(rc) + '&p=year', label: '1년 결제 화면으로' }); return;
+      default:
+        ng('결제 확인이 끝나지 않았습니다', '잠시 뒤 다시 시도해 주세요. 다시 눌러도 두 번 결제되지 않습니다.', String(j.error || ''), { retry: 'retry', retryLabel: '결제 확인 다시 시도' });
+    }
+  }
+
+  function run(mode) {
+    show('v-wait');
+    var data = mode === 'retry'
+      ? { action: 'billing_retry', track: TRACK, customerKey: ck, website: '' }
+      : { action: 'billing_issue', track: TRACK, customerKey: ck, authKey: ak, website: '' };
+    postOnce(data).then(handle).catch(function () {
+      ng('응답을 받지 못했습니다', '인터넷 연결을 확인한 뒤 [결제 확인 다시 시도]를 눌러 주세요. 다시 눌러도 두 번 결제되지 않습니다. 계속 안 되면 ' + PHONE + '로 접수번호 ' + rc + '를 알려 주세요.', 'NETWORK', { retry: mode, retryLabel: '결제 확인 다시 시도' });
+    });
+  }
+  $('#ng-retry').addEventListener('click', function () { run(retryMode); });
+
+  if (demo && rc) { ok({ card: '현대 4330-12**-****-123* (미리보기)', next: '2026-11-19' }); var dn = document.createElement('p'); dn.className = 'mt-2 text-[13px] font-bold text-[#B3261E]'; dn.textContent = '로컬 미리보기(demo) 화면입니다. 서버·시트에 기록되지 않습니다.'; $('#bs-kicker').after(dn); clearTimeout(timer); return; }
+  if (!rc || (!ak && !sessionStorage.getItem('bx:billdone:' + rc))) {
+    ng('카드 등록 정보를 확인할 수 없습니다', '카드 등록 결과 주소가 올바르지 않습니다. 결제가 끝났는데 이 화면이 보이면 ' + PHONE + '로 연락 주세요.', '', { href: HOME, label: '신청 화면으로 가기' });
+    return;
+  }
+  try { var done = JSON.parse(sessionStorage.getItem('bx:billdone:' + rc) || 'null'); if (done) { ok(done); return; } } catch (e) {}   // 새로고침
+  if (!SHEET_ENDPOINT) { ng('카드 자동결제 연결을 준비하고 있습니다', PHONE + '로 접수번호 ' + rc + '를 알려 주세요.', '', {}); return; }
+  run('issue');
+})();
+</script>
+</body>
+</html>

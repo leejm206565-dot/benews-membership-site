@@ -1,0 +1,83 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>결제 실패 | 브랜드경제신문 기자단</title>
+<meta name="description" content="브랜드경제신문 기자단 멤버십 결제가 완료되지 않았을 때 보이는 페이지입니다.">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+html{-webkit-text-size-adjust:100%}
+body{font-size:16px;line-height:1.6;word-break:keep-all;overflow-wrap:break-word;overflow-x:hidden}
+h1,h2,h3{word-break:keep-all;text-wrap:balance;letter-spacing:-.02em}
+:focus-visible{outline:3px solid #111;outline-offset:2px;border-radius:8px}
+[hidden]{display:none!important}
+[tabindex="-1"]:focus{outline:none}
+.spin{width:22px;height:22px;border-radius:50%;border:3px solid #CFE3D7;border-top-color:#0B6B3A;animation:sp 0.8s linear infinite;flex:none}
+@keyframes sp{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.spin{animation-duration:2.4s}}
+</style>
+<link rel="stylesheet" href="css/payflow.css"><!-- [payflow_1020] 미리 구운 Tailwind(속도). 새 클래스를 쓰면 output/tools/bake_payflow_css.py 실행 -->
+<script async src="https://www.googletagmanager.com/gtag/js?id=G-DYTK9ENDKF"></script>
+<script>window.dataLayer=window.dataLayer||[];function gtag(){dataLayer.push(arguments);}gtag('js',new Date());gtag('config','G-DYTK9ENDKF',{page_location:location.origin+location.pathname});</script>
+</head>
+<body class="bg-paper text-ink font-sans antialiased">
+<header class="sticky top-0 z-40 bg-white/95 backdrop-blur border-b border-line">
+  <div class="max-w-2xl mx-auto px-4 sm:px-6 h-14 flex items-center justify-between gap-3">
+    <a href="/" class="flex items-center gap-3 min-h-[44px]">
+      <img src="img/h20230814091122_bf69e5.webp" alt="브랜드경제신문" width="350" height="80" class="h-7 w-auto">
+      <span class="hidden sm:inline text-[13px] text-mute">운영: 주식회사 오픈엑스</span>
+    </a>
+    <a href="tel:010-7382-1097" class="inline-flex items-center min-h-[44px] px-3 rounded-full border border-ink text-[14px] font-bold whitespace-nowrap hover:bg-paper">전화 문의</a>
+  </div>
+</header>
+
+<main class="max-w-2xl mx-auto px-4 sm:px-6 pt-6 pb-14 md:pt-10">
+  <p class="text-[13px] md:text-[14px] font-bold text-rep">브랜드경제신문 기자단 · 결제</p>
+  <div class="mt-6 rounded-2xl border border-[#B3261E] bg-[#FDECEA] p-5 md:p-6">
+    <h1 class="text-[24px] md:text-[30px] font-extrabold leading-tight" id="f-title">결제가 완료되지 않았습니다</h1>
+    <p class="mt-2 text-[15px]" id="f-msg">결제 중 문제가 생겨 결제가 진행되지 않았습니다.</p>
+    <p class="mt-2 text-[13px] text-mute" id="f-code"></p>
+    <p class="mt-2 text-[13px] text-mute">결제가 완료되지 않았으므로 요금은 청구되지 않습니다.</p>
+  </div>
+  <a id="f-again" href="/#reporter" class="mt-4 flex items-center justify-center w-full min-h-[52px] rounded-xl bg-rep hover:bg-rep-dark text-white text-[17px] font-extrabold">다시 결제하기</a>
+  <a href="/#reporter" class="mt-2 inline-flex items-center min-h-[44px] text-[14px] text-mute underline">상품 화면으로 돌아가기</a>
+  <p class="mt-3 text-[14px] text-mute">문의 <a class="underline font-bold text-ink" href="tel:010-7382-1097">010-7382-1097</a></p>
+</main>
+
+<footer class="bg-white text-[13px] text-mute border-t border-line">
+  <div class="max-w-2xl mx-auto px-4 sm:px-6 py-8 space-y-2">
+    <p class="flex flex-wrap gap-x-1 text-[14px] text-ink"><a href="terms.html" class="inline-flex items-center min-h-[44px] underline">이용약관</a><span class="inline-flex items-center" aria-hidden="true">·</span><a href="refund.html" class="inline-flex items-center min-h-[44px] underline">환불정책</a><span class="inline-flex items-center" aria-hidden="true">·</span><a href="privacy.html" class="inline-flex items-center min-h-[44px] underline font-bold">개인정보처리방침</a></p>
+    <p class="font-bold text-ink">주식회사 오픈엑스</p>
+    <p>대표이사 김미진 · 사업자등록번호 310-81-34293 · 통신판매업신고 제 2024-서울마포-0817호 · 호스팅 서비스 제공자 Netlify, Inc.</p>
+    <p>서울특별시 마포구 성암로 330, 8층 808호 (상암동, DMC첨단산업센터)</p>
+    <p>기자단 문의 010-7382-1097</p>
+    <p>고객 문의 이메일 <a class="underline" href="mailto:leejm208585@openxgroup.co.kr">leejm208585@openxgroup.co.kr</a></p>
+    <p>브랜드경제신문은 주식회사 오픈엑스가 운영하는 언론사입니다.</p>
+  </div>
+</footer>
+
+<script>
+(function () {
+  var $ = function (s) { return document.querySelector(s); };
+  var qs = new URLSearchParams(location.search);
+  var code = String(qs.get('code') || '').slice(0, 60), msg = String(qs.get('message') || '').slice(0, 300), orderId = String(qs.get('orderId') || '');
+  var m = /^(BE-\d{4}-\d{4})-(?:R\d{2}-)?[A-Za-z0-9]{6}$/.exec(orderId);
+  var last = {}; try { last = JSON.parse(sessionStorage.getItem('bx:lastpay') || '{}') || {}; } catch (e) {}
+  var rc = m ? m[1] : (last.r || '');
+  var bill = !m && (last.p === 'month' || last.p === 'om_month');   // [fix1019b] 오픈미디어 월간 정기결제도 카드 등록(빌링)
+  var isOM = /^OM-/.test(rc) || last.p === 'om_month';
+  if (isOM) { Array.prototype.forEach.call(document.querySelectorAll('a[href="/#reporter"]'), function (a) { a.href = '/#om-start'; }); var k = document.querySelector('main > p'); if (k) { k.textContent = '오픈미디어 · 결제'; k.className = 'text-[13px] md:text-[14px] font-bold text-om'; } }   // 월간 카드 등록(빌링) 실패: orderId 없이 code·message 만 온다
+  if (bill) { $('#f-title').textContent = '카드 등록이 완료되지 않았습니다'; $('#f-msg').textContent = '카드 등록 중 문제가 생겨 등록과 결제가 진행되지 않았습니다.'; $('#f-again').textContent = '다시 카드 등록하기'; }
+  if (code === 'PAY_PROCESS_CANCELED' || code === 'USER_CANCEL') { $('#f-title').textContent = bill ? '카드 등록을 취소하셨습니다' : '결제를 취소하셨습니다'; $('#f-msg').textContent = (bill ? '카드 등록과 결제가' : '결제가') + ' 진행되지 않았습니다. 준비되시면 다시 진행해 주세요.'; }
+  else if (code === 'REJECT_CARD_COMPANY') { $('#f-msg').textContent = '카드사에서 카드 정보를 승인하지 않았습니다. 카드 번호·유효기간·생년월일을 확인하거나 다른 카드로 다시 시도해 주세요.' + (msg ? ' (' + msg + ')' : ''); }
+  else if (code === 'PAY_PROCESS_ABORTED') { $('#f-msg').textContent = (msg || '처리 중 문제가 생겼습니다.') + ' 잠시 뒤 다시 시도해 주세요. 계속되면 010-7382-1097로 알려 주세요.'; }
+  else if (msg) $('#f-msg').textContent = msg;   // 토스가 보낸 사유 (글자로만 표시)
+  if (code) $('#f-code').textContent = '오류 코드: ' + code;
+  if (rc && (last.p === 'month' || last.p === 'year' || last.p === 'om_month')) $('#f-again').href = 'pay.html?r=' + encodeURIComponent(rc) + '&p=' + last.p + (last.renew ? '&renew=1' : '');
+})();
+</script>
+</body>
+</html>
