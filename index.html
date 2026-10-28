@@ -1049,7 +1049,10 @@ a.rv-card:hover .rv-t{text-decoration:underline;text-underline-offset:3px}
 .rv-stars{position:relative;display:inline-block;font-size:17px;line-height:1;letter-spacing:1px;color:#DCD6CA;white-space:nowrap}
 .rv-stars .on{position:absolute;left:0;top:0;overflow:hidden;color:#E8372E}
 .rv-st b{font-size:15px;font-weight:900}
-.rv-body{margin-top:8px;font-size:15px;line-height:1.6;color:#3A3832;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden;min-height:4.8em}
+.rv-body{margin-top:8px;font-size:15px;line-height:1.6;color:#3A3832;white-space:pre-line;overflow-wrap:anywhere;display:-webkit-box;-webkit-line-clamp:4;-webkit-box-orient:vertical;overflow:hidden;min-height:6.4em}
+.rv-body.open{display:block;-webkit-line-clamp:unset;overflow:visible}   /* [10-28 사장] 긴 후기는 접어 두고 더보기로 펼침 */
+.rv-more{align-self:flex-start;margin-top:6px;padding:4px 0;border:0;background:none;font:inherit;font-size:14px;font-weight:800;color:var(--rep);cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+.rv-more[hidden]{display:none}
 .rv-foot{margin-top:auto;padding-top:12px;display:flex;flex-direction:column;align-items:flex-start;gap:6px}
 .rv-meta{font-size:13px;color:#8A867C}
 .rv-perk{font-size:12px;font-weight:700;background:#F1EFEA;color:#77736A;padding:2px 8px;border-radius:4px}
@@ -1106,8 +1109,8 @@ a.rv-card:hover .rv-t{text-decoration:underline;text-underline-offset:3px}
 .mall-hero h3{margin-top:6px;font-size:clamp(30px,4.6vw,48px);font-weight:900;letter-spacing:-.04em}
 .mall-d{margin-top:10px;font-size:clamp(15px,1.7vw,18px);line-height:1.65;color:#E3E7EF;max-width:36em}
 .mall-facts{margin-top:16px;display:grid;gap:6px;font-size:15px;line-height:1.55;color:#E3E7EF}
-.mall-facts li{display:flex;gap:10px}
-.mall-facts li::before{content:"";flex:none;margin-top:9px;width:7px;height:7px;border-radius:50%;background:var(--lime)}
+.mall-facts li{position:relative;padding-left:17px}   /* [10-28] flex 였을 때 <b> 앞뒤 글이 세로 칸으로 쪼개지던 문제 수정 */
+.mall-facts li::before{content:"";position:absolute;left:0;top:9px;width:7px;height:7px;border-radius:50%;background:var(--lime)}
 .mall-facts b{color:#fff}
 .mall-cta{margin-top:20px;display:flex;flex-wrap:wrap;align-items:center;gap:8px 16px}
 .mall-cta .btn{min-width:200px}
@@ -2045,7 +2048,7 @@ const SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxPac_qwfiW7pf0N
 <script>
 /* v11 회원 후기 (10-27 캐러셀): SHEET_ENDPOINT?action=reviews →
    {ok:true, reviews:[{masked_id, date, industry, stars, line, text, link, title, thumb, perk}]}  (서버가 최신순으로 보냄 → 맨 앞이 최신)
-   서버가 '공개' 체크된 실제 회원 후기만 보낸다. 여기서는 별점으로 거르지 않고 내용을 고치지 않는다(길이만 자름, 화면에서 3줄 말줄임).
+   서버가 '공개' 체크된 실제 회원 후기만 보낸다. 여기서는 별점으로 거르지 않고 내용을 고치지 않는다(전체 내용, 화면에서 4줄 접고 [더보기]로 펼침 — 사장 지시 10-28).
    카드 위 사진은 thumb와 관계없이 브경단 로고(img/v11/brgd_logo.webp)로 통일(사장 지시 10-27).
    형식이 맞는 후기가 3개 미만이거나 실패·8초 초과면 섹션은 계속 숨김. 지어낸 후기·예시 후기는 이 파일에 없다. */
 (function () {
@@ -2056,6 +2059,7 @@ const SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxPac_qwfiW7pf0N
   var LINK = /^https:\/\/(www\.)?benews\.co\.kr\/news\/\d+\/?$/;
   var LOGO = 'img/v11/brgd_logo.webp';
   function s(v, n) { return typeof v === 'string' ? v.replace(/\s+/g, ' ').trim().slice(0, n) : (typeof v === 'number' ? String(v) : ''); }
+  function para(v, n) { return typeof v === 'string' ? v.replace(/\r/g, '').replace(/[ \t]+/g, ' ').replace(/\n{3,}/g, '\n\n').trim().slice(0, n) : ''; }   // 후기 본문: 줄바꿈 유지
   function mask(id) { id = s(id, 20); if (!id) return ''; return id.indexOf('*') >= 0 ? id : id.slice(0, 2) + '***'; }
   function card(x, i, n) {
     var li = document.createElement('li');
@@ -2076,11 +2080,18 @@ const SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxPac_qwfiW7pf0N
     var num = document.createElement('b'); num.setAttribute('aria-hidden', 'true'); num.textContent = x.stars.toFixed(1);
     st.appendChild(bx); st.appendChild(num);
     var body = document.createElement('p'); body.className = 'rv-body'; body.textContent = x.body;
+    var bodyId = 'rv-b' + i; body.id = bodyId;
+    var more = document.createElement('button'); more.type = 'button'; more.className = 'rv-more'; more.hidden = true;
+    more.textContent = '더보기'; more.setAttribute('aria-expanded', 'false'); more.setAttribute('aria-controls', bodyId); more.setAttribute('data-cta', 'review-more');
+    more.addEventListener('click', function () {
+      var o = body.classList.toggle('open');
+      more.textContent = o ? '접기' : '더보기'; more.setAttribute('aria-expanded', o ? 'true' : 'false');
+    });
     var ft = document.createElement('div'); ft.className = 'rv-foot';
     if (x.perk) { var pk = document.createElement('span'); pk.className = 'rv-perk'; pk.textContent = '혜택을 받고 작성한 후기'; ft.appendChild(pk); }
     var meta = document.createElement('p'); meta.className = 'rv-meta'; meta.textContent = [x.id, x.date].filter(Boolean).join(' · ');
     ft.appendChild(meta);
-    c.appendChild(im); c.appendChild(t); c.appendChild(st); c.appendChild(body); c.appendChild(ft);
+    c.appendChild(im); c.appendChild(t); c.appendChild(st); c.appendChild(body); c.appendChild(more); c.appendChild(ft);
     li.appendChild(c);
     return li;
   }
@@ -2119,7 +2130,7 @@ const SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxPac_qwfiW7pf0N
       var rs = (d && d.ok === true && Array.isArray(d.reviews) ? d.reviews : []).map(function (x) {
         if (!x || typeof x !== 'object') return null;
         var st = Math.round(parseFloat(x.stars) * 2) / 2;
-        var body = s(x.text, 600) || s(x.line, 80);
+        var body = para(x.text, 3000) || s(x.line, 200);
         if (!(st >= 1 && st <= 5) || body.length < 2) return null;
         var lk = s(x.link, 300);
         return { stars: st, body: body, title: s(x.title, 120), id: mask(x.masked_id), date: s(x.date, 10),
@@ -2131,6 +2142,14 @@ const SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxPac_qwfiW7pf0N
       list.appendChild(frag); sec.hidden = false;
       document.documentElement.setAttribute('data-reviews', String(rs.length));
       carousel();
+      /* 4줄을 넘는 후기에만 [더보기] 표시 (글꼴·화면 폭이 바뀌면 다시 계산) */
+      function fold() {
+        Array.prototype.forEach.call(list.querySelectorAll('.rv-body'), function (b) {
+          var m = b.nextSibling; if (b.classList.contains('open')) return;
+          m.hidden = b.scrollHeight <= b.clientHeight + 2;
+        });
+      }
+      fold(); window.addEventListener('resize', fold); if (document.fonts && document.fonts.ready) document.fonts.ready.then(fold);
     })
     .catch(function () { done = true; clearTimeout(timer); });
 })();

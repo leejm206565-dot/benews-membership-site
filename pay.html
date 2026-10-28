@@ -181,6 +181,14 @@ const WIDGET_VARIANT = 'LINKPAY_link_openxzla2';   // 1년 결제 UI variantKey 
   var btn = $('#pay-btn');
   function mark(n) { try { (window.__pf = window.__pf || {})[n] = Math.round(performance.timeOrigin + performance.now()); } catch (e) {} }   // 측정용 시각(브라우저 시계, ms). 화면 동작과 무관
   function ev(name, p) { try { if (window.gtag) { p = p || {}; p.src = SRC; gtag('event', name, p); } } catch (e) {} }
+  // [2026-10-28] 시트 '결제분석' 기록: 결제 버튼 누름(click)·창에서 취소/실패(fail). 응답을 기다리지 않는다(화면 동작과 무관)
+  function pev(stage, code, msg) {
+    try {
+      var r = rc || (S && S.server && S.server.receipt) || ''; if (!r || demo) return;
+      var d = new URLSearchParams({ action: 'pay_event', track: TRACK, r: r, stage: stage, code: String(code || '').slice(0, 60), message: String(msg || '').slice(0, 200), website: '' });
+      if (!(navigator.sendBeacon && navigator.sendBeacon(SHEET_ENDPOINT, d))) fetch(SHEET_ENDPOINT, { method: 'POST', body: d, keepalive: true }).catch(function () {});
+    } catch (e) {}
+  }
 
   function bad(title, msg, opt) {
     opt = opt || {};
@@ -338,11 +346,11 @@ const WIDGET_VARIANT = 'LINKPAY_link_openxzla2';   // 1년 결제 UI variantKey 
     sdk().catch(function () { S.fail = 'sdk'; stopWait('카드 등록 화면을 불러오지 못했습니다. 새로고침하거나 ' + PHONE + '로 전화·문자 주세요.'); });
   }
   function openBilling() {
-    S.busy = true; sync();
+    S.busy = true; sync(); pev('click');
     // 고객 이름·이메일은 결제 전에 받지 않는다(토스 requestBillingAuth 의 customerName·customerEmail 은 선택값)
     S.payment.requestBillingAuth({ method: 'CARD', successUrl: location.origin + '/billing-success.html', failUrl: location.origin + '/pay-fail.html' })
       .catch(function (e) {
-        stopWait();
+        stopWait(); pev('fail', e && e.code, e && e.message);
         if (e && (e.code === 'USER_CANCEL' || e.code === 'PAY_PROCESS_CANCELED')) return;
         setMsg($('#pay-err'), ((e && e.message) ? e.message : '카드 등록을 시작하지 못했습니다. 다시 눌러 주세요.') + HELP);
       });
@@ -388,7 +396,7 @@ const WIDGET_VARIANT = 'LINKPAY_link_openxzla2';   // 1년 결제 UI variantKey 
   }
   function openWidget() {
     var j = S.server, plan = PLANS[S.pk];
-    S.busy = true; sync();
+    S.busy = true; sync(); pev('click');
     // 고객 이름·휴대폰은 결제 전에 받지 않는다(결제위젯 requestPayment 의 customerName·customerMobilePhone 은 선택값)
     S.widgets.requestPayment({
       orderId: j.renew ? rc + '-R' + ('0' + j.round).slice(-2) + '-' + rand6() : rc + '-' + rand6(),
@@ -396,7 +404,7 @@ const WIDGET_VARIANT = 'LINKPAY_link_openxzla2';   // 1년 결제 UI variantKey 
       successUrl: location.origin + '/pay-success.html',
       failUrl: location.origin + '/pay-fail.html'
     }).catch(function (e) {
-      stopWait();
+      stopWait(); pev('fail', e && e.code, e && e.message);
       if (e && e.code === 'USER_CANCEL') return;
       setMsg($('#pay-err'), ((e && e.message) ? e.message : '결제를 시작하지 못했습니다. 다시 눌러 주세요.') + HELP);
     });

@@ -76,6 +76,14 @@ h1,h2,h3{word-break:keep-all;text-wrap:balance;letter-spacing:-.02em}
   else if (code === 'PAY_PROCESS_ABORTED') { $('#f-msg').textContent = (msg || '처리 중 문제가 생겼습니다.') + ' 잠시 뒤 다시 시도해 주세요. 계속되면 010-7382-1097로 알려 주세요.'; }
   else if (msg) $('#f-msg').textContent = msg;   // 토스가 보낸 사유 (글자로만 표시)
   if (code) $('#f-code').textContent = '오류 코드: ' + code;
+  // [2026-10-28] 시트 '결제분석'에 실패·취소 사유 기록 (응답을 기다리지 않음)
+  try {
+    if (/^(BE|OM)-\d{4}-\d{4}$/.test(rc)) {
+      var EP = 'https://script.google.com/macros/s/AKfycbxPac_qwfiW7pf0NvfCQr4Vyr9bLXWjq4KYFwclAmy2buZFajcD9AKsBcbd5BD0SCu9zA/exec';
+      var d = new URLSearchParams({ action: 'pay_event', track: isOM ? 'openmedia' : 'reporter', r: rc, stage: 'fail', code: code, message: msg.slice(0, 200), website: '' });
+      if (!(navigator.sendBeacon && navigator.sendBeacon(EP, d))) fetch(EP, { method: 'POST', body: d, keepalive: true }).catch(function () {});
+    }
+  } catch (e) {}
   if (rc && (last.p === 'month' || last.p === 'year' || last.p === 'om_month')) $('#f-again').href = 'pay.html?r=' + encodeURIComponent(rc) + '&p=' + last.p + (last.renew ? '&renew=1' : '');
 })();
 </script>
