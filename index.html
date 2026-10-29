@@ -1822,7 +1822,32 @@ const SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxPac_qwfiW7pf0N
     if (v) box.setAttribute('data-ab', v);
   })();
   window.__bxAB = function () { return AB; };
-  function ev(name, p) { try { if (window.gtag) { p = p || {}; p.src = SRC; if (AB) p.ab_perks = AB; gtag('event', name, p); } } catch (e) {} }
+  /* [2026-10-29 사장 지시] 방문 기록 → 시트 '방문기록' 탭(하루 방문자·어느 구역에서 나갔는지·결제 버튼).
+     개인정보 없음: 탭을 닫으면 사라지는 무작위 세션 번호, 유입 꼬리표, 기기 종류, 본 구역, 머문 시간만 보낸다. */
+  var VIS = (function () {
+    var noop = { sec: function () {}, pay: function () {} };
+    if (typeof SHEET_ENDPOINT !== 'string' || !SHEET_ENDPOINT || !window.URLSearchParams) return noop;
+    var team = '0', sid = '';
+    try { if (localStorage.getItem('bx:team')) team = '1'; sid = sessionStorage.getItem('bx:sid') || ''; } catch (e) {}
+    if (!sid) { sid = Date.now().toString(36) + Math.random().toString(36).slice(2, 8); try { sessionStorage.setItem('bx:sid', sid); } catch (e) {} }
+    var t0 = Date.now(), secs = {}, pay = '0', n = 0;
+    function send(kind) {
+      if (++n > 40) return;
+      try {
+        var d = new URLSearchParams({ action: 'visit', sid: sid, kind: kind, src: (location.search || '').slice(0, 200),
+          ref: (document.referrer || '').split(/[?#]/)[0].slice(0, 100), dev: /Mobi|Android|iPhone/i.test(navigator.userAgent) ? '모바일' : 'PC',
+          secs: Object.keys(secs).join(','), sec: String(Math.round((Date.now() - t0) / 1000)), pay: pay, team: team, website: '' });
+        if (!(navigator.sendBeacon && navigator.sendBeacon(SHEET_ENDPOINT, d))) fetch(SHEET_ENDPOINT, { method: 'POST', body: d, keepalive: true }).catch(function () {});
+      } catch (e) {}
+    }
+    send('land');
+    document.addEventListener('visibilitychange', function () { if (document.visibilityState === 'hidden') send('leave'); });
+    return { sec: function (s) { secs[s] = 1; }, pay: function () { pay = '1'; send('pay'); } };
+  })();
+  function ev(name, p) {
+    try { if (name === 'section_view' && p) VIS.sec(p.name); if (name === 'pay_click') VIS.pay(); } catch (e) {}
+    try { if (window.gtag) { p = p || {}; p.src = SRC; if (AB) p.ab_perks = AB; gtag('event', name, p); } } catch (e) {}
+  }
   window.__bxEv = ev;
   if (SRC !== 'direct') ev('src_visit');
   if (AB) ev('ab_view', { variant: AB });
