@@ -1501,8 +1501,8 @@ a.rv-card:hover .rv-t{text-decoration:underline;text-underline-offset:3px}
         <p class="mall-d">오픈엑스가 운영하는 임직원 및 기자단 전용 복지몰. 삼성·네스프레소 등 제품을 합리적인 가격으로 구매할 수 있어요.</p>
         <ul class="mall-facts">
           <li><b>월 1회 주문</b> (연 12회)</li>
-          <li>기자단 아이디와 같은 아이디로 계정을 만들어 드려요</li>
-          <li>주문할 때 <b>추천인 또는 담당자</b> 칸에 '브경단' 입력</li>
+          <li>기자단 아이디와 같은 아이디로 <b>가입 신청까지 해 드려요</b></li>
+          <li>복지몰 승인 후 바로 로그인 · 따로 입력할 것 없음</li>
         </ul>
         <div class="mall-cta"><a href="https://openm.co.kr/" target="_blank" rel="noopener noreferrer" class="btn btn-lime" data-link="mall" data-cta="mall-go">복지몰 바로가기<svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M7 17 17 7M8 7h9v9"/></svg></a><span>이용료·구매 대금은 멤버십과 별도</span></div>
         <ul class="mall-cats" aria-label="입점 브랜드 상품 예시">
@@ -1554,8 +1554,8 @@ a.rv-card:hover .rv-t{text-decoration:underline;text-underline-offset:3px}
       <details class="pm-how" data-faq="perks-how">
         <summary>이용 방법 · '브경단' 입력 안내</summary>
         <ol>
-          <li><i>1</i><span>복지몰(모든 회원): 주문할 때 <b>추천인 또는 담당자</b> 칸에 <button type="button" class="code copy-code" data-code="브경단" aria-label="브경단 복사하기">브경단<small>복사</small></button>을 입력해 주세요.<span class="s">입력 칸이 없으면 주문 메모나 고객센터 문의 때 '브경단 회원'이라고 알려 주세요.</span></span></li>
-          <li><i>2</i><span>헬로벨 렌탈(1년 일시불 회원): 신청서 <b>전달사항</b>에 <b style="color:var(--rep)">브경단</b>을 적어 주세요.</span></li>
+          <li><i>1</i><span>복지몰(모든 회원): 기자단 아이디와 같은 아이디·임시 비밀번호로 <b>가입 신청을 해 드려요</b>.<span class="s">복지몰 승인이 끝나면 바로 로그인해 이용하시면 되고, 따로 입력할 것은 없어요.</span></span></li>
+          <li><i>2</i><span>헬로벨 렌탈(1년 일시불 회원): 신청서 <b>전달사항</b>에 <button type="button" class="code copy-code" data-code="브경단" aria-label="브경단 복사하기">브경단<small>복사</small></button>을 적어 주세요.</span></li>
         </ol>
         <p class="copy-msg" role="status" aria-live="polite"></p>
       </details>
@@ -1948,7 +1948,7 @@ const SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxPac_qwfiW7pf0N
   Array.prototype.forEach.call(document.querySelectorAll('.copy-code'), function (b) {
     b.addEventListener('click', function () {
       var t = b.getAttribute('data-code') || '브경단';
-      function done(ok) { if (msg) msg.textContent = ok ? '"' + t + '"을 복사했습니다. 입력란(헬로벨: 전달사항 / 복지몰: 추천인·담당자)에 붙여 넣으세요.' : '입력란(헬로벨: 전달사항 / 복지몰: 추천인·담당자)에 "' + t + '"을 직접 입력해 주세요.'; }
+      function done(ok) { if (msg) msg.textContent = ok ? '"' + t + '"을 복사했습니다. 헬로벨 신청서 전달사항에 붙여 넣으세요.' : '헬로벨 신청서 전달사항에 "' + t + '"을 직접 입력해 주세요.'; }
       try { if (navigator.clipboard && window.isSecureContext) { navigator.clipboard.writeText(t).then(function () { done(true); }, function () { done(false); }); } else { done(false); } } catch (e) { done(false); }
     });
   });
