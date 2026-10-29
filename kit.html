@@ -85,6 +85,23 @@ th{background:var(--paper2)}
 .upl{margin-top:12px;padding:12px 14px;border-radius:12px;background:var(--rep-s);font-weight:700}
 .ft{margin:36px 0 0;padding:24px 0 40px;border-top:1px solid var(--line);font-size:13px;color:var(--mute)}
 .top{display:inline-block;margin-top:14px;font-size:14px;font-weight:700}
+/* [2026-10-29] 체크한 항목만 프롬프트에 / 고른 기사 종류만 보이기 */
+.toc a.on{background:var(--rep);color:#fff}
+.toc a.on .n{opacity:.9}
+.fields{display:grid;gap:8px;margin-top:8px}
+.fr{border:1px solid var(--line);border-radius:12px;background:var(--paper);padding:10px 12px}
+.fr.on{background:var(--white);border-color:var(--rep)}
+.fr label.ck{display:flex;gap:10px;align-items:flex-start;cursor:pointer;font-weight:700}
+.fr label.ck input{width:20px;height:20px;margin:2px 0 0;flex:none;accent-color:var(--rep)}
+.fr .hint{display:block;font-weight:400;font-size:13.5px;color:var(--mute)}
+.fr .val{display:none;width:100%;margin-top:8px;font:inherit;font-size:15px;padding:9px 11px;border:1.5px solid var(--line);border-radius:10px;background:#fff;color:var(--ink)}
+.fr.on .val{display:block}
+.fr textarea.val{min-height:120px;resize:vertical}
+.prep{margin:10px 0 0;padding:10px 14px;border-radius:12px;background:var(--rep-s);font-size:14.5px}
+.prep b{display:block;margin-bottom:2px}
+.prep ul{margin:0;padding-left:18px}
+.live{font-size:13.5px;color:var(--rep-d);font-weight:700;margin:6px 0 0}
+
 </style>
 </head>
 <body>
@@ -119,6 +136,7 @@ th{background:var(--paper2)}
 
   <nav aria-label="기사 종류 바로가기">
     <h2 class="sr-h" style="font-size:20px;font-weight:800;margin:28px 0 0">내 기사에 맞는 프롬프트 고르기</h2>
+    <p class="mute" style="margin-top:4px">하나를 고르면 그 종류만 보여요.</p>
     <div class="toc">
       <a href="#store"><span class="n">01</span>가게·매장 소식</a><a href="#column"><span class="n">02</span>전문가 칼럼</a><a href="#company"><span class="n">03</span>기업·단체 소식</a><a href="#event"><span class="n">04</span>행사·지역 소식</a><a href="#culture"><span class="n">05</span>문화·예술</a><a href="#interview"><span class="n">06</span>인물 인터뷰</a>
       <a href="#check" class="chk"><span class="n">07</span>올리기 전 체크리스트</a>
@@ -487,6 +505,105 @@ th{background:var(--paper2)}
       else{done(b,fallback(t));}
     });
   });
+})();
+</script>
+<script>
+/* [2026-10-29 사장 요청] ① 체크한 항목만 프롬프트 '내 메모'에 들어가고, 적은 내용이 [ ] 자리에 바로 채워진다
+   ② 기사 종류를 고르면 그 종류만 보이고 나머지는 접힌다. (자바스크립트가 꺼져 있으면 예전처럼 전부 보임) */
+(function(){
+  var F = {
+    store: { f: [
+      ['가게 이름', 1, '간판에 적힌 그대로'], ['업종', 1, '예: 동네 빵집'], ['지역(시·구·동)', 1, '검색에 걸리는 핵심 단어가 됩니다'],
+      ['이번 소식(무엇을)', 1, '새로 생기거나 바뀐 것'], ['날짜·기간·시간(언제)', 1, '확정된 것만'], ['이유·배경(왜)', 1, '손님 요청, 계절, 재료 등'],
+      ['가격·수량 등 숫자(확인된 것만)', 0, '할인율은 실제 판매가 기준'], ['대표·직원이 실제로 한 말', 0, '실제로 한 말만 적어 주세요'], ['더 넣고 싶은 내용', 0, '']],
+      prep: ['사진 1~3장(직접 찍었거나 사용 허락을 받은 것)', "홍보 성격이면 기사유형을 '기사형 광고'로 올리기"] },
+    column: { f: [
+      ['필자: 이름 / 직함·소속', 1, '기사 끝 필자 소개에 들어갑니다'], ['주제(독자가 궁금해할 질문 형태로)', 1, '예: 잔금 전에 무엇을 확인해야 할까?'],
+      ['독자(누구를 위한 글인지)', 1, '예: 처음 전세 계약하는 사회초년생'], ['핵심 메시지 2~3개', 1, ''],
+      ['근거(법령·제도·통계 이름과 기준일, 제가 확인한 것만)', 0, '공식 자료와 대조한 것만'], ['제가 겪은 사례(누군지 알 수 없게)', 0, '이름·나이·주소 빼고'],
+      ['독자가 해 볼 수 있는 행동', 1, ''], ['지역(있으면)', 0, '']],
+      prep: ['법령 조항·금액·세율·시행일은 공식 자료와 꼭 대조하기', '상담 유도 문구를 넣으면 기사형 광고 대상이 될 수 있어요'] },
+    company: { f: [
+      ['회사·단체 이름', 1, '정식 이름'], ['대표자 이름·직함', 1, ''], ['소식 종류(협약 / 출시 / 수상·선정 / 봉사·기부 / 기타)', 1, ''],
+      ['무엇을', 1, ''], ['언제·어디서', 1, '확정된 것만'], ['상대 기관·주최 측 공식 명칭(있으면)', 0, '이름을 써도 되는지 미리 확인'],
+      ['금액·수량·인원 등 숫자(확인된 것만)', 0, ''], ['의미와 앞으로의 계획', 0, ''], ['대표·담당자가 실제로 한 말', 0, ''],
+      ['회사 소개(확인된 사실만)', 0, '설립연도·주요 사업 등']],
+      prep: ["홍보 성격이면 '기사형 광고' 여부를 판단해 주세요"] },
+    event: { f: [
+      ['행사 공식 이름', 1, '회차·연도 포함. 예: 2026 제O회 OO축제'], ['주최·주관', 1, '공식 명칭'], ['날짜·요일·시간', 1, ''], ['장소', 1, '주소 수준까지'],
+      ['저(우리)의 역할', 1, '참가, 부스, 공연, 개최 등'], ['행사 주제와 주요 프로그램', 0, ''], ['참가비·신청·주차·교통(확인된 것만)', 0, ''],
+      ['참가 이유와 준비 과정', 0, ''], ['실제로 한 말', 0, ''], ['기사 시점(행사 전 예고 / 행사 후 소식)', 1, '전이면 "열린다", 후면 "열렸다"']],
+      prep: ['현장 사진에 얼굴이 크게 나오면 동의 확인, 공식 포스터는 사용 허락 확인'] },
+    culture: { f: [
+      ['작가·단체 이름', 1, '활동명 표기 확인'], ['전시·공연·책의 공식 제목', 1, ''], ['기간·시간', 1, ''], ['장소', 1, '전시장·공연장 이름, 주소'],
+      ['관람료·예매 방법(확인된 것만)', 0, ''], ['작품 수·장르·주제', 0, ''], ['작가가 직접 말한 작품 의도(작가 노트·인터뷰)', 0, ''],
+      ['작가 약력(확인된 것만)', 0, ''], ['실제로 인용할 말', 0, '']],
+      prep: ['작품 사진·포스터·책 표지는 내 것이거나 사용 허락을 받은 것만'] },
+    interview: { f: [
+      ['인물 이름·직함·소속', 1, '표기 방식은 본인에게 확인'], ['인터뷰 날짜·방식(만남 / 전화 / 서면)', 1, ''], ['이 사람을 소개하는 이유', 1, ''],
+      ['약력·활동(본인이 확인해 준 것만)', 0, ''], ['실제 질문과 답(그대로 붙여 넣기)', 1, 'Q1. 질문 / A1. 답 순서로 붙여 넣어 주세요', 'area'],
+      ['원하는 형식(Q&A형 / 이야기형)', 1, '']],
+      prep: ['기사에 이름·사진·답변을 실어도 되는지 대상자에게 동의 받기'] }
+  };
+  var QA = '\n  Q1. [ ]\n  A1. [ ]\n  Q2. [ ]\n  A2. [ ]\n  (필요한 만큼 이어서)';
+  function el(t, c, txt) { var e = document.createElement(t); if (c) e.className = c; if (txt != null) e.textContent = txt; return e; }
+
+  Object.keys(F).forEach(function (id) {
+    var sec = document.getElementById(id), pre = document.getElementById('p-' + id);
+    if (!sec || !pre) return;
+    var all = pre.textContent, i1 = all.indexOf('■ 내 메모'), i2 = all.indexOf('■ 지켜 주실 규칙');
+    if (i1 < 0 || i2 < 0) return;
+    var head = all.slice(0, i1).replace(/\s+$/, ''), rules = all.slice(i2);
+    var ul = sec.querySelector('ul.chk'), h3 = ul && ul.previousElementSibling;
+    if (!ul) return;
+    if (h3 && h3.tagName === 'H3') h3.textContent = '넣을 정보 고르기 · 체크한 항목만 프롬프트에 들어가요';
+    var box = el('div', 'fields'), rows = [];
+    F[id].f.forEach(function (f, k) {
+      var row = el('div', 'fr'), lab = el('label', 'ck'), cb = el('input');
+      cb.type = 'checkbox'; cb.checked = !!f[1];
+      var sp = el('span', null, f[0]); if (f[2]) sp.appendChild(el('span', 'hint', f[2]));
+      lab.appendChild(cb); lab.appendChild(sp);
+      var v = el(f[3] === 'area' ? 'textarea' : 'input', 'val'); if (v.tagName === 'INPUT') v.type = 'text';
+      v.placeholder = '적으면 프롬프트에 바로 들어가요'; v.setAttribute('aria-label', f[0] + ' 내용');
+      row.appendChild(lab); row.appendChild(v); box.appendChild(row);
+      rows.push({ f: f, cb: cb, v: v, row: row });
+    });
+    var prep = el('div', 'prep'); prep.appendChild(el('b', null, '함께 준비할 것'));
+    var pl = el('ul'); F[id].prep.forEach(function (t) { pl.appendChild(el('li', null, t)); }); prep.appendChild(pl);
+    ul.parentNode.replaceChild(box, ul); box.parentNode.insertBefore(prep, box.nextSibling);
+    var live = el('p', 'live', '');
+    pre.parentNode.parentNode.insertBefore(live, pre.parentNode);
+    function build() {
+      var on = 0, memo = rows.filter(function (r) { r.row.classList.toggle('on', r.cb.checked); return r.cb.checked; }).map(function (r) {
+        on++;
+        var val = r.v.value.trim();
+        if (r.f[3] === 'area') return '- ' + r.f[0] + ':' + (val ? '\n' + val.replace(/^/gm, '  ') : QA);
+        return '- ' + r.f[0] + ': ' + (val || '[ ]');
+      });
+      pre.textContent = head + '\n\n■ 내 메모\n' + (memo.join('\n') || '- (체크한 항목이 없어요. 위에서 넣을 정보를 골라 주세요)') + '\n\n' + rules;
+      live.textContent = '체크한 ' + on + '개 항목이 아래 프롬프트에 들어가 있어요. 적은 내용은 바로 반영돼요.';
+    }
+    rows.forEach(function (r) { r.cb.addEventListener('change', build); r.v.addEventListener('input', build); });
+    build();
+  });
+
+  // ② 고른 기사 종류만 보이기
+  var ids = Object.keys(F), links = document.querySelectorAll('.toc a');
+  function show(id, scroll) {
+    if (ids.indexOf(id) < 0) return false;
+    ids.forEach(function (x) { var s = document.getElementById(x); if (s) s.hidden = x !== id; });
+    links.forEach(function (a) { a.classList.toggle('on', a.getAttribute('href') === '#' + id); a.setAttribute('aria-current', a.getAttribute('href') === '#' + id ? 'true' : 'false'); });
+    if (scroll) { var s = document.getElementById(id); if (s) s.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
+    return true;
+  }
+  links.forEach(function (a) {
+    a.addEventListener('click', function (e) {
+      var id = (a.getAttribute('href') || '').slice(1);
+      if (show(id, true)) { e.preventDefault(); history.replaceState(null, '', '#' + id); }
+    });
+  });
+  var hid = location.hash.slice(1);
+  show(ids.indexOf(hid) >= 0 ? hid : 'store', ids.indexOf(hid) >= 0);
 })();
 </script>
 </body>
