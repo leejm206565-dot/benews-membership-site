@@ -1834,7 +1834,7 @@ const SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxPac_qwfiW7pf0N
     function send(kind) {
       if (++n > 40) return;
       try {
-        var d = new URLSearchParams({ action: 'visit', sid: sid, kind: kind, src: (location.search || '').slice(0, 200),
+        var d = new URLSearchParams({ action: 'visit', vid: sid, kind: kind, src: (location.search || '').slice(0, 200),
           ref: (document.referrer || '').split(/[?#]/)[0].slice(0, 100), dev: /Mobi|Android|iPhone/i.test(navigator.userAgent) ? '모바일' : 'PC',
           secs: Object.keys(secs).join(','), sec: String(Math.round((Date.now() - t0) / 1000)), pay: pay, team: team, website: '' });
         if (!(navigator.sendBeacon && navigator.sendBeacon(SHEET_ENDPOINT, d))) fetch(SHEET_ENDPOINT, { method: 'POST', body: d, keepalive: true }).catch(function () {});
