@@ -187,8 +187,9 @@ details>summary::-webkit-details-marker{display:none}
       </section>
 
       <section class="rounded-2xl bg-white p-4 md:p-6 shadow-soft" aria-labelledby="c1">
-        <h2 id="c1" class="flex items-center gap-2 text-[18px] font-bold"><span class="sec-no">1</span>영문 이름</h2>
-        <label class="block mt-3"><span class="sr-only">영문 이름</span><input name="nameEn" class="fld uppercase" autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="50" placeholder="HONG GILDONG"><span class="hint block">기자증에 들어갑니다. 여권과 같은 표기로 적어 주세요. 예: 홍길동 → HONG GILDONG</span><span class="ferr" data-for="nameEn"></span></label>
+        <h2 id="c1" class="flex items-center gap-2 text-[18px] font-bold"><span class="sec-no">1</span>영문 이름 · 생년월일</h2>
+        <label class="block mt-3"><span class="text-[14px] font-bold">영문 이름</span><input name="nameEn" class="fld uppercase" autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="50" placeholder="HONG GILDONG"><span class="hint block">기자증에 들어갑니다. 여권과 같은 표기로 적어 주세요. 예: 홍길동 → HONG GILDONG</span><span class="ferr" data-for="nameEn"></span></label>
+        <label class="block mt-3"><span class="text-[14px] font-bold">생년월일</span><input name="birth" class="fld" inputmode="numeric" autocomplete="bday" maxlength="10" placeholder="예: 19850315"><span class="hint block">기자증 제작에 필요합니다. 숫자 8자리로 적어 주세요.</span><span class="ferr" data-for="birth"></span></label>
       </section>
 
       <section class="rounded-2xl bg-white p-4 md:p-6 shadow-soft" aria-labelledby="c2">
@@ -258,8 +259,8 @@ details>summary::-webkit-details-marker{display:none}
           <div class="doc pb-2 text-[13px] text-[#333] space-y-2">
             <table><tbody>
               <tr><th scope="row">수집자</th><td>주식회사 오픈엑스</td></tr>
-              <tr><th scope="row">항목</th><td>영문 이름, 증명사진, 기자증 수령 방법, 배송 주소(택배 선택 시)</td></tr>
-              <tr><th scope="row">목적</th><td>실물 기자증 제작·발송</td></tr>
+              <tr><th scope="row">항목</th><td>영문 이름, 생년월일, 증명사진, 기자증 수령 방법, 배송 주소(택배 선택 시)</td></tr>
+              <tr><th scope="row">목적</th><td>실물 기자증 제작·발송, 브랜드경제신문 기자단 등록(기자단 신청서 제출)</td></tr>
               <tr><th scope="row">보유 기간</th><td><b>증명사진: 기자증 제작·발송 완료 후 지체 없이 파기(담당자가 삭제)</b>. 재발급 때는 다시 받습니다. 영문 이름·수령 방법·주소: 멤버십 해지(계약 종료) 시까지. 관계 법령에 따라 보존해야 하는 정보는 그 기간 동안 보관합니다.</td></tr>
             </tbody></table>
             <p>동의를 거부할 수 있으나, 거부하면 실물 기자증을 만들어 보내 드릴 수 없습니다. 자세한 내용은 <a href="privacy.html" target="_blank" rel="noopener" class="underline font-bold">개인정보처리방침</a>을 확인해 주세요.</p>
@@ -423,6 +424,7 @@ const SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxPac_qwfiW7pf0N
     loginId2: ['loginId2', '영문 소문자·숫자 4~12자, 1순위와 다르게 적어 주세요.'],
     email: ['email', '이메일 주소를 확인해 주세요.'],
     nameEn: ['nameEn', '영문 이름을 확인해 주세요.'],
+    birth: ['birth', '생년월일을 숫자 8자리로 적어 주세요.'],
     photo: ['photo', '사진을 다시 골라 주세요.'],
     photoType: ['photo', 'JPG·PNG 사진만 올릴 수 있습니다.'],
     photoSize: ['photo', '사진이 너무 큽니다(최대 2MB). 다른 사진을 골라 주세요.'],
@@ -621,6 +623,12 @@ const SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxPac_qwfiW7pf0N
     });
   });
 
+  function birthOk(v) {
+    var d = String(v || '').replace(/\D/g, '');
+    if (!/^(19|20)\d{6}$/.test(d)) return false;
+    var y = +d.slice(0, 4), m = +d.slice(4, 6), dd = +d.slice(6, 8), t = new Date(y, m - 1, dd);
+    return t.getFullYear() === y && t.getMonth() === m - 1 && t.getDate() === dd && t < new Date();
+  }
   function checkCard() {
     clearErrs(fc);
     var k = checker(fc);
@@ -630,6 +638,7 @@ const SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxPac_qwfiW7pf0N
     }
     C.nameEn.value = C.nameEn.value.toUpperCase().replace(/\s+/g, ' ').trim();
     if (!EN_RE.test(C.nameEn.value)) k.bad('nameEn', '영문 대문자로 적어 주세요. 예: HONG GILDONG', C.nameEn);
+    if (!birthOk(C.birth.value)) k.bad('birth', '생년월일을 숫자 8자리로 적어 주세요. 예: 19850315', C.birth);
     var later = fc.querySelector('input[name=photoMode]:checked').value === 'later';
     if (!later && !photoData) k.bad('photo', '사진을 골라 주세요. 지금 없으면 "이메일로 보내기"를 고르세요.', $('#ph-file'));
     if (fc.querySelector('input[name=delivery]:checked').value === '택배') {
@@ -649,7 +658,7 @@ const SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxPac_qwfiW7pf0N
     if (!who) C.phone.value = phone;
     var data = {
       action: 'profile', stage: 'card', track: 'reporter', receipt: who ? who.receipt : rc, website: '',
-      name: name, phone: phone, nameEn: C.nameEn.value,
+      name: name, phone: phone, nameEn: C.nameEn.value, birth: C.birth.value.replace(/\D/g, ''),
       photoMode: later ? 'later' : 'now', photo: later ? '' : photoData,
       delivery: parcel ? '택배' : '방문 수령',
       zip: parcel ? C.zip.value : '', addr1: parcel ? C.addr1.value.trim() : '', addr2: parcel ? C.addr2.value.trim() : '',
