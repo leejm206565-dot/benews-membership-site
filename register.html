@@ -109,17 +109,48 @@ details>summary::-webkit-details-marker{display:none}
         </div>
       </section>
 
+      <section class="rounded-2xl bg-white p-4 md:p-6 shadow-soft" aria-labelledby="a4">
+        <h2 id="a4" class="text-[18px] font-bold">생년월일 · 성별 · 주소</h2>
+        <p class="hint">생년월일과 주소는 실물 기자증 발송과 복지몰 주문 시 배송 주소로 쓰여요.</p>
+        <div class="mt-3 space-y-4">
+          <div class="grid sm:grid-cols-2 gap-3 items-start">
+            <label class="block"><span class="text-[14px] font-bold">생년월일</span><input name="birthA" class="fld" inputmode="numeric" autocomplete="bday" maxlength="10" placeholder="예: 19850315"><span class="ferr" data-for="birthA"></span></label>
+            <fieldset class="block"><legend class="text-[14px] font-bold">성별</legend>
+              <div class="mt-1 grid grid-cols-2 gap-2">
+                <label class="opt"><input type="radio" name="gender" value="남"><span><b class="block text-[15px]">남성</b></span></label>
+                <label class="opt"><input type="radio" name="gender" value="여"><span><b class="block text-[15px]">여성</b></span></label>
+              </div>
+              <span class="ferr block" data-for="gender"></span>
+            </fieldset>
+          </div>
+          <div>
+            <span class="text-[14px] font-bold" id="zipA-l">주소</span>
+            <div class="mt-1 flex gap-2">
+              <input name="zipA" class="fld !mt-0 w-[120px] shrink-0" inputmode="numeric" maxlength="5" placeholder="우편번호" aria-labelledby="zipA-l" autocomplete="postal-code">
+              <button type="button" id="zipA-btn" class="flex-1 min-h-[48px] rounded-xl bg-ink text-white text-[15px] font-bold hover:bg-black">주소 검색</button>
+            </div>
+          </div>
+          <label class="block"><span class="sr-only">기본 주소</span><input name="addr1A" class="fld" placeholder="기본 주소" autocomplete="address-line1" maxlength="200"></label>
+          <label class="block"><span class="sr-only">상세 주소</span><input name="addr2A" class="fld" placeholder="상세 주소 (동·호수 등)" autocomplete="address-line2" maxlength="100"></label>
+          <span class="ferr block" data-for="addrA"></span>
+          <div id="zipA-wrap" class="relative rounded-xl border border-line overflow-hidden" hidden>
+            <button type="button" id="zipA-close" class="absolute right-1 top-1 z-10 min-h-[40px] px-3 rounded-lg bg-white/95 border border-line text-[13px] font-bold">닫기</button>
+            <div id="zipA-embed" class="h-[440px]"></div>
+          </div>
+        </div>
+      </section>
+
       <section class="rounded-2xl bg-white p-4 md:p-6 shadow-soft" aria-labelledby="a3">
         <h2 id="a3" class="text-[18px] font-bold">동의</h2>
-        <label class="mt-2 flex items-start gap-2 min-h-[44px] py-1 text-[15px]"><input type="checkbox" name="agree" value="Y" required class="mt-1 w-5 h-5 shrink-0 accent-[#0B6B3A]"><span><b>개인정보(이름·휴대폰·이메일·희망 아이디) 수집·이용에 동의합니다(필수)</b></span></label>
+        <label class="mt-2 flex items-start gap-2 min-h-[44px] py-1 text-[15px]"><input type="checkbox" name="agree" value="Y" required class="mt-1 w-5 h-5 shrink-0 accent-[#0B6B3A]"><span><b>개인정보(이름·휴대폰·이메일·희망 아이디·생년월일·성별·주소) 수집·이용에 동의합니다(필수)</b></span></label>
         <span class="ferr block" data-for="agree"></span>
         <details class="mt-1 text-[14px]">
           <summary class="inline-flex items-center min-h-[44px] underline cursor-pointer text-mute">내용 보기</summary>
           <div class="doc pb-2 text-[13px] text-[#333] space-y-2">
             <table><tbody>
               <tr><th scope="row">수집자</th><td>주식회사 오픈엑스</td></tr>
-              <tr><th scope="row">항목</th><td>이름, 휴대폰 번호, 이메일, 희망 아이디(1·2순위), 결제한 상품</td></tr>
-              <tr><th scope="row">목적</th><td>회원 확인과 연락(결제·이용 안내), 기자단 홈페이지 계정 발급과 안내(아이디·임시 비밀번호·기사 송출 방법 이메일 안내), 기자단 회원의 복지몰(주식회사 오픈엑스 운영) 계정 생성</td></tr>
+              <tr><th scope="row">항목</th><td>이름, 휴대폰 번호, 이메일, 희망 아이디(1·2순위), 생년월일, 성별, 주소, 결제한 상품</td></tr>
+              <tr><th scope="row">목적</th><td>회원 확인과 연락(결제·이용 안내), 기자단 홈페이지 계정 발급과 안내(아이디·임시 비밀번호·기사 송출 방법 이메일 안내), 기자단 회원의 복지몰(주식회사 오픈엑스 운영) 계정 생성, 실물 기자증 발송, 복지몰 주문 시 배송</td></tr>
               <tr><th scope="row">보유 기간</th><td>멤버십 해지(계약 종료) 시까지. 관계 법령에 따라 보존해야 하는 정보는 그 기간 동안 보관합니다.</td></tr>
             </tbody></table>
             <p>비밀번호는 받지 않습니다. 동의를 거부할 수 있으나, 거부하면 기자단 계정을 발급할 수 없습니다. 자세한 내용은 <a href="privacy.html" target="_blank" rel="noopener" class="underline font-bold">개인정보처리방침</a>을 확인해 주세요.</p>
@@ -425,6 +456,9 @@ const SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxPac_qwfiW7pf0N
     email: ['email', '이메일 주소를 확인해 주세요.'],
     nameEn: ['nameEn', '영문 이름을 확인해 주세요.'],
     birth: ['birth', '생년월일을 숫자 8자리로 적어 주세요.'],
+    gender: ['gender', '성별을 골라 주세요.'],
+    birthA: ['birthA', '생년월일을 숫자 8자리로 적어 주세요.'],
+    addrA: ['addrA', '주소를 확인해 주세요.'],
     photo: ['photo', '사진을 다시 골라 주세요.'],
     photoType: ['photo', 'JPG·PNG 사진만 올릴 수 있습니다.'],
     photoSize: ['photo', '사진이 너무 큽니다(최대 2MB). 다른 사진을 골라 주세요.'],
@@ -479,6 +513,10 @@ const SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxPac_qwfiW7pf0N
     else if (id1 === id2) k.bad('loginId2', '1순위와 다른 아이디를 적어 주세요.', A.loginId2);
     if (!EMAIL_RE.test(A.email.value.trim())) k.bad('email', '이메일 주소를 확인해 주세요.', A.email);
     else if (A.email2.value.trim().toLowerCase() !== A.email.value.trim().toLowerCase()) k.bad('email2', '위 이메일과 똑같이 적어 주세요.', A.email2);
+    if (!birthOk(A.birthA.value)) k.bad('birthA', '생년월일을 숫자 8자리로 적어 주세요. 예: 19850315', A.birthA);
+    if (!fa.querySelector('input[name=gender]:checked')) k.bad('gender', '성별을 골라 주세요.', fa.querySelector('input[name=gender]'));
+    if (!/^\d{5}$/.test(A.zipA.value) || A.addr1A.value.trim().length < 5) k.bad('addrA', '주소 검색으로 우편번호와 주소를 넣어 주세요.', A.zipA);
+    else if (!A.addr2A.value.trim()) k.bad('addrA', '상세 주소(동·호수 등)를 적어 주세요. 없으면 "없음"이라고 적어 주세요.', A.addr2A);
     if (!A.agree.checked) k.bad('agree', '홈페이지 가입 정보 수집·이용에 동의해 주세요.', A.agree);
     return k.end();
   }
@@ -490,12 +528,16 @@ const SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxPac_qwfiW7pf0N
     var data = {
       action: 'profile', stage: 'account', track: 'reporter', receipt: rc, website: '',
       name: A.name.value.trim(), phone: fmtPhone(d), plan: plan,
-      loginId: A.loginId.value.trim(), loginId2: A.loginId2.value.trim(), email: A.email.value.trim(), agreeProfile: 'Y'
+      loginId: A.loginId.value.trim(), loginId2: A.loginId2.value.trim(), email: A.email.value.trim(), agreeProfile: 'Y',
+      birth: A.birthA.value.replace(/\D/g, ''), gender: fa.querySelector('input[name=gender]:checked').value,
+      zip: A.zipA.value, addr1: A.addr1A.value.trim(), addr2: A.addr2A.value.trim()
     };
     try { var pf = rc && sessionStorage.getItem('bx:proof:' + rc); if (pf) data.proof = pf; } catch (e) {}   // [payflow_1020] 결제 증빙(같은 탭에서 결제했을 때만). 없어도 등록은 되고 담당자가 결제자를 확인
     sendForm(fa, data, '보내는 중…', function (j) {
       var r = j.receipt || rc;
       who = { receipt: r, name: data.name, phone: data.phone };
+      // 1단계에서 받은 생년월일·주소를 기자증 정보 화면에 미리 채운다
+      try { if (!C.birth.value) C.birth.value = data.birth; if (!C.zip.value) { C.zip.value = data.zip; C.addr1.value = data.addr1; C.addr2.value = data.addr2; } } catch (e) {}
       $('.ok-no').textContent = r || '';
       $('.ok-rc').hidden = !r; $('.ok-norc').hidden = !!r;
       $('.ok-who').textContent = maskName(data.name) + ' 님 · ' + maskPhone(d) + ' · ' + plan + ' · 희망 아이디 ' + data.loginId;
@@ -594,6 +636,34 @@ const SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxPac_qwfiW7pf0N
     });
     return pcLoading;
   }
+  /* [2026-11-02] 1단계 주소 검색(기자증 정보 단계와 같은 우편번호 서비스) */
+  $('#zipA-close').addEventListener('click', function () { $('#zipA-wrap').hidden = true; $('#zipA-btn').focus(); });
+  $('#zipA-btn').addEventListener('click', function () {
+    var btn = this; btn.disabled = true; btn.textContent = '불러오는 중…';
+    loadPostcode().then(function () {
+      btn.disabled = false; btn.textContent = '주소 검색';
+      var wrap = $('#zipA-wrap'), box = $('#zipA-embed');
+      box.innerHTML = '';
+      new daum.Postcode({
+        width: '100%', height: '100%',
+        oncomplete: function (d) {
+          var a = d.userSelectedType === 'J' ? d.jibunAddress : d.roadAddress, extra = '';
+          if (d.userSelectedType !== 'J') {
+            if (d.bname && /[동로가]$/.test(d.bname)) extra += d.bname;
+            if (d.buildingName && d.apartment === 'Y') extra += (extra ? ', ' : '') + d.buildingName;
+            if (extra) a += ' (' + extra + ')';
+          }
+          A.zipA.value = d.zonecode || ''; A.addr1A.value = a || '';
+          $('#zipA-wrap').hidden = true; setErr(fa, 'addrA', ''); A.addr2A.focus();
+        }
+      }).embed(box);
+      wrap.hidden = false; wrap.scrollIntoView({ block: 'nearest' });
+    }).catch(function () {
+      btn.disabled = false; btn.textContent = '주소 검색';
+      setErr(fa, 'addrA', '주소 검색을 불러오지 못했습니다. 우편번호와 주소를 직접 적어 주세요.');
+      A.zipA.focus();
+    });
+  });
   function closeZip() { $('#zip-wrap').hidden = true; }
   $('#zip-close').addEventListener('click', function () { closeZip(); $('#zip-btn').focus(); });
   $('#zip-btn').addEventListener('click', function () {

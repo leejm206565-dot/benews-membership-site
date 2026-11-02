@@ -1552,10 +1552,9 @@ a.rv-card:hover .rv-t{text-decoration:underline;text-underline-offset:3px}
         </article>
       </div>
       <details class="pm-how" data-faq="perks-how">
-        <summary>이용 방법 · '브경단' 입력 안내</summary>
+        <summary>이용 방법</summary>
         <ol>
           <li><i>1</i><span>복지몰(모든 회원): 기자단 아이디와 같은 아이디·임시 비밀번호로 <b>가입 신청을 해 드려요</b>.<span class="s">복지몰 승인이 끝나면 바로 로그인해 이용하시면 되고, 따로 입력할 것은 없어요.</span></span></li>
-          <li><i>2</i><span>헬로벨 렌탈(1년 일시불 회원): 신청서 <b>전달사항</b>에 <button type="button" class="code copy-code" data-code="브경단" aria-label="브경단 복사하기">브경단<small>복사</small></button>을 적어 주세요.</span></li>
         </ol>
         <p class="copy-msg" role="status" aria-live="polite"></p>
       </details>
@@ -1967,13 +1966,13 @@ const SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxPac_qwfiW7pf0N
 })();
 </script>
 <script>
-/* 브경단 추천인 코드 복사 (v8 그대로) */
+/* 코드 복사 버튼(지금 화면에는 없음) */
 (function () {
   var msg = document.querySelector('.copy-msg');
   Array.prototype.forEach.call(document.querySelectorAll('.copy-code'), function (b) {
     b.addEventListener('click', function () {
       var t = b.getAttribute('data-code') || '브경단';
-      function done(ok) { if (msg) msg.textContent = ok ? '"' + t + '"을 복사했습니다. 헬로벨 신청서 전달사항에 붙여 넣으세요.' : '헬로벨 신청서 전달사항에 "' + t + '"을 직접 입력해 주세요.'; }
+      function done(ok) { if (msg) msg.textContent = ok ? '"' + t + '"을 복사했습니다.' : '"' + t + '"을 직접 입력해 주세요.'; }
       try { if (navigator.clipboard && window.isSecureContext) { navigator.clipboard.writeText(t).then(function () { done(true); }, function () { done(false); }); } else { done(false); } } catch (e) { done(false); }
     });
   });
