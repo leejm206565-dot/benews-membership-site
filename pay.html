@@ -170,7 +170,7 @@ h1,h2,h3{word-break:keep-all;text-wrap:balance;letter-spacing:-.02em}
    키가 test_ 로 시작하면 맨 위에 '테스트 결제 모드' 띠가 보인다. */
 const SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxPac_qwfiW7pf0NvfCQr4Vyr9bLXWjq4KYFwclAmy2buZFajcD9AKsBcbd5BD0SCu9zA/exec';
 const BILLING_CLIENT_KEY = 'test_ck_kYG57Eba3GR5M0QJvydQ8pWDOxmA';   // 월간 빌링 MID 'API 개별 연동 키' 테스트 클라이언트 키(사장 제공 2026-10-16). 짝 = 속성 TOSS_BILLING_SECRET_KEY(test_sk_…)
-const WIDGET_CLIENT_KEY = 'test_gck_6BYq7GWPVvyb6aPxEjZ43NE5vbo1';   // 1년 결제위젯 MID '결제위젯 연동 키' 테스트 클라이언트 키(사장 제공 2026-10-20). 짝 = 속성 TOSS_SECRET_KEY(test_gsk_…)
+const WIDGET_CLIENT_KEY = 'live_gck_yZqmkKeP8gJ29qZA2gMKrbQRxB9l';   // [2026-11-03] 1년 결제위젯 라이브 클라이언트 키(위젯 심사 승인, 사장 제공). 짝 = 속성 TOSS_SECRET_KEY(live_gsk_…, 사장 입력). 이전 테스트 키: test_gck_6BYq7GWPVvyb6aPxEjZ43NE5vbo1
 const WIDGET_VARIANT = 'LINKPAY_link_openxzla2';   // 1년 결제 UI variantKey (사장이 토스 상점관리자에서 만든 이름, 2026-10-20)
 (function () {
   var PHONE = '010-7382-1097';
