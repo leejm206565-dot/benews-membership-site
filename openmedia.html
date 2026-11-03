@@ -1332,10 +1332,20 @@ const SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxPac_qwfiW7pf0N
     if (!sid) { sid = Date.now().toString(36) + Math.random().toString(36).slice(2, 8); try { sessionStorage.setItem('bx:sid', sid); } catch (e) {} }
     sid += 'om';
     var t0 = Date.now(), secs = {}, pay = '0', n = 0;
+    // [2026-11-03] 쓰레드·인스타 앱 안 브라우저는 링크 꼬리(?src=)를 떼는 경우가 있어 '직접 접속'으로 잡혔다(쓰레드 유입 0).
+    // 꼬리가 없으면 앱(쓰레드 = Barcelona, 인스타 = Instagram)·이전 페이지 주소로 출처를 붙인다(서버 표: utm_source=threads → '쓰레드').
+    function srcQ() {
+      var q = (location.search || '').slice(0, 200);
+      if (/[?&](src|utm_source)=/.test(q)) return q;
+      var ua = navigator.userAgent || '', rf = document.referrer || '', add = '';
+      if (/Barcelona/i.test(ua) || /threads\.(net|com)/i.test(rf)) add = 'utm_source=threads&utm_medium=app';
+      else if (/Instagram/i.test(ua) || /instagram\.com/i.test(rf)) add = 'utm_source=instagram&utm_medium=app';
+      return add ? (q ? q + '&' : '?') + add : q;
+    }
     function send(kind) {
       if (++n > 40) return;
       try {
-        var d = new URLSearchParams({ action: 'visit', vid: sid, kind: kind, page: 'openmedia', src: (location.search || '').slice(0, 200),
+        var d = new URLSearchParams({ action: 'visit', vid: sid, kind: kind, page: 'openmedia', src: srcQ(),
           ref: (document.referrer || '').split(/[?#]/)[0].slice(0, 100), dev: /Mobi|Android|iPhone/i.test(navigator.userAgent) ? '모바일' : 'PC',
           secs: Object.keys(secs).join(','), sec: String(Math.round((Date.now() - t0) / 1000)), pay: pay, team: team, website: '' });
         if (!(navigator.sendBeacon && navigator.sendBeacon(SHEET_ENDPOINT, d))) fetch(SHEET_ENDPOINT, { method: 'POST', body: d, keepalive: true }).catch(function () {});
