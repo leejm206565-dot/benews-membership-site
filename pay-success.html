@@ -119,7 +119,8 @@ const SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxPac_qwfiW7pf0N
       show('v-ok'); return;
     }
     try { sessionStorage.setItem('bx:paid:' + orderId, JSON.stringify({ receipt: r, p: p, amount: j.amount || Number(amount) })); } catch (e) {}
-    try { if (paymentKey) sessionStorage.setItem('bx:proof:' + r, paymentKey); } catch (e) {}   // [payflow_1020] 결제 증빙(결제 키): 회원 등록에서 '결제한 사람' 확인
+    try { if (paymentKey) sessionStorage.setItem('bx:proof:' + r, paymentKey); } catch (e) {}
+    try { localStorage.setItem('bx:pending', JSON.stringify({ r: r, p: p, at: Date.now(), proof: paymentKey || '' })); } catch (e) {}   // [2026-11-03 사장 지시] 결제한 기기가 접수번호를 기억 → 창을 닫아도 홈페이지에서 '정보 입력 이어 하기'   // [payflow_1020] 결제 증빙(결제 키): 회원 등록에서 '결제한 사람' 확인
     $('#o-name').textContent = PLAN[p] ? PLAN[p].label : '기자단 멤버십';
     $('#o-amt').textContent = won(j.amount || amount) + ' (VAT 포함)';
     $('#o-rc').textContent = r;

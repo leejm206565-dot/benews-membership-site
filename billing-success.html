@@ -166,6 +166,7 @@ const SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxPac_qwfiW7pf0N
       $('#m-card').textContent = j.card || '등록하신 카드'; $('#m-next').textContent = j.next || '신문사 제작 완료 1개월 후 (제작 완료 시 안내)'; $('#m-rc').textContent = rc;
       show('v-om'); omContact(); return;
     }
+    try { localStorage.setItem('bx:pending', JSON.stringify({ r: rc, p: 'month', at: Date.now(), proof: ck || '' })); } catch (e) {}   // [2026-11-03 사장 지시] 결제한 기기가 접수번호를 기억 → 창을 닫아도 홈페이지에서 '정보 입력 이어 하기'
     $('#o-card').textContent = j.card || '등록하신 카드';
     $('#o-next').textContent = j.next || '';
     $('#o-rc').textContent = rc;

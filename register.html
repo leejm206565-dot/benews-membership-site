@@ -356,7 +356,11 @@ const SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxPac_qwfiW7pf0N
   var qs = new URLSearchParams(location.search);
   var rc = String(qs.get('r') || '').trim().toUpperCase();
   if (!/^BE-\d{4}-\d{4}$/.test(rc)) rc = '';
-  var pp = String(qs.get('p') || '').toLowerCase();
+  // [2026-11-03 사장 지시] 결제 직후 창을 닫았다가 다시 온 경우: 결제한 기기가 기억한 접수번호로 이어서 입력(30일 안)
+  var PEND = null;
+  try { PEND = JSON.parse(localStorage.getItem('bx:pending') || 'null'); if (!PEND || !/^BE-\d{4}-\d{4}$/.test(PEND.r) || Date.now() - PEND.at > 30 * 864e5) PEND = null; } catch (e) { PEND = null; }
+  if (!rc && PEND) rc = PEND.r;
+  var pp = String(qs.get('p') || (PEND && PEND.r === rc && PEND.p) || '').toLowerCase();
   var planPre = pp === 'month' ? '월간' : (pp === 'year' ? '1년' : '');
   var who = null;   // 1단계 성공 후 {receipt, name, phone}
   /* [fix9 2026-10-15] 접수번호 배너는 보이지 않는다(숨김값 연결 rc는 그대로 전송). 접수번호가 없을 때 안내만 */
@@ -532,9 +536,10 @@ const SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxPac_qwfiW7pf0N
       birth: A.birthA.value.replace(/\D/g, ''), gender: fa.querySelector('input[name=gender]:checked').value,
       zip: A.zipA.value, addr1: A.addr1A.value.trim(), addr2: A.addr2A.value.trim()
     };
-    try { var pf = rc && sessionStorage.getItem('bx:proof:' + rc); if (pf) data.proof = pf; } catch (e) {}   // [payflow_1020] 결제 증빙(같은 탭에서 결제했을 때만). 없어도 등록은 되고 담당자가 결제자를 확인
+    try { var pf = rc && (sessionStorage.getItem('bx:proof:' + rc) || (PEND && PEND.r === rc && PEND.proof)); if (pf) data.proof = pf; } catch (e) {}   // [payflow_1020] 결제 증빙(같은 탭에서 결제했을 때만). 없어도 등록은 되고 담당자가 결제자를 확인
     sendForm(fa, data, '보내는 중…', function (j) {
       var r = j.receipt || rc;
+      try { localStorage.removeItem('bx:pending'); } catch (e) {}   // 정보 입력 끝 → 이어 하기 띠 없앰
       who = { receipt: r, name: data.name, phone: data.phone };
       // 1단계에서 받은 생년월일·주소를 기자증 정보 화면에 미리 채운다
       try { if (!C.birth.value) C.birth.value = data.birth; if (!C.zip.value) { C.zip.value = data.zip; C.addr1.value = data.addr1; C.addr2.value = data.addr2; } } catch (e) {}

@@ -482,5 +482,26 @@ const WIDGET_VARIANT = 'LINKPAY_link_openxzla2';   // 1년 결제 UI variantKey 
   } else start();
 })();
 </script>
+<!-- [2026-11-03 사장 지시] 결제는 끝났는데 기자단 정보를 안 넣고 나간 사람: 같은 기기로 다시 오면 맨 위에 '이어 하기' 띠 -->
+<script>
+(function () {
+  try {
+    var p = JSON.parse(localStorage.getItem('bx:pending') || 'null');
+    if (!p || !/^BE-\d{4}-\d{4}$/.test(p.r) || Date.now() - p.at > 30 * 864e5 || sessionStorage.getItem('bx:pendhide')) return;
+    var b = document.createElement('div');
+    b.setAttribute('role', 'status');
+    b.style.cssText = 'position:sticky;top:0;z-index:9999;display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;padding:10px 44px 10px 16px;background:#0B6B3A;color:#fff;font-size:15px;font-weight:800;line-height:1.4;text-align:center';
+    var t = document.createElement('span'); t.textContent = '결제는 끝났어요. 기자단 정보 입력을 마저 해 주세요';
+    var a = document.createElement('a'); a.href = 'register.html?r=' + encodeURIComponent(p.r) + (p.p ? '&p=' + encodeURIComponent(p.p) : '');
+    a.textContent = '이어서 입력하기 →'; a.style.cssText = 'display:inline-flex;align-items:center;min-height:36px;padding:0 14px;border-radius:999px;background:#FFE070;color:#191919;text-decoration:none';
+    a.setAttribute('data-cta', 'pending-register');
+    var x = document.createElement('button'); x.type = 'button'; x.setAttribute('aria-label', '닫기'); x.textContent = '×';
+    x.style.cssText = 'position:absolute;right:8px;top:50%;transform:translateY(-50%);width:36px;height:36px;border:0;background:none;color:#fff;font-size:24px;cursor:pointer';
+    x.onclick = function () { b.remove(); try { sessionStorage.setItem('bx:pendhide', '1'); } catch (e) {} };
+    b.appendChild(t); b.appendChild(a); b.appendChild(x);
+    document.body.insertBefore(b, document.body.firstChild);
+  } catch (e) {}
+})();
+</script>
 </body>
 </html>
