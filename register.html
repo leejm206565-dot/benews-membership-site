@@ -200,14 +200,14 @@ details>summary::-webkit-details-marker{display:none}
       <p class="text-[13px] font-bold text-rep">2단계 · 추가 정보</p>
       <h3 class="mt-1 text-[19px] md:text-[21px] font-extrabold leading-snug">실물 기자증 정보</h3>
       <p class="mt-2 text-[15px] font-bold">기자증 신청 링크는 아이디 안내 메일과 함께 바로 보내 드려요.</p>
-      <p class="mt-1 text-[14px]">메일의 링크로 기자증 정보를 보내 주시면 주말·공휴일 빼고 7일 이내에 보내 드려요. 기자증은 기자단 활동 시작과 별개예요.</p>
+      <p class="mt-1 text-[14px]">메일의 링크로 기자증 정보를 보내 주시면 주말·공휴일 빼고 14일 이내에 보내 드려요. 기자증은 기자단 활동 시작과 별개예요.</p>
       <p class="mt-1 text-[13px] text-mute">필요한 것: 영문 이름, 증명사진, 받는 방법(택배·방문), 주소</p>
           </div>
   </section>
 
   <!-- ===================== 2단계: 기자증 정보 ===================== -->
   <div id="v-card" hidden>
-    <p class="mt-4 text-[15px] md:text-[16px] text-mute">기자증은 기자단 활동 시작과 별개로, 이 정보를 보내 주신 뒤 발송됩니다. 정보 확인 후 주말·공휴일 빼고 7일 이내에 발송합니다.</p>
+    <p class="mt-4 text-[15px] md:text-[16px] text-mute">기자증은 기자단 활동 시작과 별개로, 이 정보를 보내 주신 뒤 발송됩니다. 정보 확인 후 주말·공휴일 빼고 14일 이내에 발송합니다.</p>
 
     <form id="f-card" onsubmit="if(!window.__formReady){alert('화면을 불러오는 중 문제가 생겼습니다. 새로고침하거나 010-7382-1097로 연락 주세요.');}return false;" class="mt-4 space-y-4" novalidate>
       <div class="hp" aria-hidden="true"><label>웹사이트<input type="text" name="website" tabindex="-1" autocomplete="off"></label></div>
@@ -753,7 +753,7 @@ const SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxPac_qwfiW7pf0N
       var r = j.receipt || data.receipt;
       $('.card-no').textContent = (r ? '접수번호 ' + r + ' · ' : '') + maskName(name) + ' 님';
       $('.card-msg').textContent = parcel
-        ? (later ? '사진을 받으면 정보를 확인한 뒤 영업일 기준 7일 이내에 택배로 발송합니다(배송비 무료).' : '정보를 확인한 뒤 영업일 기준 7일 이내에 택배로 발송합니다(배송비 무료).')
+        ? (later ? '사진을 받으면 정보를 확인한 뒤 영업일 기준 14일 이내에 택배로 발송합니다(배송비 무료).' : '정보를 확인한 뒤 영업일 기준 14일 이내에 택배로 발송합니다(배송비 무료).')
         : '기자증이 준비되면 방문 수령 장소와 시간을 개별로 안내드립니다.';
       $('.card-photo').hidden = !later;
       $('#stp2').removeAttribute('aria-current'); $('#stp2').classList.add('ok');
