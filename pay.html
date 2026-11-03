@@ -331,7 +331,12 @@ const WIDGET_VARIANT = 'LINKPAY_link_openxzla2';   // 1년 결제 UI variantKey 
     if (S.pk === 'year') { if (S.ready && S.widgets) openWidget(); }
     else if (S.payment) openBilling();
   }
+  // [2026-11-03] 카드 입력 뒤 결제 확인이 느림 → 결제창을 여는 순간 서버를 미리 깨워 둔다(돌아왔을 때 바로 처리)
+  var warmed = 0;
+  function warmServer() { if (Date.now() - warmed < 60000) return; warmed = Date.now(); try { fetch(SHEET_ENDPOINT + '?action=ping', { method: 'GET', credentials: 'omit', keepalive: true }).catch(function () {}); } catch (e) {} }
+  btn.addEventListener('pointerdown', warmServer);
   btn.addEventListener('click', function () {
+    warmServer();
     if (btn.disabled || S.go || S.busy) return;   // 중복 클릭 무시
     $('#pay-err').textContent = '';
     S.go = true; mark('click'); sync();
