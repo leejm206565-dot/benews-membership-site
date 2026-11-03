@@ -376,6 +376,7 @@ const SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxPac_qwfiW7pf0N
     if (pre && rc && pre.r === rc) {
       if (!A.name.value && pre.name) A.name.value = String(pre.name).slice(0, 30);
       if (!A.phone.value && /^010\d{8}$/.test(pre.phone || '')) A.phone.value = pre.phone.slice(0, 3) + '-' + pre.phone.slice(3, 7) + '-' + pre.phone.slice(7);
+      if (!A.email.value && pre.email) A.email.value = String(pre.email).slice(0, 100);   // [2026-11-03] 결제 전에 받은 이메일
     }
   } catch (e) {}
 

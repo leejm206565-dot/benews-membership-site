@@ -105,12 +105,31 @@ h1,h2,h3{word-break:keep-all;text-wrap:balance;letter-spacing:-.02em}
       <p id="w-err" class="px-5 py-5 text-[15px] font-bold text-[#B3261E]" role="alert" hidden></p>
     </section>
 
+    <!-- [2026-11-03 사장 지시] 결제 전에 이름·휴대폰·이메일 먼저(결제 후 정보를 안 넣고 나가도 연락·안내 메일 가능). 기자단만 -->
+    <section id="who-box" class="mt-4 rounded-2xl bg-white p-5 md:p-6 shadow-soft" aria-labelledby="who-h" hidden>
+      <h2 id="who-h" class="text-[17px] font-extrabold">결제하시는 분</h2>
+      <p class="mt-1 text-[14px] text-mute">결제 확인과 아이디 안내에만 써요.</p>
+      <div class="mt-3 grid gap-3">
+        <label class="block"><span class="text-[14px] font-bold">이름</span>
+          <input id="w-name" type="text" autocomplete="name" maxlength="30" class="mt-1 w-full min-h-[48px] rounded-xl border-2 border-line px-3 text-[16px] focus:border-rep outline-none" placeholder="홍길동"></label>
+        <label class="block"><span class="text-[14px] font-bold">휴대폰</span>
+          <input id="w-phone" type="tel" inputmode="numeric" autocomplete="tel" maxlength="13" class="mt-1 w-full min-h-[48px] rounded-xl border-2 border-line px-3 text-[16px] focus:border-rep outline-none" placeholder="010-0000-0000"></label>
+        <label class="block"><span class="text-[14px] font-bold">이메일 <span class="font-normal text-mute">(아이디 안내를 받을 주소)</span></span>
+          <input id="w-email" type="email" inputmode="email" autocomplete="email" maxlength="100" class="mt-1 w-full min-h-[48px] rounded-xl border-2 border-line px-3 text-[16px] focus:border-rep outline-none" placeholder="name@example.com"></label>
+      </div>
+      <p id="w-err" class="mt-2 text-[14px] font-bold text-[#B3261E]" role="alert"></p>
+      <label class="mt-3 flex items-start gap-3 rounded-xl border-2 border-line p-3 cursor-pointer has-[:checked]:border-rep">
+        <input type="checkbox" id="w-agree" class="mt-1 w-5 h-5 shrink-0 accent-[#0B6B3A]">
+        <span class="text-[15px] leading-relaxed"><b>[필수] 개인정보 수집·이용 동의</b> — 이름·휴대폰·이메일을 결제 확인과 기자단 아이디 안내에 쓰고, 이용 종료 뒤 관계 법령에 따라 파기합니다. <a href="privacy.html" target="_blank" rel="noopener" class="underline">개인정보처리방침</a></span>
+      </label>
+    </section>
+
     <!-- [payflow_1020] 접수 폼이 없어져 약관·환불 동의를 결제 화면에서 받는다(개인정보는 결제 후 회원 등록에서) -->
     <label id="terms-box" class="mt-4 flex items-start gap-3 rounded-xl border-2 border-line bg-white p-3 cursor-pointer has-[:checked]:border-rep" hidden>
       <input type="checkbox" id="terms-agree" class="mt-1 w-5 h-5 shrink-0 accent-[#0B6B3A]">
       <span class="text-[15px] leading-relaxed"><b>[필수] 이용약관·환불정책 동의</b> — <a href="terms.html" target="_blank" rel="noopener" class="underline">이용약관</a>과 <a href="refund.html" target="_blank" rel="noopener" class="underline">환불정책</a>을 확인했으며 동의합니다.</span>
     </label>
-    <p id="pay-policy" class="mt-4 text-[13px] text-mute leading-relaxed"><a href="terms.html" target="_blank" rel="noopener" class="underline">이용약관</a>·<a href="refund.html" target="_blank" rel="noopener" class="underline">환불정책</a>이 적용됩니다. 1년 멤버십은 결제 후 7일 이내 미이용 시 전액 환불됩니다. 이름·연락처·이메일은 결제 후 회원 등록 화면에서 받습니다.</p>
+    <p id="pay-policy" class="mt-4 text-[13px] text-mute leading-relaxed"><a href="terms.html" target="_blank" rel="noopener" class="underline">이용약관</a>·<a href="refund.html" target="_blank" rel="noopener" class="underline">환불정책</a>이 적용됩니다. 1년 멤버십은 결제 후 7일 이내 미이용 시 전액 환불됩니다. 희망 아이디 등은 결제 후 회원 등록 화면에서 받습니다.</p>
     <button id="pay-btn" type="button" class="mt-4 w-full min-h-[56px] rounded-xl bg-rep hover:bg-rep-dark disabled:bg-[#9DB8A8] disabled:cursor-not-allowed text-white text-[18px] font-extrabold" disabled>결제하기</button>
     <p id="pay-hint" class="mt-2 text-[14px] font-bold text-mute" hidden>위의 [필수] 동의에 체크하면 결제 버튼이 켜집니다.</p>
     <p id="pay-err" class="mt-2 text-[14px] font-bold text-[#B3261E]" role="alert"></p>
@@ -262,7 +281,28 @@ const WIDGET_VARIANT = 'LINKPAY_link_openxzla2';   // 1년 결제 UI variantKey 
   var S = { pk: '', server: null, ready: false, lock: false, payment: null, widgets: null, go: false, busy: false, fail: '' };
   var needTerms = !isOM;   // 기자단: 이용약관·환불정책 동의(필수). 오픈미디어는 아래 정기결제·약정 동의 안에 약관 조항 확인 포함
   var BTN_LABEL = '결제하기';
+  // [2026-11-03] 결제 전 이름·휴대폰·이메일(기자단만)
+  var needWho = !isOM;
+  function whoVal() {
+    var d = String($('#w-phone').value || '').replace(/\D/g, '');
+    return { name: String($('#w-name').value || '').trim().slice(0, 30), phone: d, email: String($('#w-email').value || '').trim() };
+  }
+  function whoOk() {
+    if (!needWho) return true;
+    var w = whoVal();
+    return !!w.name && /^010\d{8}$/.test(w.phone) && /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(w.email) && $('#w-agree').checked;
+  }
+  var whoSent = '';
+  function sendWho() {   // 결제창을 열 때 한 번(값이 바뀌면 다시). 응답을 기다리지 않는다
+    if (!needWho || demo) return;
+    var w = whoVal(), key = [w.name, w.phone, w.email].join('|'), r = (S.server && S.server.receipt) || rc;
+    try { sessionStorage.setItem('bx:pay', JSON.stringify({ r: r, name: w.name, phone: w.phone, email: w.email })); } catch (e) {}
+    if (!r || key === whoSent) return;
+    whoSent = key;
+    try { fetch(SHEET_ENDPOINT, { method: 'POST', body: new URLSearchParams({ action: 'pay_contact', track: TRACK, r: r, name: w.name, phone: w.phone, email: w.email, agree: 'Y', website: '' }), keepalive: true }).catch(function () {}); } catch (e) {}
+  }
   function agreed() {
+    if (!whoOk()) return false;
     var terms = !needTerms || $('#terms-agree').checked;
     return S.pk === 'year' ? terms : terms && $('#bill-agree').checked;
   }
@@ -274,6 +314,7 @@ const WIDGET_VARIANT = 'LINKPAY_link_openxzla2';   // 1년 결제 UI variantKey 
     if (waiting) btn.innerHTML = '<span class="spin spin-w" aria-hidden="true"></span>' + (S.busy ? '결제창을 여는 중…' : '결제창 여는 중…');
     else btn.textContent = BTN_LABEL;
     $('#pay-hint').hidden = ok || waiting || S.lock || !!S.fail;
+    if (needWho && !ok && !waiting) $('#pay-hint').textContent = '결제하시는 분 정보와 [필수] 동의를 모두 채우면 결제 버튼이 켜집니다.';
   }
   function stopWait(msg) {   // 기다리던 클릭을 취소(오류 안내는 호출한 쪽이 이미 보였거나 msg로)
     S.go = false; S.busy = false;
@@ -304,6 +345,13 @@ const WIDGET_VARIANT = 'LINKPAY_link_openxzla2';   // 1년 결제 UI variantKey 
     $('#s-rc').textContent = rc || '확인 중…';
     $('#s-amt').textContent = won(plan.amount);
     $('#terms-box').hidden = !needTerms;
+    if (needWho && !renew) {
+      $('#who-box').hidden = false;
+      ['#w-name', '#w-phone', '#w-email', '#w-agree'].forEach(function (s) { $(s).addEventListener('input', sync); $(s).addEventListener('change', sync); });
+      $('#w-phone').addEventListener('input', function () { var d = this.value.replace(/\D/g, '').slice(0, 11), f = d.length < 4 ? d : d.length < 8 ? d.slice(0, 3) + '-' + d.slice(3) : d.slice(0, 3) + '-' + d.slice(3, 7) + '-' + d.slice(7); if (f !== this.value) this.value = f; });
+      $('#w-email').addEventListener('blur', function () { var v = this.value.trim(); $('#w-err').textContent = v && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v) ? '이메일 주소를 다시 확인해 주세요.' : ''; });
+      $('#w-phone').addEventListener('blur', function () { var d = this.value.replace(/\D/g, ''); $('#w-err').textContent = d && !/^010\d{8}$/.test(d) ? '010으로 시작하는 휴대폰 번호 11자리를 넣어 주세요.' : ''; });
+    } else needWho = false;
     if (pk === 'month' || pk === 'om_month') {
       $('#s-method').textContent = '카드 자동결제 (매월)'; $('#s-amt-label').textContent = isOM ? '1회차 결제 금액' : '첫 달 결제 금액';
       shellBilling(plan);
@@ -338,7 +386,7 @@ const WIDGET_VARIANT = 'LINKPAY_link_openxzla2';   // 1년 결제 UI variantKey 
     $('#bill-box').hidden = false;
     if (!isOM) $('#pay-lead').textContent = '카드를 한 번 등록하면 매월 같은 날 자동으로 결제됩니다. 등록과 첫 결제가 끝나면 바로 회원 등록 화면(이름·연락처·아이디)이 열립니다.';
     // [refund1021 사장 결정] 월간: 결제한 달은 환불 없음, 해지는 다음 결제일 전날까지 → 다음 달부터
-    if (!isOM) $('#pay-policy').innerHTML = '<a href="terms.html#a8" target="_blank" rel="noopener" class="underline">이용약관</a>·<a href="refund.html#monthly" target="_blank" rel="noopener" class="underline">환불정책</a>이 적용됩니다. 월간 멤버십은 결제한 달은 환불되지 않으며, 다음 결제일 전날까지 해지하시면 다음 달부터 청구되지 않습니다. 이름·연락처·이메일은 결제 후 회원 등록 화면에서 받습니다.';
+    if (!isOM) $('#pay-policy').innerHTML = '<a href="terms.html#a8" target="_blank" rel="noopener" class="underline">이용약관</a>·<a href="refund.html#monthly" target="_blank" rel="noopener" class="underline">환불정책</a>이 적용됩니다. 월간 멤버십은 결제한 달은 환불되지 않으며, 다음 결제일 전날까지 해지하시면 다음 달부터 청구되지 않습니다. 희망 아이디 등은 결제 후 회원 등록 화면에서 받습니다.';
     BTN_LABEL = '카드 등록하고 ' + won(plan.amount) + ' 결제하기'; btn.textContent = BTN_LABEL;
     if (!billKeyOk) { $('#bill-keywait').hidden = false; S.lock = true; return; }
     if (/^test_/.test(BILLING_CLIENT_KEY)) $('#testband').hidden = false;
@@ -348,7 +396,10 @@ const WIDGET_VARIANT = 'LINKPAY_link_openxzla2';   // 1년 결제 UI variantKey 
   function openBilling() {
     S.busy = true; sync(); pev('click');
     // 고객 이름·이메일은 결제 전에 받지 않는다(토스 requestBillingAuth 의 customerName·customerEmail 은 선택값)
-    S.payment.requestBillingAuth({ method: 'CARD', successUrl: location.origin + '/billing-success.html', failUrl: location.origin + '/pay-fail.html' })
+    sendWho();
+    var wb = needWho ? whoVal() : null;
+    S.payment.requestBillingAuth(Object.assign({ method: 'CARD', successUrl: location.origin + '/billing-success.html', failUrl: location.origin + '/pay-fail.html' },
+      wb ? { customerName: wb.name, customerEmail: wb.email } : {}))
       .catch(function (e) {
         stopWait(); pev('fail', e && e.code, e && e.message);
         if (e && (e.code === 'USER_CANCEL' || e.code === 'PAY_PROCESS_CANCELED')) return;
@@ -398,12 +449,14 @@ const WIDGET_VARIANT = 'LINKPAY_link_openxzla2';   // 1년 결제 UI variantKey 
     var j = S.server, plan = PLANS[S.pk];
     S.busy = true; sync(); pev('click');
     // 고객 이름·휴대폰은 결제 전에 받지 않는다(결제위젯 requestPayment 의 customerName·customerMobilePhone 은 선택값)
-    S.widgets.requestPayment({
+    sendWho();
+    var ww = needWho ? whoVal() : null;
+    S.widgets.requestPayment(Object.assign({
       orderId: j.renew ? rc + '-R' + ('0' + j.round).slice(-2) + '-' + rand6() : rc + '-' + rand6(),
       orderName: plan.name,
       successUrl: location.origin + '/pay-success.html',
       failUrl: location.origin + '/pay-fail.html'
-    }).catch(function (e) {
+    }, ww ? { customerName: ww.name, customerEmail: ww.email, customerMobilePhone: ww.phone } : {})).catch(function (e) {
       stopWait(); pev('fail', e && e.code, e && e.message);
       if (e && e.code === 'USER_CANCEL') return;
       setMsg($('#pay-err'), ((e && e.message) ? e.message : '결제를 시작하지 못했습니다. 다시 눌러 주세요.') + HELP);
