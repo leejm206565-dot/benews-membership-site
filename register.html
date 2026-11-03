@@ -109,7 +109,8 @@ details>summary::-webkit-details-marker{display:none}
         </div>
       </section>
 
-      <section class="rounded-2xl bg-white p-4 md:p-6 shadow-soft" aria-labelledby="a4">
+      <!-- [2026-11-03 사장 지시] 생년월일·성별·주소는 1단계에서 받지 않는다(기자증 정보 입력에서) — 숨김 -->
+      <section class="rounded-2xl bg-white p-4 md:p-6 shadow-soft" aria-labelledby="a4" hidden>
         <h2 id="a4" class="text-[18px] font-bold">생년월일 · 성별 · 주소</h2>
         <p class="hint">생년월일과 주소는 실물 기자증 발송과 복지몰 주문 시 배송 주소로 쓰여요.</p>
         <div class="mt-3 space-y-4">
@@ -187,7 +188,7 @@ details>summary::-webkit-details-marker{display:none}
         <li class="flex gap-3"><span class="sec-no !w-7 !h-7 !text-[13px]">1</span><span>담당자가 결제를 확인합니다.</span></li>
         <li class="flex gap-3"><span class="sec-no !w-7 !h-7 !text-[13px]">2</span><span>잠시 뒤(보통 몇 분 안에) <b class="ok-mail-to">적어 주신 이메일</b>로 <b>아이디·임시 비밀번호·기사 송출 방법</b>을 한 번에 보내드립니다. 메일이 안 보이면 스팸함도 확인해 주세요.</span></li>
         <li class="flex gap-3"><span class="sec-no !w-7 !h-7 !text-[13px]">3</span><span>브랜드경제신문 홈페이지에 로그인한 뒤 비밀번호를 직접 바꾸고, 메일 안내대로 기사를 송출하시면 됩니다.</span></li>
-        <li class="ok-year flex gap-3"><span class="sec-no !w-7 !h-7 !text-[13px]">4</span><span>같은 아이디로 오픈엑스 복지몰 계정도 만들어 같은 메일로 안내해 드립니다. <span class="text-mute">(모든 기자단 회원)</span></span></li>
+        <li class="ok-year flex gap-3"><span class="sec-no !w-7 !h-7 !text-[13px]">4</span><span>오픈엑스 복지몰 가입은 기자증 정보(생년월일·성별·주소)를 입력하시면 같은 아이디로 승인돼요. <span class="text-mute">(모든 기자단 회원)</span></span></li>
       </ol>
       <div class="ok-cms mt-5 rounded-xl border border-rep bg-rep-soft p-4" hidden>
         <p class="text-[15px] font-bold">월간 회원: 매월 자동 결제 안내</p>
@@ -221,9 +222,17 @@ details>summary::-webkit-details-marker{display:none}
       </section>
 
       <section class="rounded-2xl bg-white p-4 md:p-6 shadow-soft" aria-labelledby="c1">
-        <h2 id="c1" class="flex items-center gap-2 text-[18px] font-bold"><span class="sec-no">1</span>영문 이름 · 생년월일</h2>
+        <h2 id="c1" class="flex items-center gap-2 text-[18px] font-bold"><span class="sec-no">1</span>영문 이름 · 생년월일 · 성별</h2>
         <label class="block mt-3"><span class="text-[14px] font-bold">영문 이름</span><input name="nameEn" class="fld uppercase" autocomplete="off" autocapitalize="characters" spellcheck="false" maxlength="50" placeholder="HONG GILDONG"><span class="hint block">기자증에 들어갑니다. 여권과 같은 표기로 적어 주세요. 예: 홍길동 → HONG GILDONG</span><span class="ferr" data-for="nameEn"></span></label>
         <label class="block mt-3"><span class="text-[14px] font-bold">생년월일</span><input name="birth" class="fld" inputmode="numeric" autocomplete="bday" maxlength="10" placeholder="예: 19850315"><span class="hint block">기자증 제작에 필요합니다. 숫자 8자리로 적어 주세요.</span><span class="ferr" data-for="birth"></span></label>
+        <fieldset class="block mt-3"><legend class="text-[14px] font-bold">성별</legend>
+          <div class="mt-1 grid grid-cols-2 gap-2">
+            <label class="opt"><input type="radio" name="genderC" value="남"><span><b class="block text-[15px]">남성</b></span></label>
+            <label class="opt"><input type="radio" name="genderC" value="여"><span><b class="block text-[15px]">여성</b></span></label>
+          </div>
+          <span class="hint block">복지몰 계정을 같이 만들 때 필요해요.</span>
+          <span class="ferr block" data-for="genderC"></span>
+        </fieldset>
       </section>
 
       <section class="rounded-2xl bg-white p-4 md:p-6 shadow-soft" aria-labelledby="c2">
@@ -521,10 +530,7 @@ const SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxPac_qwfiW7pf0N
     else if (id1 === id2) k.bad('loginId2', '1순위와 다른 아이디를 적어 주세요.', A.loginId2);
     if (!EMAIL_RE.test(A.email.value.trim())) k.bad('email', '이메일 주소를 확인해 주세요.', A.email);
     else if (A.email2.value.trim().toLowerCase() !== A.email.value.trim().toLowerCase()) k.bad('email2', '위 이메일과 똑같이 적어 주세요.', A.email2);
-    if (!birthOk(A.birthA.value)) k.bad('birthA', '생년월일을 숫자 8자리로 적어 주세요. 예: 19850315', A.birthA);
-    if (!fa.querySelector('input[name=gender]:checked')) k.bad('gender', '성별을 골라 주세요.', fa.querySelector('input[name=gender]'));
-    if (!/^\d{5}$/.test(A.zipA.value) || A.addr1A.value.trim().length < 5) k.bad('addrA', '주소 검색으로 우편번호와 주소를 넣어 주세요.', A.zipA);
-    else if (!A.addr2A.value.trim()) k.bad('addrA', '상세 주소(동·호수 등)를 적어 주세요. 없으면 "없음"이라고 적어 주세요.', A.addr2A);
+    // [2026-11-03] 생년월일·성별·주소는 기자증 단계에서 확인
     if (!A.agree.checked) k.bad('agree', '홈페이지 가입 정보 수집·이용에 동의해 주세요.', A.agree);
     if (!A.adult.checked) k.bad('adult', '만 19세 이상·본인 명의 신청에 체크해 주세요.', A.adult);
     return k.end();
@@ -538,8 +544,7 @@ const SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxPac_qwfiW7pf0N
       action: 'profile', stage: 'account', track: 'reporter', receipt: rc, website: '',
       name: A.name.value.trim(), phone: fmtPhone(d), plan: plan,
       loginId: A.loginId.value.trim(), loginId2: A.loginId2.value.trim(), email: A.email.value.trim(), agreeProfile: 'Y', adult: 'Y',
-      birth: A.birthA.value.replace(/\D/g, ''), gender: fa.querySelector('input[name=gender]:checked').value,
-      zip: A.zipA.value, addr1: A.addr1A.value.trim(), addr2: A.addr2A.value.trim()
+      birth: '', gender: '', zip: '', addr1: '', addr2: ''
     };
     try { var pf = rc && (sessionStorage.getItem('bx:proof:' + rc) || (PEND && PEND.r === rc && PEND.proof)); if (pf) data.proof = pf; } catch (e) {}   // [payflow_1020] 결제 증빙(같은 탭에서 결제했을 때만). 없어도 등록은 되고 담당자가 결제자를 확인
     sendForm(fa, data, '보내는 중…', function (j) {
@@ -584,8 +589,8 @@ const SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxPac_qwfiW7pf0N
   }
   function syncDelivery() {
     var visit = fc.querySelector('input[name=delivery]:checked').value === '방문 수령';
-    $('#addr').hidden = visit; $('#visit').hidden = !visit;
-    if (visit) setErr(fc, 'addr', '');
+    $('#visit').hidden = !visit;   // [2026-11-03] 주소는 방문 수령이어도 받는다(복지몰 가입에 필요)
+    $('#zip-l').textContent = visit ? '주소 (복지몰 계정에 필요)' : '배송 주소';
   }
   $$('input[name=photoMode]', fc).forEach(function (x) { x.addEventListener('change', syncPhoto); });
   $$('input[name=delivery]', fc).forEach(function (x) { x.addEventListener('change', syncDelivery); });
@@ -721,10 +726,9 @@ const SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxPac_qwfiW7pf0N
     if (!birthOk(C.birth.value)) k.bad('birth', '생년월일을 숫자 8자리로 적어 주세요. 예: 19850315', C.birth);
     var later = fc.querySelector('input[name=photoMode]:checked').value === 'later';
     if (!later && !photoData) k.bad('photo', '사진을 골라 주세요. 지금 없으면 "이메일로 보내기"를 고르세요.', $('#ph-file'));
-    if (fc.querySelector('input[name=delivery]:checked').value === '택배') {
-      if (!/^\d{5}$/.test(C.zip.value) || C.addr1.value.trim().length < 5) k.bad('addr', '주소 검색으로 우편번호와 주소를 넣어 주세요.', C.zip);
-      else if (!C.addr2.value.trim()) k.bad('addr', '상세 주소(동·호수 등)를 적어 주세요. 없으면 "없음"이라고 적어 주세요.', C.addr2);
-    }
+    if (!fc.querySelector('input[name=genderC]:checked')) k.bad('genderC', '성별을 골라 주세요.', fc.querySelector('input[name=genderC]'));
+    if (!/^\d{5}$/.test(C.zip.value) || C.addr1.value.trim().length < 5) k.bad('addr', '주소 검색으로 우편번호와 주소를 넣어 주세요.', C.zip);
+    else if (!C.addr2.value.trim()) k.bad('addr', '상세 주소(동·호수 등)를 적어 주세요. 없으면 "없음"이라고 적어 주세요.', C.addr2);
     if (!C.agree.checked) k.bad('agree', '기자증 정보 수집·이용에 동의해 주세요.', C.agree);
     return k.end();
   }
@@ -741,7 +745,8 @@ const SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxPac_qwfiW7pf0N
       name: name, phone: phone, nameEn: C.nameEn.value, birth: C.birth.value.replace(/\D/g, ''),
       photoMode: later ? 'later' : 'now', photo: later ? '' : photoData,
       delivery: parcel ? '택배' : '방문 수령',
-      zip: parcel ? C.zip.value : '', addr1: parcel ? C.addr1.value.trim() : '', addr2: parcel ? C.addr2.value.trim() : '',
+      gender: fc.querySelector('input[name=genderC]:checked').value,
+      zip: C.zip.value, addr1: C.addr1.value.trim(), addr2: C.addr2.value.trim(),
       agreeProfile: 'Y'
     };
     sendForm(fc, data, later ? '보내는 중…' : '사진과 함께 보내는 중…', function (j) {
