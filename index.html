@@ -916,6 +916,11 @@ html{scroll-padding-top:112px}
 .hero-price .to{color:var(--rep)}
 .hero-price .b{color:var(--rep)}
 .hero-price small{font-size:13px;font-weight:700;color:var(--mute);letter-spacing:0}
+.hsteps{margin-top:22px;display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px;max-width:560px;list-style:none;padding:0}
+.hsteps li{display:flex;align-items:flex-start;gap:8px;background:#fff;border:1.5px solid var(--ink);border-radius:14px;padding:12px 10px;font-size:clamp(14px,1.9vw,17px);font-weight:900;letter-spacing:-.03em;line-height:1.3}
+.hsteps b{flex:none;display:inline-flex;align-items:center;justify-content:center;width:24px;height:24px;border-radius:50%;background:var(--rep);color:#fff;font-size:13px}
+.hsteps small{display:block;margin-top:3px;font-size:12px;font-weight:700;color:var(--mute);letter-spacing:0}
+@media (max-width:479px){.hsteps li{flex-direction:column;gap:6px;padding:10px 8px}}
 .hero-cta{margin-top:22px;display:flex;flex-wrap:wrap;align-items:center;gap:6px 20px}
 .hero-cta .btn{min-height:56px;padding:0 28px;font-size:18px;box-shadow:4px 4px 0 var(--ink)}
 @media (max-width:479px){.hero-cta .btn{width:100%}}
@@ -1158,15 +1163,15 @@ a.rv-card:hover .rv-t{text-decoration:underline;text-underline-offset:3px}
       <!-- [2026-11-02 사장 결정] 가격 앞세운 "기사 1건 값으로 한 달 무제한" → 월 구독형 기사 송출(홍보 중심 + 소식도) -->
       <h1 class="h1" style="font-size:clamp(30px,7.4vw,58px)">기사, 건마다 맡기지 말고<br><span class="hl hl-n">직접 송출</span>하세요</h1>
       <p class="hero-sub" style="margin-top:12px">내 가게·내 일 홍보부터 우리 모임 소식까지<br>내 이름으로 기사를 쓰는 <b>브랜드경제신문 브경단</b></p>
-      <p class="hero-price"><span class="a">기사 1건 송출 5만원</span><span class="to" aria-hidden="true">→</span><span class="b">월 구독 5만원, 횟수 제한 없음</span><small>(VAT 별도)</small></p>
-      <p class="hero-sub"><b>글 못 써도 괜찮아요.</b> 메모 3줄이면 AI가 초안을 도와요.</p>
-      <ul class="cond" aria-label="이용 안내 요약">
-        <li>횟수 제한 없음</li>
-        <li>모든 기사는 담당자 확인 후 실려요</li>
-      </ul>
+      <!-- [2026-11-03 사장 지시] 첫 화면 이탈 보완: 가격 상자·작은 안내를 빼고 '어떻게 되는지' 3단계만. 가격은 아래 요금 칸에서 -->
+      <ol class="hsteps" aria-label="이용 순서">
+        <li><b>1</b><span>메모 3줄<small>글 못 써도 괜찮아요</small></span></li>
+        <li><b>2</b><span>AI가 기사 초안<small>다듬어서 직접 송출</small></span></li>
+        <li><b>3</b><span>기사로 게재<small>담당자 확인 후</small></span></li>
+      </ol>
 
       <div class="hero-cta">
-        <a href="/pay?p=month" class="pay-go btn btn-rep" data-plan="month" data-cta="hero-start">월 5만원으로 시작하기</a>
+        <a href="#reporter" class="btn btn-rep" data-cta="hero-start">브경단 시작하기</a>
         <a href="#articles" class="tlink" data-cta="hero-articles">실제 실린 기사 보기<svg class="arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" aria-hidden="true"><path d="M5 12h14M13 6l6 6-6 6"/></svg></a>
       </div>
       <p class="hero-foot">궁금한 점은 <a href="tel:010-7382-1097" data-link="tel-hero">전화</a><span class="sep" aria-hidden="true">·</span><a href="sms:010-7382-1097" data-link="sms-hero">문자</a><span class="sep" aria-hidden="true">·</span><a href="https://open.kakao.com/o/sMTQwzTi" target="_blank" rel="noopener" data-link="kakao" data-cta="hero-kakao"><span class="kk-dot" aria-hidden="true" style="margin-right:5px"></span>카카오톡 상담</a></p>
@@ -2062,7 +2067,10 @@ const SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxPac_qwfiW7pf0N
       settled = true; clearTimeout(timer);
       var items = (d && d.ok && Array.isArray(d.items) ? d.items : []).filter(valid);
       var seen = {};
-      items = items.filter(function (x) { if (seen[x.u]) return false; seen[x.u] = 1; return true; }).slice(0, 6);
+      // [2026-11-03] 첫 화면 이탈 보완: 종교·정치 기사는 랜딩에 쓰지 않고, 같은 사진(같은 연재)은 한 번만
+      var OFF = /신앙|성경|교회|성당|종교|선교|목사|예배|정치|선거|정당|국회/, seenImg = {};
+      items = items.filter(function (x) { if (seen[x.u] || OFF.test((x.t || '') + ' ' + (x.k || ''))) return false; seen[x.u] = 1; return true; })
+        .filter(function (x) { var im = x.th || x.img || ''; if (im && seenImg[im]) return false; seenImg[im] = 1; return true; }).slice(0, 6);
       if (items.length < 4) return;
       renderList(items);
       renderHero(items);
