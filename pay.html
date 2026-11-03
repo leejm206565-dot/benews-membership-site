@@ -509,7 +509,9 @@ const WIDGET_VARIANT = 'LINKPAY_link_openxzla2';   // 1년 결제 UI variantKey 
     if (rc) req = { action: 'pay_prepare', track: TRACK, r: rc, p: hintP, renew: renew ? '1' : '', website: '' };
     else {
       var o = st || { cid: newCid() }; setOrd(o);   // 같은 cid로 다시 보내면 서버가 같은 접수번호를 돌려준다(새로고침·재시도 중복 방지)
-      req = { action: 'order_start', track: TRACK, p: hintP, source: SOURCE, cid: o.cid, website: '' };
+      var rcode = ''; try { rcode = sessionStorage.getItem('bx:ref') || ''; } catch (e) {}   // [2026-11-03] 직원 추천 링크로 들어온 그 방문(같은 탭)에서 결제할 때만
+      if (!rcode) { var rm = /[?&]ref=([a-z0-9]{2,16})/i.exec(SOURCE + '&' + location.search); if (rm) rcode = rm[1].toLowerCase(); }
+      req = { action: 'order_start', track: TRACK, p: hintP, source: SOURCE, cid: o.cid, rcode: rcode, website: '' };
     }
     mark('req');
     postOnce(req)
@@ -556,5 +558,6 @@ const WIDGET_VARIANT = 'LINKPAY_link_openxzla2';   // 1년 결제 UI variantKey 
   } catch (e) {}
 })();
 </script>
+<script src="js/bxvis.js" defer data-page="pay"></script>
 </body>
 </html>

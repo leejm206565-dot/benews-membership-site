@@ -70,7 +70,7 @@ details>summary::-webkit-details-marker{display:none}
     <ul class="mt-4 rounded-2xl bg-white p-4 md:p-5 shadow-soft space-y-3 text-[14px] md:text-[15px]">
       <li class="flex gap-3"><span class="shrink-0 grid place-items-center w-8 h-8 rounded-lg bg-rep-soft text-rep"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span><span><b>비밀번호는 받지 않습니다.</b> 아이디·임시 비밀번호와 기사 송출 방법을 아래 <b>이메일</b>로 보내드립니다. 첫 로그인 후 비밀번호를 바꿔 주세요.</span></li>
       <li class="flex gap-3"><span class="shrink-0 grid place-items-center w-8 h-8 rounded-lg bg-rep-soft text-rep"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l1.5-5h15L21 9"/><path d="M4 9v11h16V9"/><path d="M10 20v-5h4v5"/></svg></span><span>같은 아이디로 <b>오픈엑스 복지몰 계정</b>도 만들어 드립니다. <span class="text-mute">(모든 기자단 회원)</span></span></li>
-      <li class="flex gap-3"><span class="shrink-0 grid place-items-center w-8 h-8 rounded-lg bg-rep-soft text-rep"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></span><span>결제 확인 후 <b>평일 기준 1일 이내</b>에 아이디 안내 메일을 보내드립니다(주말·공휴일 결제는 다음 평일).</span></li>
+      <li class="flex gap-3"><span class="shrink-0 grid place-items-center w-8 h-8 rounded-lg bg-rep-soft text-rep"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></span><span>결제·등록이 끝나면 <b>바로</b> 아이디 안내 메일을 보내드립니다(담당자 확인이 필요한 경우 1일 이내).</span></li>
     </ul>
 
     <form id="f-acct" onsubmit="if(!window.__formReady){alert('화면을 불러오는 중 문제가 생겼습니다. 새로고침하거나 010-7382-1097로 연락 주세요.');}return false;" class="mt-4 space-y-4" novalidate>
@@ -144,6 +144,9 @@ details>summary::-webkit-details-marker{display:none}
         <h2 id="a3" class="text-[18px] font-bold">동의</h2>
         <label class="mt-2 flex items-start gap-2 min-h-[44px] py-1 text-[15px]"><input type="checkbox" name="agree" value="Y" required class="mt-1 w-5 h-5 shrink-0 accent-[#0B6B3A]"><span><b>개인정보(이름·휴대폰·이메일·희망 아이디·생년월일·성별·주소) 수집·이용에 동의합니다(필수)</b></span></label>
         <span class="ferr block" data-for="agree"></span>
+        <!-- [2026-11-03 사장 지시] 자동 승인 조건: 만 19세 이상·본인 명의(필수) -->
+        <label class="mt-2 flex items-start gap-2 min-h-[44px] py-1 text-[15px]"><input type="checkbox" name="adult" value="Y" required class="mt-1 w-5 h-5 shrink-0 accent-[#0B6B3A]"><span><b>만 19세 이상이며 본인 명의로 신청합니다(필수)</b></span></label>
+        <span class="ferr block" data-for="adult"></span>
         <details class="mt-1 text-[14px]">
           <summary class="inline-flex items-center min-h-[44px] underline cursor-pointer text-mute">내용 보기</summary>
           <div class="doc pb-2 text-[13px] text-[#333] space-y-2">
@@ -182,7 +185,7 @@ details>summary::-webkit-details-marker{display:none}
       <h3 class="mt-5 text-[16px] font-bold">다음 단계</h3>
       <ol class="mt-2 space-y-3 text-[15px]">
         <li class="flex gap-3"><span class="sec-no !w-7 !h-7 !text-[13px]">1</span><span>담당자가 결제를 확인합니다.</span></li>
-        <li class="flex gap-3"><span class="sec-no !w-7 !h-7 !text-[13px]">2</span><span>결제 확인 후 평일 기준 1일 이내(주말·공휴일 결제는 다음 평일)에 <b class="ok-mail-to">적어 주신 이메일</b>로 <b>아이디·임시 비밀번호·기사 송출 방법</b>을 한 번에 보내드립니다. 메일이 안 보이면 스팸함도 확인해 주세요.</span></li>
+        <li class="flex gap-3"><span class="sec-no !w-7 !h-7 !text-[13px]">2</span><span>잠시 뒤(보통 몇 분 안에) <b class="ok-mail-to">적어 주신 이메일</b>로 <b>아이디·임시 비밀번호·기사 송출 방법</b>을 한 번에 보내드립니다. 메일이 안 보이면 스팸함도 확인해 주세요.</span></li>
         <li class="flex gap-3"><span class="sec-no !w-7 !h-7 !text-[13px]">3</span><span>브랜드경제신문 홈페이지에 로그인한 뒤 비밀번호를 직접 바꾸고, 메일 안내대로 기사를 송출하시면 됩니다.</span></li>
         <li class="ok-year flex gap-3"><span class="sec-no !w-7 !h-7 !text-[13px]">4</span><span>같은 아이디로 오픈엑스 복지몰 계정도 만들어 같은 메일로 안내해 드립니다. <span class="text-mute">(모든 기자단 회원)</span></span></li>
       </ol>
@@ -195,7 +198,7 @@ details>summary::-webkit-details-marker{display:none}
     <div class="mt-4 rounded-2xl bg-white p-5 md:p-7 shadow-soft">
       <p class="text-[13px] font-bold text-rep">2단계 · 추가 정보</p>
       <h3 class="mt-1 text-[19px] md:text-[21px] font-extrabold leading-snug">실물 기자증 정보</h3>
-      <p class="mt-2 text-[15px] font-bold">기자증 신청 링크는 아이디 안내 메일에 함께 보내 드려요(평일 기준 1일 이내).</p>
+      <p class="mt-2 text-[15px] font-bold">기자증 신청 링크는 아이디 안내 메일과 함께 바로 보내 드려요.</p>
       <p class="mt-1 text-[14px]">메일의 링크로 기자증 정보를 보내 주시면 주말·공휴일 빼고 7일 이내에 보내 드려요. 기자증은 기자단 활동 시작과 별개예요.</p>
       <p class="mt-1 text-[13px] text-mute">필요한 것: 영문 이름, 증명사진, 받는 방법(택배·방문), 주소</p>
           </div>
@@ -523,6 +526,7 @@ const SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxPac_qwfiW7pf0N
     if (!/^\d{5}$/.test(A.zipA.value) || A.addr1A.value.trim().length < 5) k.bad('addrA', '주소 검색으로 우편번호와 주소를 넣어 주세요.', A.zipA);
     else if (!A.addr2A.value.trim()) k.bad('addrA', '상세 주소(동·호수 등)를 적어 주세요. 없으면 "없음"이라고 적어 주세요.', A.addr2A);
     if (!A.agree.checked) k.bad('agree', '홈페이지 가입 정보 수집·이용에 동의해 주세요.', A.agree);
+    if (!A.adult.checked) k.bad('adult', '만 19세 이상·본인 명의 신청에 체크해 주세요.', A.adult);
     return k.end();
   }
   function submitAcct() {
@@ -533,7 +537,7 @@ const SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxPac_qwfiW7pf0N
     var data = {
       action: 'profile', stage: 'account', track: 'reporter', receipt: rc, website: '',
       name: A.name.value.trim(), phone: fmtPhone(d), plan: plan,
-      loginId: A.loginId.value.trim(), loginId2: A.loginId2.value.trim(), email: A.email.value.trim(), agreeProfile: 'Y',
+      loginId: A.loginId.value.trim(), loginId2: A.loginId2.value.trim(), email: A.email.value.trim(), agreeProfile: 'Y', adult: 'Y',
       birth: A.birthA.value.replace(/\D/g, ''), gender: fa.querySelector('input[name=gender]:checked').value,
       zip: A.zipA.value, addr1: A.addr1A.value.trim(), addr2: A.addr2A.value.trim()
     };
@@ -767,5 +771,6 @@ const SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxPac_qwfiW7pf0N
   else { showRc($('#v-acct')); }
 })();
 </script>
+<script src="js/bxvis.js" defer data-page="register"></script>
 </body>
 </html>
