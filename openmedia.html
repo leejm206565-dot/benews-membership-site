@@ -914,12 +914,12 @@ html{scroll-padding-top:112px}
       <span>운영: 주식회사 오픈엑스</span>
     </a>
     <nav class="nav" aria-label="주요 메뉴">
-      <a href="/#process" data-cta="om-nav-reporter">기자단</a><a href="openmedia.html" aria-current="page" data-cta="om-nav-openmedia">신문사 창간</a><a href="#pricing" data-cta="om-nav-price">가격</a><a href="#benefits" data-cta="om-nav-benefits">혜택</a><a href="#faq" data-cta="om-nav-faq">질문</a>
+      <a href="/#process" data-cta="om-nav-reporter">기자단</a><a href="openmedia.html" aria-current="page" data-cta="om-nav-openmedia">오픈미디어 알아보기</a><a href="#pricing" data-cta="om-nav-price">가격</a><a href="#benefits" data-cta="om-nav-benefits">혜택</a><a href="#faq" data-cta="om-nav-faq">질문</a>
     </nav>
     <a href="#om-start" class="btn btn-ink" data-om-mode="consult" data-cta="om-nav-apply">신청하기</a>
   </div>
   <nav class="nav-m no-bar" aria-label="주요 메뉴(모바일)">
-    <a href="/#process" data-cta="om-navm-reporter">기자단</a><a href="openmedia.html" aria-current="page" data-cta="om-navm-openmedia">신문사 창간</a><a href="#pricing" data-cta="om-navm-price">가격</a><a href="#benefits" data-cta="om-navm-benefits">혜택</a><a href="#faq" data-cta="om-navm-faq">질문</a>
+    <a href="/#process" data-cta="om-navm-reporter">기자단</a><a href="openmedia.html" aria-current="page" data-cta="om-navm-openmedia">오픈미디어 알아보기</a><a href="#pricing" data-cta="om-navm-price">가격</a><a href="#benefits" data-cta="om-navm-benefits">혜택</a><a href="#faq" data-cta="om-navm-faq">질문</a>
   </nav>
 </header>
 
@@ -1646,5 +1646,33 @@ const SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxPac_qwfiW7pf0N
 </script>
 
 <script src="js/bxvis.js" defer data-page="openmedia"></script>
+<!-- [2026-11-03 사장 지시] 맨 위로 버튼: 조금 내려가면 오른쪽 아래에 나타남. 하단 고정 바(#bar)가 보이면 그 위로 비켜 선다 -->
+<button type="button" id="totop" aria-label="맨 위로" title="맨 위로" data-cta="totop" hidden><svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M12 19V5M5 12l7-7 7 7"/></svg></button>
+<style>
+#totop{position:fixed;right:16px;bottom:calc(16px + env(safe-area-inset-bottom));z-index:60;width:48px;height:48px;border-radius:999px;border:1px solid rgba(0,0,0,.12);background:#fff;color:#191919;display:flex;align-items:center;justify-content:center;box-shadow:0 6px 18px rgba(0,0,0,.16);cursor:pointer;transition:opacity .2s,transform .2s,bottom .2s}
+#totop[hidden]{display:none}
+#totop:hover{transform:translateY(-2px)}
+#totop:focus-visible{outline:3px solid #0B6B3A;outline-offset:2px}
+</style>
+<script>
+(function () {
+  var b = document.getElementById('totop'), bar = document.getElementById('bar');
+  if (!b) return;
+  function place() {
+    b.hidden = (window.scrollY || document.documentElement.scrollTop) < 600;
+    var h = bar && !bar.classList.contains('off') && bar.offsetHeight ? bar.offsetHeight : 0;
+    b.style.bottom = 'calc(' + (16 + h) + 'px + env(safe-area-inset-bottom))';
+  }
+  window.addEventListener('scroll', place, { passive: true });
+  window.addEventListener('resize', place);
+  if (bar && window.MutationObserver) new MutationObserver(place).observe(bar, { attributes: true, attributeFilter: ['class'] });
+  b.addEventListener('click', function () {
+    var still = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    window.scrollTo({ top: 0, behavior: still ? 'auto' : 'smooth' });
+    var logo = document.querySelector('.logo'); if (logo) try { logo.focus({ preventScroll: true }); } catch (e) {}
+  });
+  place();
+})();
+</script>
 </body>
 </html>
