@@ -47,6 +47,11 @@ h1,h2,h3{word-break:keep-all;text-wrap:balance;letter-spacing:-.02em}
   <p id="pay-kicker" class="text-[13px] md:text-[14px] font-bold text-rep">브랜드경제신문 기자단 · 결제</p>
   <h1 id="pay-h1" class="mt-1 text-[26px] md:text-[34px] font-extrabold leading-tight">기자단 멤버십 결제</h1>
   <p id="pay-lead" class="mt-2 text-[15px] text-mute">결제가 끝나면 바로 회원 등록 화면(이름·연락처·아이디)이 열립니다.</p>
+  <!-- [2026-11-04 사장 지시] 메인 가격표를 뺐으므로 결제 화면에서 상품을 고른다 -->
+  <nav id="plan-sw" aria-label="상품 고르기" hidden style="margin-top:14px;display:grid;grid-template-columns:1fr 1fr;gap:8px">
+    <a href="/pay?p=month" data-sw="month" style="display:block;text-align:center;padding:10px 6px;border-radius:12px;border:2px solid #D8D0BE;font-size:15px;font-weight:800;line-height:1.35;background:#fff">월간<br><span style="font-size:13px;font-weight:700">월 5만원 (VAT 별도)</span></a>
+    <a href="/pay?p=year" data-sw="year" style="display:block;text-align:center;padding:10px 6px;border-radius:12px;border:2px solid #D8D0BE;font-size:15px;font-weight:800;line-height:1.35;background:#fff">1년 일시불<br><span style="font-size:13px;font-weight:700">60만원 (VAT 별도)</span></a>
+  </nav>
 
   <div id="pay-load" class="mt-6 rounded-2xl bg-white p-5 shadow-soft" role="status">
     <p class="flex items-center gap-3 text-[15px] text-mute"><span class="spin" aria-hidden="true"></span>결제 화면을 준비하고 있습니다…</p>
@@ -134,7 +139,7 @@ h1,h2,h3{word-break:keep-all;text-wrap:balance;letter-spacing:-.02em}
     <button id="pay-btn" type="button" class="mt-4 w-full min-h-[56px] rounded-xl bg-rep hover:bg-rep-dark disabled:bg-[#9DB8A8] disabled:cursor-not-allowed text-white text-[18px] font-extrabold" disabled>결제하기</button>
     <p id="pay-hint" class="mt-2 text-[14px] font-bold text-mute" hidden>위의 [필수] 동의에 체크하면 결제 버튼이 켜집니다.</p>
     <p id="pay-err" class="mt-2 text-[14px] font-bold text-[#B3261E]" role="alert"></p>
-    <a id="pay-back" href="/#reporter" class="mt-2 inline-flex items-center min-h-[44px] text-[14px] text-mute underline">상품 화면으로 돌아가기</a>
+    <a id="pay-back" href="/" class="mt-2 inline-flex items-center min-h-[44px] text-[14px] text-mute underline">상품 화면으로 돌아가기</a>
   </div>
 </main>
 
@@ -232,6 +237,12 @@ const WIDGET_VARIANT = 'BRGD_YEAR';   // 1년 결제 UI variantKey (사장이 op
     Array.prototype.forEach.call(document.querySelectorAll('.om-only'), function (x) { x.hidden = false; });
     Array.prototype.forEach.call(document.querySelectorAll('.rep-only'), function (x) { x.hidden = true; });
   }
+  (function () {   // [2026-11-04] 상품 전환: 접수번호 없이 들어온 기자단 화면에서만
+    var sw = $('#plan-sw'); if (!sw || isOM || rc || !hintP) { if (sw) sw.style.display = 'none'; return; }
+    sw.hidden = false;
+    var cur = sw.querySelector('[data-sw="' + hintP + '"]');
+    if (cur) { cur.style.borderColor = '#0B6B3A'; cur.style.background = '#E4EFE6'; cur.setAttribute('aria-current', 'true'); }
+  })();
   if (rc === 'BAD' || (!rc && !hintP)) { bad('결제할 상품을 찾지 못했습니다.', '상품 화면에서 [시작하기]를 눌러 주세요.'); return; }
 
   function rand6() {
@@ -510,9 +521,9 @@ const WIDGET_VARIANT = 'BRGD_YEAR';   // 1년 결제 UI variantKey (사장이 op
     }
   }
   function monthSoon() {   // [2026-11-03] 월 구독 오픈 전: 주문을 만들지 않고 안내만
-    bad('월 구독은 지금 전화로 신청하실 수 있어요',   // [2026-11-04 사장 지시] 오픈 전에는 전화로 받아 담당자가 직접 진행
-      '온라인 월 구독 결제는 ' + MONTH_OPEN_DAY + '에 열려요. 그 전에 월 5만원으로 시작하고 싶으시면 ' + PHONE + '로 전화 주세요. 담당자가 바로 진행해 드려요. 1년 멤버십은 지금 이 화면에서 바로 결제하실 수 있어요.',
-      { href: 'tel:' + PHONE, label: '전화로 월 구독 신청하기 (' + PHONE + ')', alt: { href: '/pay?p=year', label: '1년 멤버십으로 지금 시작하기' } });
+    bad('월 구독은 ' + MONTH_OPEN_DAY + '에 오픈해요',   // [2026-11-04 사장 지시]
+      '월 5만원(VAT 별도) 월 구독은 ' + MONTH_OPEN_DAY + '부터 이 화면에서 결제하실 수 있어요. 1년 멤버십은 지금 바로 결제하실 수 있어요.',
+      { href: '/pay?p=year', label: '1년 멤버십으로 지금 시작하기' });
     try { $('#testband').hidden = true; } catch (e) {}
     mark('month_soon');
   }

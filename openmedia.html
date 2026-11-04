@@ -914,12 +914,12 @@ html{scroll-padding-top:112px}
       <span>운영: 주식회사 오픈엑스</span>
     </a>
     <nav class="nav" aria-label="주요 메뉴">
-      <a href="/#process" data-cta="om-nav-reporter">기자단</a><a href="openmedia.html" aria-current="page" data-cta="om-nav-openmedia">오픈미디어 알아보기</a><a href="#pricing" data-cta="om-nav-price">가격</a><a href="#benefits" data-cta="om-nav-benefits">혜택</a><a href="#faq" data-cta="om-nav-faq">질문</a>
+      <a href="/#process" data-cta="om-nav-reporter">기자단</a><a href="openmedia.html" aria-current="page" data-cta="om-nav-openmedia">신문사창간</a><a href="/#major" data-cta="om-nav-major">메이저언론사</a><a href="#pricing" data-cta="om-nav-price">가격</a><a href="#benefits" data-cta="om-nav-benefits">혜택</a><a href="#faq" data-cta="om-nav-faq">질문</a>
     </nav>
     <a href="#om-start" class="btn btn-ink" data-om-mode="consult" data-cta="om-nav-apply">신청하기</a>
   </div>
   <nav class="nav-m no-bar" aria-label="주요 메뉴(모바일)">
-    <a href="/#process" data-cta="om-navm-reporter">기자단</a><a href="openmedia.html" aria-current="page" data-cta="om-navm-openmedia">오픈미디어 알아보기</a><a href="#pricing" data-cta="om-navm-price">가격</a><a href="#benefits" data-cta="om-navm-benefits">혜택</a><a href="#faq" data-cta="om-navm-faq">질문</a>
+    <a href="/#process" data-cta="om-navm-reporter">기자단</a><a href="openmedia.html" aria-current="page" data-cta="om-navm-openmedia">신문사창간</a><a href="/#major" data-cta="om-nav-major">메이저언론사</a><a href="#pricing" data-cta="om-navm-price">가격</a><a href="#benefits" data-cta="om-navm-benefits">혜택</a><a href="#faq" data-cta="om-navm-faq">질문</a>
   </nav>
 </header>
 
@@ -1672,6 +1672,46 @@ const SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxPac_qwfiW7pf0N
     var logo = document.querySelector('.logo'); if (logo) try { logo.focus({ preventScroll: true }); } catch (e) {}
   });
   place();
+})();
+</script>
+<!-- [2026-11-04 사장 지시] 페이지 이동 점 메뉴: 점을 누르면 그 구역으로. 이름은 마우스를 올릴 때만 -->
+<nav id="dotnav" aria-label="이 페이지 안에서 이동"></nav>
+<style>
+#dotnav{position:fixed;right:10px;top:50%;transform:translateY(-50%);z-index:55;display:flex;flex-direction:column;align-items:center;pointer-events:none}
+#dotnav a{pointer-events:auto;position:relative;display:flex;align-items:center;justify-content:center;width:22px;height:22px;text-decoration:none}
+#dotnav i{display:block;width:7px;height:7px;border-radius:50%;background:rgba(120,120,120,.55);box-shadow:0 0 0 1.5px rgba(255,255,255,.75);transition:transform .15s,background .15s}
+#dotnav a:hover i{background:#0B6B3A;transform:scale(1.3)}
+#dotnav a.on i{background:#0B6B3A;transform:scale(1.5)}
+#dotnav span{position:absolute;right:26px;top:50%;transform:translateY(-50%);opacity:0;visibility:hidden;font-size:12.5px;font-weight:700;line-height:1;white-space:nowrap;padding:6px 10px;border-radius:6px;background:#121212;color:#fff;transition:opacity .12s}
+#dotnav a:hover span,#dotnav a:focus-visible span{opacity:1;visibility:visible}
+#dotnav a:focus-visible{outline:2px solid #0B6B3A;border-radius:50%}
+@media (max-width:767px){#dotnav{right:1px}#dotnav a{width:18px;height:22px}#dotnav i{width:6px;height:6px}}
+</style>
+<script>
+(function () {
+  var items = [["hero","처음"],["process","창간 과정"],["who","기자단과 차이"],["om-cases","창간 사례"],["benefits","함께하는 것"],["pricing","가격"],["faq","자주 묻는 질문"],["cta","시작하기"]];
+  var nav = document.getElementById('dotnav'); if (!nav) return;
+  var rows = [];
+  items.forEach(function (it) {
+    var el = document.getElementById(it[0]); if (!el || el.hidden) return;
+    var a = document.createElement('a'); a.href = '#' + it[0]; a.setAttribute('data-cta', 'dotnav-' + it[0]); a.setAttribute('aria-label', it[1]);
+    var sp = document.createElement('span'); sp.textContent = it[1]; a.appendChild(sp); a.appendChild(document.createElement('i'));
+    a.addEventListener('click', function (e) {
+      e.preventDefault();
+      if (it[2]) { var t = document.getElementById(it[2]); if (t) t.click(); }
+      var still = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+      el.scrollIntoView({ behavior: still ? 'auto' : 'smooth', block: 'start' });
+    });
+    nav.appendChild(a);
+    if (!it[2]) rows.push({ el: el, a: a });
+  });
+  function mark() {
+    var line = window.innerHeight * 0.35, cur = rows[0];
+    rows.forEach(function (r) { if (r.el.getBoundingClientRect().top <= line) cur = r; });
+    Array.prototype.forEach.call(nav.children, function (a) { a.classList.remove('on'); });
+    if (cur) { cur.a.classList.add('on'); cur.a.setAttribute('aria-current', 'true'); }
+  }
+  window.addEventListener('scroll', mark, { passive: true }); window.addEventListener('resize', mark); mark();
 })();
 </script>
 </body>
