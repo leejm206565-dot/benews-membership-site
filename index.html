@@ -2693,5 +2693,86 @@ const SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxPac_qwfiW7pf0N
 #mall .btn-ink:hover,#perks .btn-ink:hover{background:#d8f04a}
 .bk-thumbs img[src*="cat_appliance_hb"]{border-color:transparent}
 </style>
+<style>
+/* [2026-11-09] 모바일 정리: 세로로 길게 쌓이던 카드를 줄이고(2칸·가로 넘김), 장식 줄이기 */
+@media (max-width:767px){
+  .sec{padding:52px 0 !important}
+  .sec.tight{padding:44px 0 !important}
+  .h2{font-size:clamp(26px,7vw,32px) !important}
+  .lead{font-size:15px}
+  /* 첫 화면: 가입 창 2개 나란히, 그림·콜라주 숨김 */
+  .hero-in{padding-bottom:28px}
+  .hero-in .hpl{grid-template-columns:1fr 1fr !important;gap:10px;margin-top:20px}
+  .hero-in .hp-c{padding:14px 12px 12px;border-radius:14px}
+  .hero-in .hp-k{flex-direction:column;align-items:flex-start;gap:6px;font-size:11px}
+  .hero-in .hp-soon,.hero-in .hp-best{font-size:11px;padding:2px 7px}
+  .hero-in .hp-t{font-size:19px;margin-top:6px}
+  .hero-in .hp-im{display:none}
+  .hero-in .hp-c .btn{margin-top:12px;min-height:44px;font-size:14px;padding:0 6px}
+  #hero figure.only-m{display:none}
+  /* 숫자 3개: 한 줄 3칸 */
+  .stats{grid-template-columns:repeat(3,minmax(0,1fr)) !important;gap:8px !important;margin-top:20px}
+  .stat,.stat.s3{width:auto !important;margin:0 !important;min-height:0 !important;padding:16px 4px !important;border-radius:14px !important;animation:none !important;transform:none !important}
+  .stat.s2{border-radius:14px !important}
+  .stat.s3::before,.stat.s3 .stamp{display:none}
+  .stat dd.num{font-size:30px !important}
+  .stat dd.num.ko{font-size:20px !important;line-height:1.3}
+  .stat dt{font-size:12px;margin-top:6px;line-height:1.35}
+  .stat dd.sub{display:none}
+  /* 글쓰기 3단계: 가로로 넘기기 */
+  .nw-steps{display:grid !important;gap:10px;margin-top:20px}
+  .nw-steps>li{display:grid !important;grid-template-columns:118px 1fr;grid-template-rows:auto auto auto;column-gap:12px;padding:12px !important;align-items:start}
+  .nw-steps>li>.nw-vis{grid-row:1 / span 3;height:100px;margin:0;padding:6px;transform:scale(1);overflow:hidden}
+  .nw-steps .nw-vis .memo{transform:none;padding:6px 8px;gap:4px}.nw-steps .nw-vis .memo p{grid-template-columns:34px 1fr;font-size:10.5px}
+  .nw-steps .nw-vis.v2{gap:4px}.nw-steps .nw-vis .mm,.nw-steps .nw-vis .dc{padding:5px 6px}.nw-steps .nw-vis .ar em{display:none}.nw-steps .nw-vis .mm b,.nw-steps .nw-vis .dc b{font-size:9.5px}
+  .nw-steps .nw-vis.v3{flex-direction:column;gap:6px}.nw-steps .nw-vis .ck li{font-size:10.5px}.nw-steps .nw-vis .ck li::before{width:14px;height:14px;font-size:9px}.nw-steps .nw-vis .up{padding:5px 12px;font-size:11.5px}
+  .nw-steps h3{margin-top:2px !important;font-size:16px}.nw-steps p{font-size:13.5px;line-height:1.5;margin-top:2px}
+  .nw-steps .sn{font-size:26px}
+  #nowrite .bcard.aip .note{display:none}
+  /* 이런 분: 2칸, 설명 숨김 */
+  .who{grid-template-columns:1fr 1fr !important;gap:8px !important}
+  .who .wc{display:flex !important;flex-direction:column;padding:12px 12px 14px !important;min-height:86px}
+  .who .no{font-size:18px !important}
+  .who .bx{width:20px !important;height:20px !important;top:10px !important;right:10px !important}
+  .who .tt{margin-top:6px !important;padding-right:0 !important;font-size:14px !important;line-height:1.35}
+  .who .dd{display:none}
+  .who-out{margin-top:14px;padding:16px !important}
+  .who-out p{font-size:15px}
+  .who-out .btn{width:100%;min-width:0}
+  /* 혜택: 글 줄이고 사진 칸 정리 */
+  .bn-no{font-size:18px !important}
+  #benefits .bn-no{margin:36px 0 8px !important}
+  #presscard,#ticket,.bk{padding:20px 16px !important;border-radius:16px}
+  #presscard h3,#ticket h3,.bk h3{font-size:19px !important}
+  #presscard .d,#ticket .d,.bk .d{font-size:14px;line-height:1.55}
+  #presscard .n{display:none}
+  #presscard .ex{font-size:11px}
+  .bk-facts{gap:6px}.bk-facts li{font-size:12px !important;padding:4px 9px !important}
+  .bk-thumbs.t3{gap:6px}.bk-thumbs.t3 img{aspect-ratio:1/1 !important}
+  .bk-thumbs.t6{display:flex !important;overflow-x:auto;gap:8px;margin-left:-16px;margin-right:-16px;padding:0 16px 4px}
+  .bk-thumbs.t6 li{flex:0 0 27%}
+  .bk-thumbs li{font-size:12px}
+  .bk-pay{font-size:17px}
+  .tk-note{font-size:12px}
+  /* 메이저: 이름 칸 작게 */
+  .mj-g li{padding:9px 10px;font-size:13px}
+  /* 질문 탭: 넘기기 */
+  #faq .tabs{flex-wrap:nowrap;overflow-x:auto}
+  #faq .tabs>*{flex:none}
+}
+</style>
+<style>@media (max-width:767px){.who li{display:flex !important}.who label{display:flex !important;flex-direction:column;grid-row:auto !important;padding:12px 12px 14px !important;min-height:92px}.who .no{grid-row:auto !important}}</style>
+<style>/* [11-09] 모바일: 오른쪽 점 이동바(툴바) 숨김 */@media (max-width:1023px){#dotnav{display:none !important}}</style>
+<style>/* [11-09] 모바일: 기자증·공연 티켓·실제 게재 기사를 한 줄로 놓고 오른쪽으로 넘겨 보기 */
+@media (max-width:767px){
+  #presscard .pc-grid{display:flex !important;overflow-x:auto;scroll-snap-type:x mandatory;scroll-padding:0 16px;gap:10px;margin:16px -16px 0;padding:0 16px 8px;scrollbar-width:none}
+  #presscard .pc-grid::-webkit-scrollbar{display:none}
+  #presscard .pc-grid figure{flex:0 0 76%;scroll-snap-align:start}
+  #presscard .pc-grid .pc-type{padding:8px}
+  #presscard .pc-grid figcaption{font-size:13.5px}
+  #ticket .tk-list{margin:10px -16px 0;padding:0 16px 6px;scroll-padding:0 16px}
+  #ticket .tk-list li{flex:0 0 42%}
+  .art-list li{flex:0 0 76%}
+}</style>
 </body>
 </html>
