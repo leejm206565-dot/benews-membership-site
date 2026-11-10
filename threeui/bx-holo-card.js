@@ -5,7 +5,7 @@
    뺀 것: Three.js 엔진, 배경 세계(성당·칼·나무·불), 블룸 후처리, 13MB 그림. 카드 그림은 HTML 로, 필름은 작은 WebGL 하나로 그린다. */
 (function () {
   var root = document.querySelector('.bxh'); if (!root) return;
-  var card = root.querySelector('.bxh-card'), foil = root.querySelector('.bxh-foil');
+  var card = root.querySelector('.bxh-card'), foil = root.querySelector('.bxh-foil'), fr = root.querySelector('.bxh-front'), bk = root.querySelector('.bxh-back');
   var reduced = matchMedia('(prefers-reduced-motion: reduce)').matches;
   var S = { rot: { x: 0, y: 0 }, vel: { x: 0, y: 0 }, face: 0, hover: 0, ptr: { x: 0, y: 0, t: -99, inside: false },
     drag: false, inertia: false, spin: -1, introT: 0, lastInput: 0, time: 0, last: { x: 0, y: 0, t: 0 } };
@@ -82,7 +82,8 @@
     var y = lerp(60, 0, rise) + (reduced ? 0 : Math.sin(t * .8) * 4), sc = lerp(.86, 1, rise), rz = reduced ? 0 : Math.sin(t * .31) * .012;
     // three.js 회전(rotation.x, y, z) → CSS (x 는 방향이 반대)
     card.style.transform = 'translateY(' + y.toFixed(2) + 'px) scale(' + sc.toFixed(4) + ') rotateX(' + (-S.rot.x).toFixed(4) + 'rad) rotateY(' + S.rot.y.toFixed(4) + 'rad) rotateZ(' + (-rz).toFixed(4) + 'rad)';
-    card.classList.toggle('is-back', !isFront(nearestFace(S.rot.y)) || Math.cos(S.rot.y) < 0);
+    var showBack = Math.cos(S.rot.y) < 0;   // [11-10] 뒷면 숨기기를 브라우저에만 맡기지 않고 직접 정한다(일부 화면에서 뒷면이 비쳐 보이던 문제)
+    if (showBack !== S.showBack) { S.showBack = showBack; card.classList.toggle('is-back', showBack); fr.style.visibility = showBack ? 'hidden' : 'visible'; bk.style.visibility = showBack ? 'visible' : 'hidden'; }
     var la = [Math.sin(t * .29) * .75, .42 + .3 * Math.sin(t * .21 + 1.2), 1], lh = [S.ptr.x * 1.15, .48 + S.ptr.y * .85, .9];
     light = [lerp(la[0], lh[0], S.hover), lerp(la[1], lh[1], S.hover), lerp(la[2], lh[2], S.hover)];
     var L = Math.hypot(light[0], light[1], light[2]); light = [light[0] / L, light[1] / L, light[2] / L];
