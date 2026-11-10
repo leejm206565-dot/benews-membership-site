@@ -41,9 +41,14 @@
       if (host.__frameWin && host.__frameWin() === e.source) {
         try { if (window.__bxEv) window.__bxEv('pay_click', { cta: host.getAttribute('data-cta') || 'glass' }); } catch (x) {}
         var fb = host.parentNode && host.parentNode.querySelector('a.pay-go'); var to = (fb && fb.href) || host.getAttribute('data-href');   // [11-10] 유입 꼬리표(&s=)가 붙은 주소로
-        setTimeout(function () { location.href = to; }, 900);
+        setTimeout(function () { location.href = to; }, 280);   // [11-10] 빛 효과 잠깐만 보이고 바로 결제 화면
       }
     });
   });
-  mountAll(); if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', mountAll);   // [11-10] 버튼이 이미 그려졌으면 바로 시작(페이지 끝까지 기다리지 않음)
+  /* [11-10] 첫 화면이 다 그려진 뒤(한가할 때) 3D 를 붙인다. 그동안은 같은 모양의 가벼운 버튼이 보인다 */
+  function later() { (window.requestIdleCallback || function (f) { setTimeout(f, 300); })(mountAll, { timeout: 1500 }); }
+  if (document.readyState === 'complete') later(); else addEventListener('load', later);
+  /* 결제 서버를 미리 깨워 둔다(버튼에 손이 가면) */
+  var warmed = 0; document.addEventListener('pointerover', function (e) { if (warmed || !e.target.closest || !e.target.closest('.hp-join,.pay-go')) return; warmed = 1;
+    try { fetch('https://script.google.com/macros/s/AKfycbxPac_qwfiW7pf0NvfCQr4Vyr9bLXWjq4KYFwclAmy2buZFajcD9AKsBcbd5BD0SCu9zA/exec?action=ping', { credentials: 'omit', keepalive: true }).catch(function () {}); } catch (x) {} }, { passive: true });
 })();

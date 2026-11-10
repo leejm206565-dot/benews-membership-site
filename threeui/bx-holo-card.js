@@ -125,7 +125,7 @@
       ['uTime', 'uGlare', 'uFoil', 'uHover', 'uLightDir', 'uRootRot'].forEach(function (n) { U[n] = gl.getUniformLocation(prog, n); });
     } catch (e) { gl = null; }
   }
-  function sizeFoil() { if (!gl) return; var r = foil.getBoundingClientRect(), pr = Math.min(devicePixelRatio || 1, 1.5);
+  function sizeFoil() { if (!gl) return; var r = foil.getBoundingClientRect(), pr = Math.min(devicePixelRatio || 1, 1);
     var w = Math.max(2, Math.round(r.width * pr)), h = Math.max(2, Math.round(r.height * pr)); if (foil.width !== w || foil.height !== h) { foil.width = w; foil.height = h; } gl.viewport(0, 0, w, h); }
   function rotMat(x, y, z) { // three.js Euler XYZ → 3x3 (열 우선)
     var a = Math.cos(x), b = Math.sin(x), c = Math.cos(y), d = Math.sin(y), e = Math.cos(z), f = Math.sin(z), ae = a * e, af = a * f, be = b * e, bf = b * f;
@@ -141,7 +141,10 @@
 
   // ---- 화면에 보일 때만 돈다
   var on = false, last = 0, t0 = performance.now(), raf = 0;
-  function loop(ms) { raf = 0; if (!on) return; var dt = Math.min((ms - last) / 1e3, .05); last = ms; step(dt, (ms - t0) / 1e3); draw((ms - t0) / 1e3); raf = requestAnimationFrame(loop); }
+  var lastDraw = 0;
+  function loop(ms) { raf = 0; if (!on) return; var dt = Math.min((ms - last) / 1e3, .05); last = ms; step(dt, (ms - t0) / 1e3);
+    if (ms - lastDraw > 33) { lastDraw = ms; draw((ms - t0) / 1e3); }   // [11-10] 필름은 초당 30번만 그려도 같아 보임(가볍게)
+    raf = requestAnimationFrame(loop); }
   function start() { if (on) return; on = true; last = performance.now(); sizeFoil(); raf = requestAnimationFrame(loop); }
   function stop() { on = false; }
   if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { (es[0].isIntersecting && !document.hidden) ? start() : stop(); }, { rootMargin: '80px' }).observe(root); else start();
