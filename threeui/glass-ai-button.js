@@ -40,7 +40,8 @@
     document.querySelectorAll('.glass-ai-button[data-href]').forEach(function (host) {
       if (host.__frameWin && host.__frameWin() === e.source) {
         try { if (window.__bxEv) window.__bxEv('pay_click', { cta: host.getAttribute('data-cta') || 'glass' }); } catch (x) {}
-        setTimeout(function () { location.href = host.getAttribute('data-href'); }, 900);
+        var fb = host.parentNode && host.parentNode.querySelector('a.pay-go'); var to = (fb && fb.href) || host.getAttribute('data-href');   // [11-10] 유입 꼬리표(&s=)가 붙은 주소로
+        setTimeout(function () { location.href = to; }, 900);
       }
     });
   });
