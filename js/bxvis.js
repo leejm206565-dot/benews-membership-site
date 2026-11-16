@@ -19,7 +19,7 @@
   var qs = new URLSearchParams(location.search);
   // 내부(직원) 브라우저
   if (qs.get('team') === '1') ls('bx:team', '1'); else if (qs.get('team') === '0') ls('bx:team', null);
-  var team = ls('bx:team') ? '1' : '0';
+  var team = ls('bx:team') || navigator.webdriver ? '1' : '0';   // [2026-11-16] 자동 점검 프로그램(웹드라이버) 방문은 내부로
   // 방문자ID (쿠키 + localStorage, 둘 중 하나만 남아 있어도 복구)
   var ck = (/(?:^|;\s*)bxv=([a-z0-9]{6,32})/.exec(document.cookie) || [])[1], st = ls('bx:vid'), uid = ck || st, nid = '0';
   if (!uid || !/^[a-z0-9]{6,32}$/.test(uid)) { uid = rnd().slice(0, 24); nid = '1'; }
@@ -85,7 +85,9 @@
     } else { since = Date.now(); Object.keys(secOn).forEach(function (k) { if (secOn[k]) secOn[k] = Date.now(); }); }
   });
   window.addEventListener('pagehide', function () { if (since) send('leave'); });
-  setInterval(function () { if (!since) return; var s = seen(); if (s - lastBeat >= 14) { lastBeat = s; send('beat'); } }, 15000);
+  // [2026-11-16] 결제가 느려지지 않게: 체류 신호를 15초마다 → 15·30·60·120·240·480초, 그 뒤 15분마다(떠날 때 신호가 정확한 시간을 보냄)
+  var nextBeat = 15;
+  setInterval(function () { if (!since) return; var s = seen(); if (s >= nextBeat && s - lastBeat >= 10) { lastBeat = s; nextBeat = nextBeat < 480 ? nextBeat * 2 : s + 900; send('beat'); } }, 5000);
   send('land');
   window.BXVIS = { sec: function (s) { secs[s] = 1; }, pay: function () { pay = '1'; send('pay'); } };
 })();
