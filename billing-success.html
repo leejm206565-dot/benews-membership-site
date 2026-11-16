@@ -123,7 +123,7 @@ h1,h2,h3{word-break:keep-all;text-wrap:balance;letter-spacing:-.02em}
   <div class="max-w-2xl mx-auto px-4 sm:px-6 py-8 space-y-2">
     <p class="flex flex-wrap gap-x-1 text-[14px] text-ink"><a href="terms.html" class="inline-flex items-center min-h-[44px] underline">이용약관</a><span class="inline-flex items-center" aria-hidden="true">·</span><a href="refund.html" class="inline-flex items-center min-h-[44px] underline">환불정책</a><span class="inline-flex items-center" aria-hidden="true">·</span><a href="privacy.html" class="inline-flex items-center min-h-[44px] underline font-bold">개인정보처리방침</a></p>
     <p class="font-bold text-ink">주식회사 오픈엑스</p>
-    <p>대표이사 김미진 · 사업자등록번호 310-81-34293 · 통신판매업신고 제 2024-서울마포-0817호 · 호스팅 서비스 제공자 Netlify, Inc.</p>
+    <p>대표이사 김미진 · 사업자등록번호 310-81-34293 · 통신판매업신고 제 2024-서울마포-0817호 · 호스팅 서비스 제공자 GitHub, Inc.</p>
     <p>서울특별시 마포구 성암로 330, 8층 808호 (상암동, DMC첨단산업센터)</p>
     <p>기자단 문의 010-7382-1097</p>
     <p>고객 문의 이메일 <a class="underline" href="mailto:leejm208585@openxgroup.co.kr">leejm208585@openxgroup.co.kr</a></p>
@@ -228,7 +228,8 @@ const SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxPac_qwfiW7pf0N
   function ng(title, msg, code, opt) {
     opt = opt || {};
     $('#ng-title').textContent = title;
-    $('#ng-msg').textContent = msg;
+    var KB_PENDING = false;   // [2026-11-16] 국민카드 자동결제 승인 전(pay.html 과 같이 바꿈)
+    $('#ng-msg').textContent = msg + (KB_PENDING ? ' 국민(KB)카드는 자동결제 승인 진행 중이라 아직 등록할 수 없어요. 다른 카드로 등록해 주세요.' : '');
     $('#ng-code').textContent = code ? '오류 코드: ' + code : '';
     $('#ng-retry').hidden = !opt.retry;
     if (opt.retry) { retryMode = opt.retry; $('#ng-retry').textContent = opt.retryLabel || '같은 카드로 다시 결제하기'; }
