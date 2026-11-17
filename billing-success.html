@@ -59,7 +59,7 @@ h1,h2,h3{word-break:keep-all;text-wrap:balance;letter-spacing:-.02em}
         <p class="text-[16px] font-extrabold">다음: 회원 등록 1단계 (필수)</p>
         <p class="mt-1 text-[14px]">이름·휴대폰·이메일·희망 아이디를 한 번에 적으면 아이디 발급이 진행됩니다. 1분이면 끝납니다.</p>
       </div>
-      <a id="go-reg" href="register.html" class="mt-4 flex items-center justify-center w-full min-h-[56px] rounded-xl bg-rep hover:bg-rep-dark text-white text-[18px] font-extrabold">회원 등록 시작하기</a>
+      <a id="go-reg" href="register.html" class="mt-4 flex items-center justify-center w-full min-h-[56px] rounded-xl bg-rep hover:bg-rep-dark text-white text-[18px] font-extrabold"><span class="go-t">회원 등록 시작하기</span></a>
       <p class="mt-2 text-[14px] text-mute" id="auto" aria-live="polite"></p>
       <button type="button" id="stay" class="inline-flex items-center min-h-[44px] text-[14px] underline text-mute">자동 이동 멈추기</button>
     </div>
@@ -155,7 +155,9 @@ const SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxPac_qwfiW7pf0N
   var isOM = /^OM-/.test(rc), TRACK = isOM ? 'openmedia' : 'reporter', HOME = isOM ? '/#om-start' : '/#reporter';
   if (isOM) { $('#bs-kicker').textContent = '오픈미디어 · 카드 자동결제'; $('#bs-kicker').className = 'text-[13px] md:text-[14px] font-bold text-om'; document.title = '오픈미디어 결제 완료 | 주식회사 오픈엑스'; }
   var again = 'pay.html?r=' + encodeURIComponent(rc) + '&p=' + (isOM ? 'om_month' : 'month');
-  function regUrl() { return 'register.html?r=' + encodeURIComponent(rc) + '&p=month'; }
+  var MYGO = (function () { try { return !!localStorage.getItem('bx:my'); } catch (e) { return false; } })();   // [2026-11-17] 로그인하고 결제했으면 내 기자실로
+  function regUrl() { return MYGO ? '/my.html' : regUrl0(); }
+  function regUrl0() { return 'register.html?r=' + encodeURIComponent(rc) + '&p=month'; }
   function show(id) { ['v-wait', 'v-ok', 'v-om', 'v-ng'].forEach(function (x) { $('#' + x).hidden = x !== id; }); try { $('#' + id).focus({ preventScroll: true }); } catch (e) {} }
 
   var timer = null;
@@ -175,7 +177,7 @@ const SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxPac_qwfiW7pf0N
     var n = 3;
     (function tick() {
       if (n <= 0) { location.replace(regUrl()); return; }
-      $('#auto').textContent = n + '초 뒤 회원 등록 화면으로 자동 이동합니다.';
+      $('#auto').textContent = n + (MYGO ? '초 뒤 내 기자실로 자동 이동합니다.' : '초 뒤 회원 등록 화면으로 자동 이동합니다.');
       n--; timer = setTimeout(tick, 1000);
     })();
   }
@@ -296,5 +298,6 @@ const SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxPac_qwfiW7pf0N
   run('issue');
 })();
 </script>
+<script>try{if(localStorage.getItem('bx:my')){document.querySelectorAll('.go-t').forEach(function(e){e.textContent='내 기자실로 가기';});var h=document.querySelectorAll('#v-ok .text-\\[16px\\].font-extrabold, .rounded-xl.bg-rep-soft p');h.forEach(function(p,i){if(/회원 등록 1단계/.test(p.textContent))p.textContent='다음: 내 기자실에서 기자 계정 만들기';else if(/이름·휴대폰·이메일·희망 아이디/.test(p.textContent))p.textContent='희망 아이디·생년월일만 적으면 아이디가 만들어지고, 아이디·비밀번호는 내 기자실에서 바로 확인해요.';});}}catch(e){}</script>
 </body>
 </html>

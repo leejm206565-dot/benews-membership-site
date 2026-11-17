@@ -316,6 +316,11 @@ const WIDGET_VARIANT = 'BRGD_YEAR';   // 1년 결제 UI variantKey (사장이 op
   var BTN_LABEL = '결제하기';
   // [2026-11-03] 결제 전 이름·휴대폰·이메일(기자단만)
   var needWho = !isOM;
+  /* [2026-11-17 사장 지시] 기자단 결제는 로그인한 사람만: 이름·휴대폰·이메일은 로그인 정보로 서버가 채운다(입력 칸 없음) */
+  var LG = null; try { LG = JSON.parse(sessionStorage.getItem('bx:login') || 'null'); } catch (e) {}
+  if (!LG || !LG.t) { try { var lt0 = localStorage.getItem('bx:my'), lw0 = JSON.parse(localStorage.getItem('bx:mywho') || 'null'); if (lt0) LG = { n: (lw0 && lw0.n) || '', e: (lw0 && lw0.e) || '', ph: (lw0 && lw0.ph) || '', t: lt0 }; } catch (e) {} }
+  if (!isOM && !renew && !demo && !(LG && LG.t)) { location.replace('/my.html?next=pay&' + location.search.replace(/^\?/, '')); return; }
+  if (!isOM && LG && LG.t) needWho = false;
   function whoVal() {
     var d = String($('#w-phone').value || '').replace(/\D/g, '');
     return { name: String($('#w-name').value || '').trim().slice(0, 30), phone: d, email: String($('#w-email').value || '').trim() };
@@ -456,7 +461,7 @@ const WIDGET_VARIANT = 'BRGD_YEAR';   // 1년 결제 UI variantKey (사장이 op
       $('#w-phone').addEventListener('input', function () { var d = this.value.replace(/\D/g, '').slice(0, 11), f = d.length < 4 ? d : d.length < 8 ? d.slice(0, 3) + '-' + d.slice(3) : d.slice(0, 3) + '-' + d.slice(3, 7) + '-' + d.slice(7); if (f !== this.value) this.value = f; });
       $('#w-email').addEventListener('blur', function () { var v = this.value.trim(); $('#w-err').textContent = v && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v) ? '이메일 주소를 다시 확인해 주세요.' : ''; });
       $('#w-phone').addEventListener('blur', function () { var d = this.value.replace(/\D/g, ''); $('#w-err').textContent = d && !/^010\d{8}$/.test(d) ? '010으로 시작하는 휴대폰 번호 11자리를 넣어 주세요.' : ''; });
-    } else needWho = false;
+    } else { needWho = false; var ps = $('#privacy-slot'); if (ps) ps.hidden = true; var wb0 = $('#who-box'); if (wb0) wb0.hidden = true; }
     if (pk === 'month' || pk === 'om_month' || pk === 'standard') {
       $('#s-method').textContent = isOM ? '카드 자동결제 (매월)' : '카드 CMS (정기결제)'; $('#s-amt-label').textContent = isOM ? '1회차 결제 금액' : '결제 금액';
       shellBilling(plan);
@@ -627,7 +632,7 @@ const WIDGET_VARIANT = 'BRGD_YEAR';   // 1년 결제 UI variantKey (사장이 op
       var o = st || { cid: newCid() }; setOrd(o);   // 같은 cid로 다시 보내면 서버가 같은 접수번호를 돌려준다(새로고침·재시도 중복 방지)
       var rcode = ''; try { rcode = sessionStorage.getItem('bx:ref') || ''; } catch (e) {}   // [2026-11-03] 직원 추천 링크로 들어온 그 방문(같은 탭)에서 결제할 때만
       if (!rcode) { var rm = /[?&]ref=([a-z0-9]{2,16})/i.exec(SOURCE + '&' + location.search); if (rm) rcode = rm[1].toLowerCase(); }
-      req = { action: 'order_start', track: TRACK, p: hintP, source: SOURCE, cid: o.cid, rcode: rcode, website: '' };
+      req = { action: 'order_start', track: TRACK, p: hintP, source: SOURCE, cid: o.cid, rcode: rcode, mytok: (LG && LG.t) || '', website: '' };
     }
     mark('req');
     postOnce(req)
