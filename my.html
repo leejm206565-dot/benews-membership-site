@@ -38,6 +38,7 @@ h2{font-size:17px;margin:0 0 10px;letter-spacing:-.02em}
 .btn{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:0 18px;border-radius:12px;border:0;background:var(--g);color:#fff;font-weight:800;text-decoration:none;font-size:15px}
 .btn.line{background:#fff;color:var(--g);border:1.5px solid var(--g)}
 .btn.red{background:#fff;color:var(--warn);border:1.5px solid #E6B4AE}
+.btn.full{width:100%}
 .btn.sm{min-height:36px;padding:0 12px;font-size:14px;border-radius:10px}
 .btn[disabled]{opacity:.5;cursor:progress}
 .row{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;align-items:center}
@@ -71,8 +72,14 @@ input.fld,select.fld,textarea.fld{width:100%;min-height:46px;border:2px solid va
 .sso[disabled]{opacity:.45;cursor:not-allowed}
 #g-btn{display:flex;justify-content:center;margin-top:10px;min-height:44px}
 .plans{display:grid;gap:10px}@media(min-width:640px){.plans{grid-template-columns:repeat(3,1fr)}}
-.pl{position:relative;display:block;padding:16px;border-radius:14px;border:2px solid var(--line);text-decoration:none;background:#fff}
-.pl.rec{border-color:var(--g);background:var(--g2)}
+.pl{position:relative;display:block;width:100%;text-align:left;padding:16px;border-radius:14px;border:2px solid var(--line);text-decoration:none;background:#fff;font:inherit;color:inherit}
+.pl[aria-checked=true]{border-color:var(--g);box-shadow:0 0 0 3px rgba(11,107,58,.15)}
+.pl[aria-checked=true]::after{content:"✓ 선택";position:absolute;top:16px;right:14px;font-size:12px;font-weight:800;color:var(--g)}
+.pd{margin-top:14px;padding:16px;border-radius:14px;background:var(--paper);border:1px solid var(--line)}
+.pd h3{margin:0 0 8px;font-size:17px}
+.pd ul{list-style:none;margin:0;padding:0;display:grid;gap:6px;font-size:15px}
+.pd li{display:flex;gap:8px}.pd li i{font-style:normal;width:18px;flex:none;text-align:center;font-weight:900;color:var(--g)}.pd li.no{color:#A9A49A}.pd li.no i{color:#C9C4B8}
+.pl.rec{background:var(--g2)}
 .pl i{position:absolute;top:-10px;right:12px;font-style:normal;font-size:12px;font-weight:800;background:var(--g);color:#fff;padding:1px 9px;border-radius:999px}
 .pl b{display:block;font-size:18px}.pl .pr{display:block;font-size:22px;font-weight:900;margin-top:2px}.pl small{display:block;margin-top:6px;color:var(--mute);font-size:13.5px;line-height:1.45}
 .lock{padding:12px 0;border-top:1px solid var(--line)}.lock:first-of-type{border-top:0}.lock b{display:block}.lock small{color:var(--mute);font-size:13.5px}
@@ -142,10 +149,17 @@ footer{margin:36px 0 30px;font-size:12.5px;color:var(--mute);text-align:center}
   <p class="sub">요금제를 고르고 결제하면 아래 잠긴 것들이 바로 열려요. 이름·연락처는 로그인 정보로 미리 채워 드려요.</p>
   <section class="card" aria-labelledby="pl0-h">
     <h2 id="pl0-h">요금제 고르기 <span class="sub" style="font-weight:500">VAT 별도</span></h2>
-    <div class="plans">
-      <a class="pl" href="/pay?p=standard" data-go><b>Standard</b><span class="pr">월 2만원</span><small>기사 주 2회 송출 · 300+ 제휴 언론사</small></a>
-      <a class="pl rec" href="/pay?p=month" data-go><i>추천</i><b>Pro</b><span class="pr">월 5만원</span><small>송출 횟수 제한 없이 · 실물 기자증 · 공연 티켓 2매 · 복지몰</small></a>
-      <a class="pl" href="/pay?p=year" data-go><b>Max</b><span class="pr">1년 60만원</span><small>Pro 혜택 모두 + 헬로벨 렌탈 회원 혜택</small></a>
+    <div class="plans" role="radiogroup" aria-label="요금제">
+      <button type="button" class="pl" role="radio" data-plan="standard"><b>Standard</b><span class="pr">월 2만원</span><small>기사 주 2회 송출</small></button>
+      <button type="button" class="pl rec" role="radio" data-plan="month"><i>추천</i><b>Pro</b><span class="pr">월 5만원</span><small>송출 횟수 제한 없이 + 기자증·혜택</small></button>
+      <button type="button" class="pl" role="radio" data-plan="year"><b>Max</b><span class="pr">1년 60만원</span><small>Pro 혜택 + 헬로벨 렌탈</small></button>
+    </div>
+    <div class="pd" id="pl-detail" aria-live="polite">
+      <h3 id="pd-name"></h3>
+      <ul id="pd-list"></ul>
+      <dl class="kv" style="margin-top:12px"><dt>결제 금액</dt><dd id="pd-amt"></dd><dt>결제 방식</dt><dd id="pd-way"></dd></dl>
+      <p class="note" id="pd-note"></p>
+      <a class="btn full" id="pd-pay" href="/pay?p=month" data-go style="margin-top:12px;min-height:52px;font-size:17px">결제하기</a>
     </div>
   </section>
   <section class="card" aria-labelledby="lk0-h">
@@ -250,6 +264,20 @@ footer{margin:36px 0 30px;font-size:12.5px;color:var(--mute);text-align:center}
   function view(id) { ['#loading', '#gate', '#none', '#app'].forEach(function (s) { $(s).hidden = s !== id; }); }
   var qs = new URLSearchParams(location.search), DEMO = qs.get('as');
   var TOKEN = ls('bx:my') || '', ME = null, WHO = null;
+  /* [2026-11-17 사장 지시] 홈의 '브경단 가입하기' → my.html?next=pay&p=… : 로그인 뒤 바로 결제 화면(이름·이메일·휴대폰 자동 입력).
+     카카오·네이버는 다른 사이트에 다녀오므로 가려던 곳을 이 탭에 적어 둔다 */
+  if (qs.get('next') === 'pay' && !DEMO) {
+    var nq = new URLSearchParams(); qs.forEach(function (v, k) { if (k !== 'next' && k !== 'code' && k !== 'state') nq.set(k, v); });
+    if (!/^(standard|month|year)$/.test(nq.get('p') || '')) nq.set('p', 'month');
+    ss('bx:next', '/pay?' + nq.toString());
+  }
+  function goNext() {   // 결제할 곳이 적혀 있으면 이동. 이미 이용 중인 회원은 결제하지 않고 내 기자실
+    var to = ss('bx:next'); if (!to) return false;
+    ss('bx:next', null);
+    if (ME && ME.status !== '해지') { toast('이미 브경단 회원이에요. 내 기자실에서 확인하세요.'); return false; }
+    try { sessionStorage.setItem('bx:login', JSON.stringify({ n: (WHO && WHO.n) || '', e: (WHO && WHO.e) || '', ph: (WHO && WHO.ph) || '', t: TOKEN })); } catch (e) {}
+    location.replace(to); return true;
+  }
 
   function api(data) {
     data.website = '';
@@ -314,7 +342,9 @@ footer{margin:36px 0 30px;font-size:12.5px;color:var(--mute);text-align:center}
   function done(j) {
     if (j.token) { TOKEN = j.token; ls('bx:my', TOKEN); }
     if (j.who) { WHO = j.who; ls('bx:mywho', JSON.stringify(WHO)); }
-    ME = j.me || null; render();
+    ME = j.me || null;
+    if (goNext()) { view('#loading'); return; }
+    render();
   }
   function logout() { ls('bx:my', null); ls('bx:mywho', null); TOKEN = ''; ME = null; WHO = null; if (DEMO) { location.href = '?as=out'; return; } gate(); }
   Array.prototype.forEach.call(document.querySelectorAll('[data-logout]'), function (b) { b.addEventListener('click', logout); });
@@ -371,8 +401,29 @@ footer{margin:36px 0 30px;font-size:12.5px;color:var(--mute);text-align:center}
   $('#f-reset').addEventListener('submit', function (e) { e.preventDefault(); var b = this.querySelector('[type=submit]');
     emCall({ action: 'my_reset_send', email: $('#r-email').value }, b, function (j) { $('#r-step2').hidden = false; $('#em-msg').textContent = '가입된 이메일이면 ' + j.to + ' 으로 확인 번호를 보냈어요.'; $('#r-code').focus(); }); });
   $('#r-go').addEventListener('click', function () { emCall({ action: 'my_reset', email: $('#r-email').value, code: $('#r-code').value.replace(/\D/g, ''), pw: $('#r-pw').value }, this, function (j) { done(j); toast('비밀번호를 바꿨어요.'); }); });
-  function gate(msg) { view('#gate'); $('#gate-err').textContent = msg || ''; gInit(); }
+  function gate(msg) {
+    view('#gate'); $('#gate-err').textContent = msg || ''; gInit();
+    if (ss('bx:next')) { var h = document.querySelector('#gate h1'); if (h) h.textContent = '로그인하고 결제하기'; var sb = document.querySelector('#gate .sub'); if (sb) sb.textContent = '로그인하면 이름·연락처가 채워진 결제 화면으로 바로 이어져요.'; }
+  }
 
+  /* [2026-11-17 사장 지시] 요금제를 누르면 바로 결제하지 않고 상세 내용 → 아래 [결제하기] */
+  var PD = {
+    standard: { name: 'Standard · 월 2만원 (VAT 별도)', amt: '매월 22,000원 (VAT 포함)', way: '카드 자동결제(매월)', note: '해지는 다음 결제일 3영업일 전까지 신청하면 다음 결제부터 청구되지 않아요.', send: '기사 송출 주 2회' },
+    month: { name: 'Pro · 월 5만원 (VAT 별도)', amt: '매월 55,000원 (VAT 포함)', way: '카드 자동결제(매월)', note: '해지는 다음 결제일 3영업일 전까지 신청하면 다음 결제부터 청구되지 않아요.', send: '기사 송출 횟수 제한 없이' },
+    year: { name: 'Max · 1년 60만원 (VAT 별도)', amt: '660,000원 (VAT 포함) 한 번', way: '1년 한 번 결제 · 자동 갱신 없음', note: '이용 기간이 끝나기 전에 안내해 드려요.', send: '기사 송출 횟수 제한 없이' }
+  };
+  var FEAT = [['300+ 제휴 언론사 동시 보도', 1, 1, 1], ['AI 기사 작성 프롬프트 팩', 1, 1, 1], ['내 기자실: 기자 계정·요금제·카드 관리', 1, 1, 1],
+    ['실물 기자증', 0, 1, 1], ['공연 티켓 2매 (가입 선물)', 0, 1, 1], ['오픈엑스 복지몰', 0, 1, 1], ['헬로벨 렌탈 회원 혜택', 0, 0, 1]];
+  function pick(k) {
+    var d = PD[k], col = { standard: 1, month: 2, year: 3 }[k];
+    Array.prototype.forEach.call(document.querySelectorAll('.pl'), function (b) { b.setAttribute('aria-checked', b.getAttribute('data-plan') === k ? 'true' : 'false'); });
+    $('#pd-name').textContent = d.name;
+    $('#pd-list').innerHTML = '<li><i>✓</i><span><b>' + d.send + '</b></span></li>' + FEAT.map(function (f) { return f[col] ? '<li><i>✓</i><span>' + f[0] + '</span></li>' : '<li class="no"><i>–</i><span>' + f[0] + '</span></li>'; }).join('');
+    $('#pd-amt').textContent = d.amt; $('#pd-way').textContent = d.way; $('#pd-note').textContent = d.note;
+    $('#pd-pay').href = '/pay?p=' + k; $('#pd-pay').textContent = d.name.split(' · ')[0] + ' 결제하기';
+  }
+  Array.prototype.forEach.call(document.querySelectorAll('.pl'), function (b) { b.addEventListener('click', function () { pick(b.getAttribute('data-plan')); var d = $('#pl-detail'), r = d.getBoundingClientRect(); if (r.top > innerHeight - 120) d.scrollIntoView({ behavior: 'smooth', block: 'start' }); }); });   // 휴대폰: 상세가 화면 밖이면 내려 줌
+  pick('month');
   /* 결제 화면으로 갈 때 로그인 정보(이름·이메일·휴대폰)와 로그인 열쇠를 넘긴다(이 탭에서만) */
   Array.prototype.forEach.call(document.querySelectorAll('[data-go]'), function (a) { a.addEventListener('click', function () {
     if (DEMO || !WHO) return;
