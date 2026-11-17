@@ -371,7 +371,7 @@ const WIDGET_VARIANT = 'BRGD_YEAR';   // 1년 결제 UI variantKey (사장이 op
     try { sessionStorage.setItem('bx:pay', JSON.stringify({ r: r, name: w.name, phone: w.phone, email: w.email, idHint: gIdHint && w.email.split('@')[0].toLowerCase().replace(/[^a-z0-9]/g, '').indexOf(gIdHint.slice(0, 4)) >= 0 ? gIdHint : '' })); } catch (e) {}
     if (!r || key === whoSent) return;
     whoSent = key;
-    try { fetch(SHEET_ENDPOINT, { method: 'POST', body: new URLSearchParams({ action: 'pay_contact', track: TRACK, r: r, name: w.name, phone: w.phone, email: w.email, agree: 'Y', website: '' }), keepalive: true }).catch(function () {}); } catch (e) {}
+    try { fetch(SHEET_ENDPOINT, { method: 'POST', body: new URLSearchParams({ action: 'pay_contact', track: TRACK, r: r, name: w.name, phone: w.phone, email: w.email, agree: 'Y', mytok: (function () { try { return (JSON.parse(sessionStorage.getItem('bx:login') || 'null') || {}).t || ''; } catch (e) { return ''; } })(), website: '' }), keepalive: true }).catch(function () {}); } catch (e) {}
   }
   function agreed() {
     if (!whoOk()) return false;
@@ -442,6 +442,16 @@ const WIDGET_VARIANT = 'BRGD_YEAR';   // 1년 결제 UI variantKey (사장이 op
     if (needWho && !renew) {
       $('#who-box').hidden = false;
       gInit();   // [2026-11-16] 구글로 간편 입력
+      try {   // [2026-11-17] 내 기자실에서 로그인하고 왔으면 이름·이메일·휴대폰을 채운다
+        var lg = JSON.parse(sessionStorage.getItem('bx:login') || 'null');
+        if (lg) {
+          if (lg.n && !$('#w-name').value) $('#w-name').value = String(lg.n).slice(0, 30);
+          if (lg.e && !$('#w-email').value) $('#w-email').value = String(lg.e).slice(0, 100);
+          if (/^010\d{8}$/.test(lg.ph || '') && !$('#w-phone').value) $('#w-phone').value = lg.ph.slice(0, 3) + '-' + lg.ph.slice(3, 7) + '-' + lg.ph.slice(7);
+          var gb = $('#g-box'); if (gb) gb.remove();
+          var ok = document.createElement('p'); ok.className = 'mt-2 text-[14px] font-bold text-rep'; ok.textContent = '✓ 로그인 정보로 채웠어요. 비어 있는 칸만 적어 주세요.'; $('#who-h').after(ok);
+        }
+      } catch (e) {}
       ['#w-name', '#w-phone', '#w-email', '#w-agree'].forEach(function (s) { $(s).addEventListener('input', sync); $(s).addEventListener('change', sync); });
       $('#w-phone').addEventListener('input', function () { var d = this.value.replace(/\D/g, '').slice(0, 11), f = d.length < 4 ? d : d.length < 8 ? d.slice(0, 3) + '-' + d.slice(3) : d.slice(0, 3) + '-' + d.slice(3, 7) + '-' + d.slice(7); if (f !== this.value) this.value = f; });
       $('#w-email').addEventListener('blur', function () { var v = this.value.trim(); $('#w-err').textContent = v && !/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(v) ? '이메일 주소를 다시 확인해 주세요.' : ''; });

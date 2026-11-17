@@ -1,0 +1,503 @@
+<!doctype html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>내 기자실 | 브경단</title>
+<link rel="icon" href="/favicon.ico" sizes="any"><link rel="icon" type="image/png" sizes="32x32" href="/img/favicon-32.png">
+<meta name="robots" content="noindex, nofollow">
+<meta name="referrer" content="strict-origin-when-cross-origin">
+<link rel="preconnect" href="https://script.google.com"><link rel="preconnect" href="https://script.googleusercontent.com" crossorigin>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable-dynamic-subset.min.css">
+<style>
+/* [2026-11-16 사장 지시] 내 기자실: 로그인(구글·카카오·네이버) → 기자 아이디·임시 비밀번호, 요금제·카드·해지. ?as=standard|pro|max|none|out = 미리보기(서버 연결 없음) */
+:root{--g:#0B6B3A;--g2:#F2F8F4;--ink:#111;--mute:#5E5A52;--line:#E4DED0;--paper:#F7F5EF;--warn:#B3261E;--navy:#0A1B37}
+*{box-sizing:border-box}
+html{-webkit-text-size-adjust:100%}
+body{margin:0;background:var(--paper);color:var(--ink);font:16px/1.6 "Pretendard Variable",Pretendard,system-ui,sans-serif;word-break:keep-all;overflow-wrap:break-word}
+[hidden]{display:none!important}
+a{color:inherit}
+button{font:inherit;cursor:pointer}
+:focus-visible{outline:3px solid #111;outline-offset:2px;border-radius:8px}
+.wrap{max-width:760px;margin:0 auto;padding:0 16px}
+header{position:sticky;top:0;z-index:20;background:rgba(255,255,255,.96);border-bottom:1px solid var(--line)}
+header .wrap{height:56px;display:flex;align-items:center;justify-content:space-between;gap:12px}
+header img{height:28px;width:auto}
+.who{display:flex;align-items:center;gap:8px;font-size:14px;font-weight:700}
+.av{width:32px;height:32px;border-radius:50%;background:var(--g);color:#fff;display:grid;place-items:center;font-weight:800;font-size:14px;flex:none}
+.demo{background:#FFF3C4;color:#5C4600;font-size:13px;font-weight:700}
+.demo .wrap{display:flex;flex-wrap:wrap;align-items:center;gap:6px;padding-top:8px;padding-bottom:8px}
+.demo a{padding:3px 10px;border-radius:999px;border:1px solid #D9C27A;text-decoration:none;background:#fff}
+.demo a[aria-current]{background:#5C4600;color:#fff;border-color:#5C4600}
+h1{font-size:24px;margin:24px 0 4px;letter-spacing:-.02em}
+h2{font-size:17px;margin:0 0 10px;letter-spacing:-.02em}
+.sub{color:var(--mute);font-size:14px;margin:0}
+.card{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px;margin-top:12px}
+.badge{display:inline-block;font-size:12px;font-weight:800;padding:2px 9px;border-radius:999px;background:var(--g2);color:var(--g);vertical-align:3px}
+.badge.bad{background:#FDECEA;color:var(--warn)}.badge.gray{background:#EEE;color:#555}
+.btn{display:inline-flex;align-items:center;justify-content:center;min-height:46px;padding:0 18px;border-radius:12px;border:0;background:var(--g);color:#fff;font-weight:800;text-decoration:none;font-size:15px}
+.btn.line{background:#fff;color:var(--g);border:1.5px solid var(--g)}
+.btn.red{background:#fff;color:var(--warn);border:1.5px solid #E6B4AE}
+.btn.sm{min-height:36px;padding:0 12px;font-size:14px;border-radius:10px}
+.btn[disabled]{opacity:.5;cursor:progress}
+.row{display:flex;flex-wrap:wrap;gap:8px;margin-top:12px;align-items:center}
+.kv{display:grid;grid-template-columns:auto 1fr;gap:8px 16px;font-size:15px;margin:0;align-items:center}
+.kv dt{color:var(--mute)}
+.kv dd{margin:0;font-weight:700;min-width:0}
+.mono{font-family:ui-monospace,Consolas,monospace;letter-spacing:.04em}
+.line-item{display:flex;justify-content:space-between;align-items:center;gap:12px;padding:12px 0;border-top:1px solid var(--line)}
+.line-item:first-of-type{border-top:0}
+.line-item b{display:block}
+.line-item small{display:block;color:var(--mute);font-size:13.5px}
+.todo a{display:flex;align-items:center;gap:10px;padding:12px;border-radius:12px;border:1.5px solid #E9D48A;background:#FFFBEA;text-decoration:none;font-weight:700;margin-top:8px}
+.todo a::before{content:"☐";font-size:18px;color:#8A6A00}
+.todo a::after{content:"→";margin-left:auto}
+.meter{height:10px;border-radius:999px;background:#E7EFE9;overflow:hidden;margin-top:8px}
+.meter i{display:block;height:100%;background:var(--g)}
+.steps{display:flex;gap:6px;margin-top:8px;font-size:13px;font-weight:700}
+.steps span{flex:1;text-align:center;padding:8px 4px;border-radius:10px;background:#F1EEE6;color:#8A867C}
+.steps span.on{background:var(--g);color:#fff}
+.panel{margin-top:12px;padding:14px;border-radius:12px;background:var(--paper);border:1px solid var(--line)}
+.opt{display:block;padding:14px;border-radius:12px;border:2px solid var(--line);background:#fff;margin-top:8px}
+.opt b{font-size:16px}.opt p{margin:4px 0 0;font-size:14px;color:var(--mute)}
+input.fld,select.fld,textarea.fld{width:100%;min-height:46px;border:2px solid var(--line);border-radius:12px;padding:10px 12px;font:inherit;font-size:16px;background:#fff}
+.note{font-size:13.5px;color:var(--mute);margin:8px 0 0}
+.err{color:var(--warn);font-weight:700;font-size:14px;margin:8px 0 0}
+.toast{position:fixed;left:50%;bottom:24px;transform:translateX(-50%);background:#111;color:#fff;padding:12px 18px;border-radius:12px;font-weight:700;font-size:14.5px;z-index:50;max-width:calc(100% - 32px)}
+.gate{max-width:440px;margin:40px auto;text-align:center}
+.gate .card{padding:26px 22px}
+.sso{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;min-height:50px;border-radius:12px;border:0;font-weight:800;font-size:16px;margin-top:10px}
+.sso.k{background:#FEE500;color:#191600}.sso.n{background:#03C75A;color:#fff}
+.sso[disabled]{opacity:.45;cursor:not-allowed}
+#g-btn{display:flex;justify-content:center;margin-top:10px;min-height:44px}
+.plans{display:grid;gap:10px}@media(min-width:640px){.plans{grid-template-columns:repeat(3,1fr)}}
+.pl{position:relative;display:block;padding:16px;border-radius:14px;border:2px solid var(--line);text-decoration:none;background:#fff}
+.pl.rec{border-color:var(--g);background:var(--g2)}
+.pl i{position:absolute;top:-10px;right:12px;font-style:normal;font-size:12px;font-weight:800;background:var(--g);color:#fff;padding:1px 9px;border-radius:999px}
+.pl b{display:block;font-size:18px}.pl .pr{display:block;font-size:22px;font-weight:900;margin-top:2px}.pl small{display:block;margin-top:6px;color:var(--mute);font-size:13.5px;line-height:1.45}
+.lock{padding:12px 0;border-top:1px solid var(--line)}.lock:first-of-type{border-top:0}.lock b{display:block}.lock small{color:var(--mute);font-size:13.5px}
+.sso svg{flex:none}
+.or{display:flex;align-items:center;gap:10px;margin:18px 0 10px;color:var(--mute);font-size:13px}.or::before,.or::after{content:"";flex:1;height:1px;background:var(--line)}
+.tabs{display:flex;gap:6px;background:var(--paper);padding:4px;border-radius:12px}.tab{flex:1;min-height:40px;border:0;border-radius:9px;background:transparent;font-weight:800;color:var(--mute)}.tab.on{background:#fff;color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.08)}
+.ef{display:grid;gap:8px;margin-top:10px;text-align:left}
+.lnk{border:0;background:none;color:var(--mute);font-size:13.5px;text-decoration:underline;padding:6px 0}
+.chk{display:flex;gap:8px;align-items:flex-start;font-size:13.5px;line-height:1.5}.chk input{margin-top:3px;width:18px;height:18px;flex:none;accent-color:#0B6B3A}
+.loading{display:flex;justify-content:center;align-items:center;gap:10px;margin:60px 0;color:var(--mute);font-weight:700}
+.spin{width:22px;height:22px;border-radius:50%;border:3px solid #CFE3D7;border-top-color:var(--g);animation:sp .8s linear infinite}
+@keyframes sp{to{transform:rotate(360deg)}}
+footer{margin:36px 0 30px;font-size:12.5px;color:var(--mute);text-align:center}
+</style>
+</head>
+<body>
+<div class="demo" id="demo" hidden><div class="wrap">미리보기 · 서버와 연결되지 않아요 ·
+  <a href="?as=standard">Standard</a><a href="?as=pro">Pro</a><a href="?as=max">Max</a><a href="?as=none">회원 아님</a><a href="?as=out">로그인 전</a></div></div>
+<header><div class="wrap">
+  <a href="/" aria-label="브경단 홈"><img src="img/h20230814091122_bf69e5.webp" alt="브랜드경제신문" width="350" height="80"></a>
+  <div class="who" id="who" hidden><span class="av" id="av">·</span><span id="who-name"></span></div>
+</div></header>
+
+<div id="loading" class="loading wrap"><span class="spin"></span>불러오는 중…</div>
+
+<!-- 로그인 -->
+<main id="gate" class="wrap gate" hidden>
+  <div class="card">
+    <h1 style="margin-top:0">내 기자실</h1>
+    <p class="sub">로그인하고 요금제를 고르면 바로 시작해요. 이미 회원이면 결제한 이메일·휴대폰과 같은 계정으로 로그인하면 바로 연결돼요.</p>
+    <button class="sso k" type="button" id="kakao-btn"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path fill="#000" d="M12 3C6.48 3 2 6.58 2 11c0 2.86 1.88 5.37 4.71 6.79-.15.53-.97 3.4-1 3.62 0 0-.02.17.09.24.11.06.24.01.24.01.32-.04 3.7-2.43 4.28-2.84.55.08 1.11.12 1.68.12 5.52 0 10-3.58 10-8S17.52 3 12 3z" opacity=".85"/></svg><span>카카오로 시작하기</span></button>
+    <button class="sso n" type="button" id="naver-btn"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path fill="#fff" d="M10.85 8.56 4.97 0H0v16h5.15V7.44L11.03 16H16V0h-5.15z"/></svg><span>네이버 로그인</span></button>
+    <div id="g-btn"></div>
+    <p class="or"><span>또는 이메일로</span></p>
+    <div class="tabs" role="tablist"><button type="button" class="tab on" data-tab="login" role="tab">로그인</button><button type="button" class="tab" data-tab="signup" role="tab">회원가입</button></div>
+    <form id="f-login" class="ef" novalidate>
+      <input class="fld" id="l-email" type="email" autocomplete="email" placeholder="이메일" maxlength="100">
+      <input class="fld" id="l-pw" type="password" autocomplete="current-password" placeholder="비밀번호" maxlength="64">
+      <button class="btn full" type="submit">로그인</button>
+      <button class="lnk" type="button" data-tab="reset">비밀번호를 잊으셨나요?</button>
+    </form>
+    <form id="f-signup" class="ef" novalidate hidden>
+      <input class="fld" id="s-name" autocomplete="name" placeholder="이름" maxlength="30">
+      <input class="fld" id="s-phone" inputmode="numeric" autocomplete="tel" placeholder="휴대폰 (010-0000-0000)" maxlength="13">
+      <input class="fld" id="s-email" type="email" autocomplete="email" placeholder="이메일" maxlength="100">
+      <input class="fld" id="s-pw" type="password" autocomplete="new-password" placeholder="비밀번호 (영문·숫자 섞어 8자 이상)" maxlength="64">
+      <label class="chk"><input type="checkbox" id="s-agree"> <span>[필수] 개인정보 수집·이용 동의 — 이름·휴대폰·이메일을 회원 확인과 결제·이용 안내에 써요. <a href="privacy.html" target="_blank" rel="noopener">개인정보처리방침</a></span></label>
+      <button class="btn full" type="submit" id="s-send">이메일로 확인 번호 받기</button>
+      <div id="s-step2" class="ef" hidden><input class="fld" id="s-code" inputmode="numeric" maxlength="6" placeholder="확인 번호 6자리"><button class="btn full" type="button" id="s-go">가입 완료</button></div>
+    </form>
+    <form id="f-reset" class="ef" novalidate hidden>
+      <p class="sub" style="text-align:left">가입한 이메일로 확인 번호를 보내 드려요.</p>
+      <input class="fld" id="r-email" type="email" autocomplete="email" placeholder="이메일" maxlength="100">
+      <button class="btn line full" type="submit">확인 번호 받기</button>
+      <div id="r-step2" class="ef" hidden><input class="fld" id="r-code" inputmode="numeric" maxlength="6" placeholder="확인 번호 6자리"><input class="fld" id="r-pw" type="password" autocomplete="new-password" placeholder="새 비밀번호 (영문·숫자 8자 이상)" maxlength="64"><button class="btn full" type="button" id="r-go">비밀번호 바꾸고 로그인</button></div>
+      <button class="lnk" type="button" data-tab="login">로그인으로 돌아가기</button>
+    </form>
+    <p class="note" id="em-msg" role="status"></p>
+    <p class="err" id="gate-err" role="alert"></p>
+    <p class="note" style="text-align:center;margin-top:14px">로그인이 안 되나요? <a href="/pay?p=month" style="color:var(--mute)">로그인 없이 결제하기</a></p>
+  </div>
+</main>
+
+<!-- 회원 정보를 못 찾음 -->
+<main id="none" class="wrap" hidden>
+  <h1><span id="none-hi"></span>님, 반가워요</h1>
+  <p class="sub">요금제를 고르고 결제하면 아래 잠긴 것들이 바로 열려요. 이름·연락처는 로그인 정보로 미리 채워 드려요.</p>
+  <section class="card" aria-labelledby="pl0-h">
+    <h2 id="pl0-h">요금제 고르기 <span class="sub" style="font-weight:500">VAT 별도</span></h2>
+    <div class="plans">
+      <a class="pl" href="/pay?p=standard" data-go><b>Standard</b><span class="pr">월 2만원</span><small>기사 주 2회 송출 · 300+ 제휴 언론사</small></a>
+      <a class="pl rec" href="/pay?p=month" data-go><i>추천</i><b>Pro</b><span class="pr">월 5만원</span><small>송출 횟수 제한 없이 · 실물 기자증 · 공연 티켓 2매 · 복지몰</small></a>
+      <a class="pl" href="/pay?p=year" data-go><b>Max</b><span class="pr">1년 60만원</span><small>Pro 혜택 모두 + 헬로벨 렌탈 회원 혜택</small></a>
+    </div>
+  </section>
+  <section class="card" aria-labelledby="lk0-h">
+    <h2 id="lk0-h">결제하면 열려요</h2>
+    <div class="lock"><b>🔒 브랜드경제신문 기자 계정</b><small>기자 아이디·임시 비밀번호를 여기서 바로 확인해요</small></div>
+    <div class="lock"><b>🔒 기사 송출 가이드</b><small>기사 올리는 방법, 편집국 확인 기준</small></div>
+    <div class="lock"><b>🔒 AI 기사 작성 프롬프트 팩</b><small>메모 3줄로 기사 초안을 만드는 6가지 틀</small></div>
+    <div class="lock"><b>🔒 실물 기자증 · 공연 티켓 · 복지몰</b><small>Pro·Max 회원</small></div>
+    <div class="lock"><b>🔒 요금제·카드 관리, 해지</b><small>버튼 하나로 직접</small></div>
+  </section>
+  <details class="card" id="lk-box">
+    <summary style="font-weight:800;cursor:pointer">이미 결제하셨나요? (다른 이메일·번호로 결제한 경우)</summary>
+    <p class="sub" style="margin-top:8px">결제할 때 쓴 <b>휴대폰 번호</b>를 넣으면 가입 이메일로 확인 번호를 보내 드려요. 한 번만 연결하면 다음부터는 바로 들어와요.</p>
+    <div class="row"><input class="fld" id="lk-ph" inputmode="numeric" autocomplete="tel" placeholder="010-0000-0000" style="flex:1;min-width:180px"><button class="btn line" type="button" id="lk-send">확인 번호 받기</button></div>
+    <div class="row" id="lk-step2" hidden><input class="fld" id="lk-code" inputmode="numeric" maxlength="6" placeholder="확인 번호 6자리" style="flex:1;min-width:150px"><button class="btn" type="button" id="lk-go">연결하기</button></div>
+    <p class="note" id="lk-msg"></p>
+  </details>
+  <div class="row" style="justify-content:center;margin-top:20px"><button class="btn line sm" type="button" data-logout>로그아웃</button></div>
+</main>
+
+<!-- 내 기자실 -->
+<main id="app" class="wrap" hidden>
+  <h1><span id="hi"></span> 기자님 <span class="badge" id="plan-badge"></span></h1>
+  <p class="sub" id="plan-line"></p>
+
+  <section class="card todo" id="todo-card" hidden aria-labelledby="todo-h"><h2 id="todo-h">남은 할 일</h2><div id="todo"></div></section>
+
+  <section class="card" aria-labelledby="id-h">
+    <h2 id="id-h">브랜드경제신문 기자 계정</h2>
+    <div id="id-ok">
+      <dl class="kv"><dt>아이디</dt><dd><span class="mono" id="bx-id"></span> <button class="btn line sm" type="button" data-copy="id">복사</button></dd>
+        <dt>임시 비밀번호</dt><dd><span class="mono" id="bx-pw">●●●●●●●●●●</span> <button class="btn line sm" type="button" id="pw-show">보기</button> <button class="btn line sm" type="button" data-copy="pw">복사</button></dd></dl>
+      <p class="note">처음 비밀번호예요. 브랜드경제신문에 로그인한 뒤 회원정보에서 비밀번호를 바꿔 주세요. 이미 바꾸셨다면 바꾼 비밀번호로 로그인하세요.</p>
+      <div class="row"><a class="btn" href="https://www.benews.co.kr/?r=s162343&amp;m=member&amp;front=login" target="_blank" rel="noopener">브랜드경제신문 로그인 · 기사 쓰기</a></div>
+    </div>
+    <div id="id-wait" hidden><p style="margin:0;font-weight:700" id="id-wait-t">기자 아이디를 만들고 있어요.</p><p class="note" id="id-wait-s">보통 몇 분 안에 끝나요. 잠시 뒤 새로고침해 주세요.</p></div>
+  </section>
+
+  <section class="card" id="week-card" hidden aria-labelledby="w-h">
+    <h2 id="w-h">이번 주 기사 송출</h2>
+    <p style="margin:0"><b id="w-used"></b> <span class="sub" id="w-sub"></span></p>
+    <div class="meter"><i id="w-bar"></i></div>
+    <p class="note">Standard는 주 2회(월요일~일요일) 송출돼요. 송출된 기사 목록은 브랜드경제신문에서 볼 수 있어요.</p>
+  </section>
+
+  <section class="card" aria-labelledby="pl-h">
+    <h2 id="pl-h">요금제</h2>
+    <div class="line-item"><div><b id="pl-name"></b><small id="pl-price"></small></div><button class="btn line sm" type="button" id="pl-btn">요금제 변경</button></div>
+    <div class="line-item" id="pl-next-row"><div><b id="pl-next-k">다음 결제일</b><small id="pl-next"></small></div></div>
+    <p class="note" id="pl-reserve" hidden></p>
+    <div class="panel" id="pl-panel" hidden></div>
+  </section>
+
+  <section class="card" id="pay-card" aria-labelledby="pm-h">
+    <h2 id="pm-h">결제 수단</h2>
+    <div class="line-item"><div><b id="pm-card"></b><small>매월 이 카드로 자동 결제돼요</small></div><button class="btn line sm" type="button" id="pm-btn">카드 변경</button></div>
+    <p class="err" id="pm-err" role="alert"></p>
+  </section>
+
+  <section class="card" id="press-card" hidden aria-labelledby="pc-h">
+    <h2 id="pc-h">실물 기자증</h2>
+    <div class="steps" id="pc-steps"><span>정보 입력</span><span>제작 중</span><span>발송</span></div>
+    <p class="note" id="pc-note"></p>
+  </section>
+
+  <section class="card" aria-labelledby="cx-h" id="cx-card">
+    <h2 id="cx-h">구독 해지</h2>
+    <p class="sub">다음 결제일 3영업일 전(토·일·공휴일 제외)까지 신청하면 다음 결제부터 청구되지 않아요.</p>
+    <div class="row"><button class="btn red sm" type="button" id="cx-btn">해지 신청</button></div>
+    <div class="panel" id="cx-panel" hidden>
+      <label style="font-weight:700;font-size:14px">해지하시는 이유<select class="fld" id="cx-reason" style="margin-top:4px">
+        <option value="">골라 주세요</option><option>기사를 쓸 시간이 없어요</option><option>비용이 부담돼요</option><option>기대한 효과가 없었어요</option><option>사용 방법이 어려워요</option><option>기타</option></select></label>
+      <label style="display:block;margin-top:10px;font-weight:700;font-size:14px">더 하고 싶은 말 (선택)<textarea class="fld" id="cx-detail" rows="3" maxlength="500" style="margin-top:4px"></textarea></label>
+      <div class="row"><button class="btn red" type="button" id="cx-go">해지 신청하기</button><button class="btn line" type="button" id="cx-close">닫기</button></div>
+      <p class="err" id="cx-err" role="alert"></p>
+    </div>
+  </section>
+
+  <section class="card" aria-labelledby="ac-h">
+    <h2 id="ac-h">로그인 계정</h2>
+    <div class="line-item"><div><b id="ac-sso"></b><small id="ac-mail"></small></div><button class="btn line sm" type="button" data-logout>로그아웃</button></div>
+  </section>
+  <footer>브랜드경제신문 기자단 · 운영 주식회사 오픈엑스 · 문의 010-7382-1097(전화·문자)</footer>
+</main>
+
+<script>
+(function () {
+  'use strict';
+  var EP = 'https://script.google.com/macros/s/AKfycbxPac_qwfiW7pf0NvfCQr4Vyr9bLXWjq4KYFwclAmy2buZFajcD9AKsBcbd5BD0SCu9zA/exec';
+  var G_CLIENT = '654422828712-ti2n32qdjbjvrgbgqd2sn0tidh3149tl.apps.googleusercontent.com';
+  var KAKAO_REST = 'afef7d4390e82df9ee543a9263ab2b3a';    // 카카오 앱 REST API 키(공개 값). 비어 있으면 버튼 '준비 중'
+  var NAVER_ID = 'bbAt57c02Lfm9pqG7uIQ';      // 네이버 Client ID(공개 값)
+  var BILLING_CLIENT_KEY = 'live_ck_DpexMgkW36bnnYWxX7Zw3GbR5ozO';   // pay.html 과 같은 빌링 키(카드 변경)
+  var BENEWS_LOGIN = 'https://www.benews.co.kr/?r=s162343&m=member&front=login';
+  var PHONE = '010-7382-1097';
+  var REDIRECT = location.origin + '/my.html';
+  function $(s) { return document.querySelector(s); }
+  function won(n) { return String(n).replace(/\B(?=(\d{3})+(?!\d))/g, ',') + '원'; }
+  function toast(t) { var d = document.createElement('div'); d.className = 'toast'; d.setAttribute('role', 'status'); d.textContent = t; document.body.appendChild(d); setTimeout(function () { d.remove(); }, 3200); }
+  function ls(k, v) { try { if (v === undefined) return localStorage.getItem(k); if (v === null) localStorage.removeItem(k); else localStorage.setItem(k, v); } catch (e) {} return null; }
+  function ss(k, v) { try { if (v === undefined) return sessionStorage.getItem(k); if (v === null) sessionStorage.removeItem(k); else sessionStorage.setItem(k, v); } catch (e) {} return null; }
+  function view(id) { ['#loading', '#gate', '#none', '#app'].forEach(function (s) { $(s).hidden = s !== id; }); }
+  var qs = new URLSearchParams(location.search), DEMO = qs.get('as');
+  var TOKEN = ls('bx:my') || '', ME = null, WHO = null;
+
+  function api(data) {
+    data.website = '';
+    if (TOKEN && !data.token) data.token = TOKEN;
+    return fetch(EP, { method: 'POST', body: new URLSearchParams(data) }).then(function (r) { return r.json(); });
+  }
+  var ERR = { login: '로그인이 끝났어요. 다시 로그인해 주세요.', busy: '잠시 뒤 다시 시도해 주세요.', rate: '너무 여러 번 시도했어요. 1시간 뒤 다시 해 주세요.',
+    phone: '010으로 시작하는 휴대폰 번호 11자리를 넣어 주세요.', notfound: '이 번호로 결제한 회원을 찾지 못했어요. ' + PHONE + '로 문의해 주세요.',
+    noemail: '가입 이메일이 없어 확인 번호를 보낼 수 없어요. ' + PHONE + '로 문의해 주세요.', code: '확인 번호가 맞지 않아요.', expired: '확인 번호 시간이 지났어요. 다시 받아 주세요.',
+    google: '구글 로그인 정보를 확인하지 못했어요.', kakao: '카카오 로그인이 끝나지 않았어요. 다시 시도해 주세요.', naver: '네이버 로그인이 끝나지 않았어요. 다시 시도해 주세요.',
+    setup: '이 로그인은 준비 중이에요.', server: '잠시 문제가 생겼어요. 다시 시도해 주세요.',
+    email: '이메일 주소를 다시 확인해 주세요.', name: '이름을 적어 주세요.', pw: '비밀번호는 영문과 숫자를 섞어 8자 이상으로 적어 주세요.', agree: '개인정보 수집·이용에 동의해 주세요.',
+    exists: '이미 가입된 이메일이에요. 로그인해 주세요.', pwlogin: '이메일 또는 비밀번호가 맞지 않아요.' };
+  function errMsg(j) { return (j && (ERR[j.error] || j.message)) || '잠시 문제가 생겼어요. 다시 시도해 주세요.'; }
+
+  /* ---------- 화면 ---------- */
+  function render() {
+    if (!ME) { view('#none'); $('#none-hi').textContent = (WHO && WHO.n) || '브경단'; who(); return; }
+    view('#app'); who();
+    var m = ME, nm = m.name || (WHO && WHO.n) || '회원';
+    $('#hi').textContent = nm;
+    var b = $('#plan-badge'); b.textContent = m.status === '이용 중' ? m.plan : m.status; b.className = 'badge' + (m.status === '결제 실패' ? ' bad' : m.status === '해지' ? ' gray' : '');
+    $('#plan-line').textContent = '브랜드경제신문 기자단 · ' + m.plan;
+    // 할 일
+    $('#todo').innerHTML = ''; (m.todo || []).forEach(function (t) { var a = document.createElement('a'); a.href = t.href; a.textContent = t.label; $('#todo').appendChild(a); });
+    $('#todo-card').hidden = !(m.todo || []).length;
+    // 기자 계정
+    $('#id-ok').hidden = !m.id; $('#id-wait').hidden = !!m.id;
+    if (m.id) { $('#bx-id').textContent = m.id; $('#bx-pw').textContent = '●●●●●●●●●●'; $('#pw-show').textContent = '보기'; }
+    else if (m.idState === '정보 필요') { $('#id-wait-t').textContent = '회원 정보를 넣으면 기자 아이디를 만들어 드려요.'; $('#id-wait-s').textContent = '위 "남은 할 일"에서 회원 정보를 넣어 주세요.'; }
+    // 주 2회
+    $('#week-card').hidden = !m.week;
+    if (m.week) { var u = Math.min(m.week.used, m.week.limit); $('#w-used').textContent = m.week.limit + '건 중 ' + m.week.used + '건 송출'; $('#w-sub').textContent = '· ' + Math.max(0, m.week.limit - m.week.used) + '건 남음 (월요일에 다시 ' + m.week.limit + '건)'; $('#w-bar').style.width = (u / m.week.limit * 100) + '%'; }
+    // 요금제
+    $('#pl-name').textContent = m.plan;
+    $('#pl-price').textContent = m.key === 'year' ? '660,000원 (VAT 포함) · 1년 한 번 결제' : '월 ' + won(m.amount) + ' (VAT 포함)';
+    var gone = m.status === '해지';
+    $('#pl-next-row').hidden = !(m.next || m.until);
+    $('#pl-next-k').textContent = m.key === 'year' ? '이용 기간 끝' : '다음 결제일';
+    $('#pl-next').textContent = (m.key === 'year' ? m.until : m.next + ' (' + won(m.nextPlan === 'Standard(월)' ? 22000 : m.amount) + ')');
+    $('#pl-btn').hidden = gone || !m.monthly;
+    $('#pl-reserve').hidden = !m.nextPlan;
+    if (m.nextPlan) $('#pl-reserve').innerHTML = '<b>' + m.next + '</b>부터 <b>' + m.nextPlan + '</b>로 바뀌어요. <button class="btn line sm" type="button" id="pl-keep">예약 취소</button>';
+    $('#pl-panel').hidden = true;
+    // 결제 수단
+    $('#pay-card').hidden = !m.monthly || gone;
+    $('#pm-card').textContent = m.card || '등록된 카드 정보 없음';
+    // 기자증
+    $('#press-card').hidden = !m.pressCard;
+    if (m.pressCard) { var st = /발송/.test(m.pressCard) ? 3 : m.pressCard === '제작 중' ? 2 : 1, sp = $('#pc-steps').children;
+      for (var i = 0; i < sp.length; i++) sp[i].className = i < st ? 'on' : '';
+      $('#pc-note').textContent = m.pressCard === '정보 입력 전' ? '위 "남은 할 일"에서 기자증 정보를 넣으면 제작을 시작해요.' : m.pressCard; }
+    // 해지
+    $('#cx-card').hidden = gone || m.key === 'year';
+  }
+  function who() {
+    var n = (ME && ME.name) || (WHO && WHO.n) || '';
+    $('#who').hidden = !n; $('#who-name').textContent = n; $('#av').textContent = n.charAt(0) || '·';
+    $('#ac-sso').textContent = WHO ? ({ google: 'Google', kakao: '카카오', naver: '네이버', email: '이메일' }[WHO.p] || WHO.p) + ' 로그인' : '';
+    $('#ac-mail').textContent = WHO && WHO.e ? WHO.e : '';
+  }
+  function done(j) {
+    if (j.token) { TOKEN = j.token; ls('bx:my', TOKEN); }
+    if (j.who) { WHO = j.who; ls('bx:mywho', JSON.stringify(WHO)); }
+    ME = j.me || null; render();
+  }
+  function logout() { ls('bx:my', null); ls('bx:mywho', null); TOKEN = ''; ME = null; WHO = null; if (DEMO) { location.href = '?as=out'; return; } gate(); }
+  Array.prototype.forEach.call(document.querySelectorAll('[data-logout]'), function (b) { b.addEventListener('click', logout); });
+
+  /* ---------- 로그인 ---------- */
+  var gLoaded = false;
+  function gDone(res) {
+    if (DEMO) { toast('미리보기에서는 로그인하지 않아요.'); return; }
+    view('#loading');
+    api({ action: 'my_login', provider: 'google', credential: res.credential }).then(function (j) { if (!j.ok) { gate(errMsg(j)); return; } done(j); }).catch(function () { gate(ERR.server); });
+  }
+  function gInit() {
+    if (gLoaded || /KAKAOTALK|Instagram|FBAN|FBAV|NAVER\(inapp|Line\/|Barcelona|DaumApps|; wv\)/i.test(navigator.userAgent || '')) return; gLoaded = true;
+    var sc = document.createElement('script'); sc.src = 'https://accounts.google.com/gsi/client'; sc.async = true;
+    sc.onload = function () { try {
+      google.accounts.id.initialize({ client_id: G_CLIENT, callback: gDone, ux_mode: 'popup', use_fedcm_for_button: true });
+      google.accounts.id.renderButton($('#g-btn'), { theme: 'outline', size: 'large', text: 'continue_with', shape: 'pill', locale: 'ko', width: 300 });
+    } catch (e) {} };
+    document.head.appendChild(sc);
+  }
+  function oauth(kind) {
+    var st = kind.charAt(0) + '_' + Math.random().toString(36).slice(2) + Date.now().toString(36);
+    ss('bx:oauth', st);
+    location.href = kind === 'kakao'
+      ? 'https://kauth.kakao.com/oauth/authorize?response_type=code&client_id=' + encodeURIComponent(KAKAO_REST) + '&redirect_uri=' + encodeURIComponent(REDIRECT) + '&state=' + st
+      : 'https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=' + encodeURIComponent(NAVER_ID) + '&redirect_uri=' + encodeURIComponent(REDIRECT) + '&state=' + st;
+  }
+  $('#kakao-btn').disabled = !KAKAO_REST && !DEMO; if (!KAKAO_REST) $('#kakao-btn span').textContent = '카카오로 시작하기 (준비 중)';
+  var NAVER_OPEN = false;   // [2026-11-17] 네이버 검수 끝나면 true. 그 전에는 ?nv=1 로 연 화면(심사 담당자)에서만 보임
+  if (!NAVER_OPEN && qs.get('nv') !== '1' && !DEMO) $('#naver-btn').hidden = true;
+  $('#naver-btn').disabled = !NAVER_ID && !DEMO; if (!NAVER_ID) $('#naver-btn span').textContent = '네이버 로그인 (준비 중)';
+  $('#kakao-btn').addEventListener('click', function () { if (DEMO) { toast('미리보기에서는 로그인하지 않아요.'); return; } oauth('kakao'); });
+  $('#naver-btn').addEventListener('click', function () { if (DEMO) { toast('미리보기에서는 로그인하지 않아요.'); return; } oauth('naver'); });
+  /* ---------- 이메일 로그인·가입 ---------- */
+  function tab(t) {
+    Array.prototype.forEach.call(document.querySelectorAll('.tab'), function (b) { b.classList.toggle('on', b.getAttribute('data-tab') === t); });
+    $('#f-login').hidden = t !== 'login'; $('#f-signup').hidden = t !== 'signup'; $('#f-reset').hidden = t !== 'reset'; $('#em-msg').textContent = ''; $('#gate-err').textContent = '';
+  }
+  Array.prototype.forEach.call(document.querySelectorAll('[data-tab]'), function (b) { b.addEventListener('click', function () { tab(b.getAttribute('data-tab')); }); });
+  function emCall(data, btn, then) {
+    if (DEMO) { toast('미리보기에서는 보내지 않아요.'); return; }
+    $('#gate-err').textContent = ''; if (btn) btn.disabled = true;
+    api(data).then(function (j) { if (btn) btn.disabled = false; if (!j.ok) { $('#gate-err').textContent = errMsg(j); return; } then(j); })
+      .catch(function () { if (btn) btn.disabled = false; $('#gate-err').textContent = ERR.server; });
+  }
+  $('#s-phone').addEventListener('input', function () { var d = this.value.replace(/\D/g, '').slice(0, 11); this.value = d.length < 4 ? d : d.length < 8 ? d.slice(0, 3) + '-' + d.slice(3) : d.slice(0, 3) + '-' + d.slice(3, 7) + '-' + d.slice(7); });
+  $('#f-login').addEventListener('submit', function (e) { e.preventDefault(); var b = this.querySelector('[type=submit]');
+    emCall({ action: 'my_pwlogin', email: $('#l-email').value, pw: $('#l-pw').value }, b, function (j) { done(j); }); });
+  $('#f-signup').addEventListener('submit', function (e) { e.preventDefault();
+    if (!$('#s-agree').checked) { $('#gate-err').textContent = ERR.agree; return; }
+    emCall({ action: 'my_signup_send', name: $('#s-name').value, phone: $('#s-phone').value, email: $('#s-email').value, pw: $('#s-pw').value, agree: 'Y' }, $('#s-send'), function (j) {
+      $('#s-step2').hidden = false; $('#em-msg').textContent = j.to + ' 으로 확인 번호를 보냈어요(10분 안에). 메일이 안 보이면 스팸함도 봐 주세요.'; $('#s-code').focus(); }); });
+  $('#s-go').addEventListener('click', function () { emCall({ action: 'my_signup', email: $('#s-email').value, code: $('#s-code').value.replace(/\D/g, '') }, this, function (j) { done(j); toast('가입했어요. 환영해요!'); }); });
+  $('#f-reset').addEventListener('submit', function (e) { e.preventDefault(); var b = this.querySelector('[type=submit]');
+    emCall({ action: 'my_reset_send', email: $('#r-email').value }, b, function (j) { $('#r-step2').hidden = false; $('#em-msg').textContent = '가입된 이메일이면 ' + j.to + ' 으로 확인 번호를 보냈어요.'; $('#r-code').focus(); }); });
+  $('#r-go').addEventListener('click', function () { emCall({ action: 'my_reset', email: $('#r-email').value, code: $('#r-code').value.replace(/\D/g, ''), pw: $('#r-pw').value }, this, function (j) { done(j); toast('비밀번호를 바꿨어요.'); }); });
+  function gate(msg) { view('#gate'); $('#gate-err').textContent = msg || ''; gInit(); }
+
+  /* 결제 화면으로 갈 때 로그인 정보(이름·이메일·휴대폰)와 로그인 열쇠를 넘긴다(이 탭에서만) */
+  Array.prototype.forEach.call(document.querySelectorAll('[data-go]'), function (a) { a.addEventListener('click', function () {
+    if (DEMO || !WHO) return;
+    try { sessionStorage.setItem('bx:login', JSON.stringify({ n: WHO.n || '', e: WHO.e || '', ph: WHO.ph || '', t: TOKEN })); } catch (e) {}
+  }); });
+  /* ---------- 회원 연결(휴대폰 → 가입 이메일 확인 번호) ---------- */
+  $('#lk-ph').addEventListener('input', function () { var d = this.value.replace(/\D/g, '').slice(0, 11); this.value = d.length < 4 ? d : d.length < 8 ? d.slice(0, 3) + '-' + d.slice(3) : d.slice(0, 3) + '-' + d.slice(3, 7) + '-' + d.slice(7); });
+  $('#lk-send').addEventListener('click', function () {
+    if (DEMO) { $('#lk-step2').hidden = false; $('#lk-msg').textContent = '미리보기: ho***@gmail.com 으로 확인 번호를 보냈다고 나와요.'; return; }
+    var b = this; b.disabled = true; $('#lk-msg').textContent = '';
+    api({ action: 'my_link_send', phone: $('#lk-ph').value }).then(function (j) { b.disabled = false;
+      if (!j.ok) { $('#lk-msg').textContent = errMsg(j); return; }
+      $('#lk-step2').hidden = false; $('#lk-msg').textContent = j.to + ' 으로 확인 번호를 보냈어요(10분 안에 넣어 주세요). 메일이 안 보이면 스팸함도 봐 주세요.'; $('#lk-code').focus();
+    }).catch(function () { b.disabled = false; $('#lk-msg').textContent = ERR.server; });
+  });
+  $('#lk-go').addEventListener('click', function () {
+    if (DEMO) { location.href = '?as=pro'; return; }
+    var b = this; b.disabled = true;
+    api({ action: 'my_link', code: $('#lk-code').value.replace(/\D/g, '') }).then(function (j) { b.disabled = false; if (!j.ok) { $('#lk-msg').textContent = errMsg(j); return; } done(j); toast('연결됐어요. 다음부터는 로그인만 하면 돼요.'); })
+      .catch(function () { b.disabled = false; $('#lk-msg').textContent = ERR.server; });
+  });
+
+  /* ---------- 아이디·비밀번호 ---------- */
+  $('#pw-show').addEventListener('click', function () { var on = this.textContent === '보기'; $('#bx-pw').textContent = on ? (ME && ME.pw || '') : '●●●●●●●●●●'; this.textContent = on ? '가리기' : '보기'; });
+  Array.prototype.forEach.call(document.querySelectorAll('[data-copy]'), function (b) { b.addEventListener('click', function () {
+    var v = ME ? (b.getAttribute('data-copy') === 'id' ? ME.id : ME.pw) : '';
+    if (navigator.clipboard) navigator.clipboard.writeText(v).then(function () { toast('복사했어요.'); }, function () { toast('복사하지 못했어요. 길게 눌러 복사해 주세요.'); }); });
+  });
+
+  /* ---------- 요금제 변경 ---------- */
+  $('#pl-btn').addEventListener('click', function () {
+    var p = $('#pl-panel'); if (!p.hidden) { p.hidden = true; return; }
+    var m = ME, h = '';
+    if (m.key === 'standard') {
+      var q = m.upQuote;
+      h = '<div class="opt"><b>Pro로 올리기 · 월 55,000원</b><p>기사 송출 횟수 제한 없이 · 실물 기자증 · 공연 티켓 2매 · 복지몰</p>' +
+        (q ? '<p>지금 바로 바뀌어요. 오늘은 남은 ' + q.days + '일만큼 <b>' + won(q.amount) + '</b>만 결제되고, ' + q.next + '부터 매월 55,000원이에요.</p><div class="row"><button class="btn" type="button" id="up-go" data-amt="' + q.amount + '">' + won(q.amount) + ' 결제하고 Pro로 올리기</button></div>'
+           : '<p>결제일 정보를 확인할 수 없어요. ' + PHONE + '로 문의해 주세요.</p>') + '</div>';
+    } else if (m.key === 'month') {
+      h = '<div class="opt"><b>Standard로 내리기 · 월 22,000원</b><p>기사 주 2회 송출 · 기자증·공연 티켓·복지몰 혜택 없음</p><p>다음 결제일(' + m.next + ')부터 바뀌어요. 그때까지는 Pro 그대로 쓰세요.</p>' +
+        (m.nextPlan ? '<p><b>이미 예약돼 있어요.</b></p>' : '<div class="row"><button class="btn line" type="button" id="down-go">다음 결제일부터 Standard로</button></div>') + '</div>';
+    }
+    h += '<div class="opt"><b>Max · 1년 660,000원</b><p>Pro 혜택 모두 + 헬로벨 렌탈 회원 혜택. 1년 한 번 결제예요. 바꾸시려면 ' + PHONE + '로 연락 주세요(남은 기간을 계산해 드려요).</p></div><p class="err" id="pl-err" role="alert"></p>';
+    p.innerHTML = h; p.hidden = false;
+  });
+  document.addEventListener('click', function (e) {
+    var t = e.target; if (!t || !t.id) return;
+    if (t.id === 'up-go') planChange('pro', t.getAttribute('data-amt'), t);
+    if (t.id === 'down-go') planChange('standard', '', t);
+    if (t.id === 'pl-keep') planChange('keep', '', t);
+  });
+  function planChange(to, amt, btn) {
+    if (DEMO) { toast('미리보기라 바뀌지 않아요.'); return; }
+    if (to === 'pro' && !confirm(won(Number(amt)) + '을 등록된 카드로 결제하고 Pro로 올릴까요?')) return;
+    btn.disabled = true;
+    api({ action: 'my_plan', to: to, amount: amt || '' }).then(function (j) {
+      btn.disabled = false;
+      if (!j.ok) { var el = $('#pl-err'); if (el) el.textContent = j.error === 'quote' ? '금액이 바뀌었어요. 다시 열어 확인해 주세요.' : j.error === 'charge' ? '카드 결제가 승인되지 않았어요: ' + (j.message || '') : errMsg(j); else toast(errMsg(j)); return; }
+      done(j); toast(j.done === 'up' ? 'Pro로 올렸어요. 담당자가 기자증·혜택 안내를 드려요.' : j.done === 'down' ? '다음 결제일부터 Standard로 바뀌어요.' : '예약을 취소했어요.');
+    }).catch(function () { btn.disabled = false; toast(ERR.server); });
+  }
+
+  /* ---------- 카드 변경(토스 카드 등록 창) ---------- */
+  $('#pm-btn').addEventListener('click', function () {
+    if (DEMO) { toast('미리보기: 토스 카드 등록 창이 열려요.'); return; }
+    var b = this; b.disabled = true; $('#pm-err').textContent = '';
+    var sdk = new Promise(function (ok, no) { if (window.TossPayments) return ok(); var s = document.createElement('script'); s.src = 'https://js.tosspayments.com/v2/standard'; s.onload = ok; s.onerror = no; document.head.appendChild(s); });
+    Promise.all([sdk, api({ action: 'my_card_start' })]).then(function (r) {
+      var j = r[1]; if (!j.ok) throw j;
+      return TossPayments(BILLING_CLIENT_KEY).payment({ customerKey: j.customerKey }).requestBillingAuth({ method: 'CARD', successUrl: REDIRECT + '?card=ok', failUrl: REDIRECT + '?card=fail', customerEmail: j.email || undefined, customerName: j.name || undefined });
+    }).catch(function (e) { b.disabled = false; if (e && (e.code === 'USER_CANCEL' || e.code === 'PAY_PROCESS_CANCELED')) return; $('#pm-err').textContent = e && e.error ? errMsg(e) : '카드 등록 창을 열지 못했어요. 다시 시도해 주세요.'; });
+  });
+
+  /* ---------- 해지 ---------- */
+  $('#cx-btn').addEventListener('click', function () { $('#cx-panel').hidden = false; });
+  $('#cx-close').addEventListener('click', function () { $('#cx-panel').hidden = true; });
+  $('#cx-go').addEventListener('click', function () {
+    var rs = $('#cx-reason').value; if (!rs) { $('#cx-err').textContent = '이유를 골라 주세요.'; return; }
+    if (DEMO) { toast('미리보기라 신청되지 않아요.'); return; }
+    var b = this; b.disabled = true;
+    api({ action: 'my_cancel', reason: rs, detail: $('#cx-detail').value }).then(function (j) { b.disabled = false;
+      if (!j.ok) { $('#cx-err').textContent = errMsg(j); return; }
+      $('#cx-panel').innerHTML = '<p style="margin:0;font-weight:700">해지 신청을 받았어요 (' + j.receipt + ').</p><p class="note">담당자가 확인한 뒤 문자로 처리 결과를 알려 드려요. 다음 결제일 3영업일 전까지 신청하셨다면 다음 결제부터 청구되지 않아요.</p>';
+    }).catch(function () { b.disabled = false; $('#cx-err').textContent = ERR.server; });
+  });
+
+  /* ---------- 시작 ---------- */
+  function start() {
+    if (DEMO) { demo(); return; }
+    try { WHO = JSON.parse(ls('bx:mywho') || 'null'); } catch (e) {}
+    var code = qs.get('code'), state = qs.get('state'), card = qs.get('card');
+    if (code || state || card) history.replaceState(null, '', '/my.html');
+    if (code && state) {   // 카카오·네이버에서 돌아옴
+      if (state !== ss('bx:oauth')) { gate('로그인 요청이 맞지 않아요. 다시 시도해 주세요.'); return; }
+      ss('bx:oauth', null);
+      api({ action: 'my_login', provider: state.charAt(0) === 'k' ? 'kakao' : 'naver', code: code, state: state, redirect: REDIRECT }).then(function (j) { if (!j.ok) { gate(errMsg(j)); return; } done(j); }).catch(function () { gate(ERR.server); });
+      return;
+    }
+    if (!TOKEN) { gate(qs.get('error') ? '로그인을 취소했어요.' : ''); return; }
+    if (card === 'ok' && qs.get('authKey')) {
+      api({ action: 'my_card', customerKey: qs.get('customerKey'), authKey: qs.get('authKey') }).then(function (j) { if (!j.ok) { if (j.error === 'login') { logout(); return; } load(); toast(errMsg(j)); return; } done(j); toast('카드를 바꿨어요. 다음 결제부터 새 카드로 결제돼요.'); }).catch(function () { load(); toast(ERR.server); });
+      return;
+    }
+    if (card === 'fail') toast('카드 등록을 마치지 않았어요. 카드는 그대로예요.');
+    load();
+  }
+  function load() { view('#loading'); api({ action: 'my_me' }).then(function (j) { if (!j.ok) { if (j.error === 'login') { logout(); gate(ERR.login); return; } gate(errMsg(j)); return; } done(j); }).catch(function () { gate(ERR.server); }); }
+
+  /* ---------- 미리보기 데이터 ---------- */
+  function demo() {
+    $('#demo').hidden = false;
+    Array.prototype.forEach.call(document.querySelectorAll('.demo a'), function (a) { if (a.getAttribute('href') === '?as=' + DEMO) a.setAttribute('aria-current', 'true'); });
+    if (DEMO === 'out') { gate(''); return; }
+    WHO = { n: '홍길동', e: 'hong@gmail.com', p: 'google' };
+    var base = { name: '홍길동', status: '이용 중', monthly: true, id: 'hong2026', pw: 'Xk7mPq2Rta', idState: '발급', card: '현대 4330-12**-****-123*', next: '2026-12-16', nextPlan: '', todo: [] };
+    var D = {
+      standard: { plan: 'Standard(월)', key: 'standard', amount: 22000, week: { used: 1, limit: 2 }, upQuote: { amount: 33000, days: 30, next: '2026-12-16' } },
+      pro: { plan: 'Pro(월)', key: 'month', amount: 55000, pressCard: '제작 중', todo: [{ label: '기자증 정보 (영문 이름·사진·받을 주소)', href: '#' }] },
+      max: { plan: 'Max(1년)', key: 'year', amount: 660000, monthly: false, next: '', until: '2027-11-15', card: '', pressCard: '발송 완료 2026-11-20' }
+    };
+    ME = D[DEMO] ? Object.assign({}, base, D[DEMO]) : null;
+    render();
+  }
+  start();
+})();
+</script>
+</body>
+</html>
