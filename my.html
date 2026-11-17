@@ -91,6 +91,10 @@ input.fld,select.fld,textarea.fld{width:100%;min-height:46px;border:2px solid va
 .g2{display:grid;gap:8px}@media(min-width:560px){.g2{grid-template-columns:1fr 1fr}}
 .seg{display:flex;gap:8px;margin-top:4px}.seg label{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;min-height:46px;border:2px solid var(--line);border-radius:12px;font-weight:700;cursor:pointer}.seg label:has(input:checked){border-color:var(--g);background:var(--g2)}
 .zipbox{height:420px;border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-top:8px}
+.fold summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:10px}.fold summary::-webkit-details-marker{display:none}
+.fold summary b{display:block;font-size:17px}.fold summary small{display:block;color:var(--mute);font-size:13.5px;font-weight:500}
+.fold summary::after{content:"펼치기 ▾";flex:none;font-size:13px;font-weight:700;color:var(--mute)}.fold[open] summary::after{content:"접기 ▴"}
+.sub-blk{border-top:1px solid var(--line);margin-top:14px;padding-top:12px}.h3{font-size:15px;margin:0 0 6px}
 .lnk{border:0;background:none;color:var(--mute);font-size:13.5px;text-decoration:underline;padding:6px 0}
 .chk{display:flex;gap:8px;align-items:flex-start;font-size:13.5px;line-height:1.5}.chk input{margin-top:3px;width:18px;height:18px;flex:none;accent-color:#0B6B3A}
 .loading{display:flex;justify-content:center;align-items:center;gap:10px;margin:60px 0;color:var(--mute);font-weight:700}
@@ -213,6 +217,37 @@ footer{margin:36px 0 30px;font-size:12.5px;color:var(--mute);text-align:center}
     </form>
   </section>
 
+
+
+
+
+
+
+
+
+  <section class="card" aria-labelledby="id-h">
+    <h2 id="id-h">기자 계정</h2>
+    <div id="id-ok">
+      <dl class="kv"><dt>아이디</dt><dd><span class="mono" id="bx-id"></span> <button class="btn line sm" type="button" data-copy="id">복사</button></dd>
+        <dt>임시 비밀번호</dt><dd><span class="mono" id="bx-pw">●●●●●●●●●●</span> <button class="btn line sm" type="button" id="pw-show">보기</button> <button class="btn line sm" type="button" data-copy="pw">복사</button></dd></dl>
+      <p class="note">처음 비밀번호예요. 브랜드경제신문에 로그인한 뒤 회원정보에서 비밀번호를 바꿔 주세요. 이미 바꾸셨다면 바꾼 비밀번호로 로그인하세요.</p>
+    </div>
+    <div id="id-wait" hidden><p style="margin:0;font-weight:700" id="id-wait-t">기자 아이디를 만들고 있어요.</p><p class="note" id="id-wait-s">보통 몇 분 안에 끝나요. 잠시 뒤 새로고침해 주세요.</p></div>
+  </section>
+
+  <section class="card" id="bnews-card" aria-labelledby="bn-h">
+    <h2 id="bn-h">브랜드경제신문</h2>
+    <p class="sub">위 아이디·비밀번호로 로그인해 기사를 써요.</p>
+    <div class="row"><a class="btn" href="https://www.benews.co.kr/?r=s162343&amp;m=member&amp;front=login" target="_blank" rel="noopener">로그인 · 기사 쓰기</a><a class="btn line" href="https://www.benews.co.kr" target="_blank" rel="noopener">홈페이지 가기</a></div>
+  </section>
+
+  <section class="card" id="week-card" hidden aria-labelledby="w-h">
+    <h2 id="w-h">이번 주 기사 송출</h2>
+    <p style="margin:0"><b id="w-used"></b> <span class="sub" id="w-sub"></span></p>
+    <div class="meter"><i id="w-bar"></i></div>
+    <p class="note">Standard는 주 2회(월요일~일요일) 송출돼요. 송출된 기사 목록은 브랜드경제신문에서 볼 수 있어요.</p>
+  </section>
+
   <section class="card" id="cardf" hidden aria-labelledby="cardf-h">
     <h2 id="cardf-h">기자증 발급 신청</h2>
     <p class="sub">실물 기자증을 만들어 보내 드려요. 정보를 받으면 제작을 시작해요.</p>
@@ -231,7 +266,12 @@ footer{margin:36px 0 30px;font-size:12.5px;color:var(--mute);text-align:center}
       <p class="err" id="c-err" role="alert"></p>
     </form>
   </section>
-  <section class="card" id="card-done" hidden><h2>기자증 발급 신청</h2><p style="margin:0;font-weight:700">✓ 신청을 받았어요. 제작이 시작되면 아래 '실물 기자증'에서 진행 상황을 볼 수 있어요.</p></section>
+  <section class="card" id="card-done" hidden><h2>기자증 발급 신청</h2><p style="margin:0;font-weight:700">✓ 신청을 받았어요. 제작이 시작되면 아래 '기자증'에서 진행 상황을 볼 수 있어요.</p></section>
+  <section class="card" id="press-card" hidden aria-labelledby="pc-h">
+    <h2 id="pc-h">기자증</h2>
+    <div class="steps" id="pc-steps"><span>정보 입력</span><span>제작 중</span><span>발송</span></div>
+    <p class="note" id="pc-note"></p>
+  </section>
 
   <section class="card" id="docs" aria-labelledby="docs-h">
     <h2 id="docs-h">기자 자료</h2>
@@ -239,46 +279,22 @@ footer{margin:36px 0 30px;font-size:12.5px;color:var(--mute);text-align:center}
     <div class="line-item"><div><b>AI 기사 작성 프롬프트 팩</b><small>메모 3줄로 기사 초안을 만드는 6가지 틀</small></div><a class="btn line sm" href="/kit.html">보기</a></div>
   </section>
 
-  <section class="card" aria-labelledby="id-h">
-    <h2 id="id-h">브랜드경제신문 기자 계정</h2>
-    <div id="id-ok">
-      <dl class="kv"><dt>아이디</dt><dd><span class="mono" id="bx-id"></span> <button class="btn line sm" type="button" data-copy="id">복사</button></dd>
-        <dt>임시 비밀번호</dt><dd><span class="mono" id="bx-pw">●●●●●●●●●●</span> <button class="btn line sm" type="button" id="pw-show">보기</button> <button class="btn line sm" type="button" data-copy="pw">복사</button></dd></dl>
-      <p class="note">처음 비밀번호예요. 브랜드경제신문에 로그인한 뒤 회원정보에서 비밀번호를 바꿔 주세요. 이미 바꾸셨다면 바꾼 비밀번호로 로그인하세요.</p>
-      <div class="row"><a class="btn" href="https://www.benews.co.kr/?r=s162343&amp;m=member&amp;front=login" target="_blank" rel="noopener">브랜드경제신문 로그인 · 기사 쓰기</a></div>
-    </div>
-    <div id="id-wait" hidden><p style="margin:0;font-weight:700" id="id-wait-t">기자 아이디를 만들고 있어요.</p><p class="note" id="id-wait-s">보통 몇 분 안에 끝나요. 잠시 뒤 새로고침해 주세요.</p></div>
-  </section>
-
-  <section class="card" id="week-card" hidden aria-labelledby="w-h">
-    <h2 id="w-h">이번 주 기사 송출</h2>
-    <p style="margin:0"><b id="w-used"></b> <span class="sub" id="w-sub"></span></p>
-    <div class="meter"><i id="w-bar"></i></div>
-    <p class="note">Standard는 주 2회(월요일~일요일) 송출돼요. 송출된 기사 목록은 브랜드경제신문에서 볼 수 있어요.</p>
-  </section>
-
-  <section class="card" aria-labelledby="pl-h">
-    <h2 id="pl-h">요금제</h2>
+  <details class="card fold" id="plan-box">
+    <summary><span><b>요금제</b><small id="fold-sum"></small></span></summary>
+    <div class="sub-blk">
+    <h3 class="h3" id="pl-h">지금 요금제</h3>
     <div class="line-item"><div><b id="pl-name"></b><small id="pl-price"></small></div><button class="btn line sm" type="button" id="pl-btn">요금제 변경</button></div>
     <div class="line-item" id="pl-next-row"><div><b id="pl-next-k">다음 결제일</b><small id="pl-next"></small></div></div>
     <p class="note" id="pl-reserve" hidden></p>
     <div class="panel" id="pl-panel" hidden></div>
-  </section>
-
-  <section class="card" id="pay-card" aria-labelledby="pm-h">
-    <h2 id="pm-h">결제 수단</h2>
+    </div>
+    <div class="sub-blk" id="pay-card">
+    <h3 class="h3" id="pm-h">결제 수단</h3>
     <div class="line-item"><div><b id="pm-card"></b><small>매월 이 카드로 자동 결제돼요</small></div><button class="btn line sm" type="button" id="pm-btn">카드 변경</button></div>
     <p class="err" id="pm-err" role="alert"></p>
-  </section>
-
-  <section class="card" id="press-card" hidden aria-labelledby="pc-h">
-    <h2 id="pc-h">실물 기자증</h2>
-    <div class="steps" id="pc-steps"><span>정보 입력</span><span>제작 중</span><span>발송</span></div>
-    <p class="note" id="pc-note"></p>
-  </section>
-
-  <section class="card" aria-labelledby="cx-h" id="cx-card">
-    <h2 id="cx-h">구독 해지</h2>
+    </div>
+    <div class="sub-blk" id="cx-card">
+    <h3 class="h3" id="cx-h">구독 해지</h3>
     <p class="sub">다음 결제일 3영업일 전(토·일·공휴일 제외)까지 신청하면 다음 결제부터 청구되지 않아요.</p>
     <div class="row"><button class="btn red sm" type="button" id="cx-btn">해지 신청</button></div>
     <div class="panel" id="cx-panel" hidden>
@@ -288,7 +304,8 @@ footer{margin:36px 0 30px;font-size:12.5px;color:var(--mute);text-align:center}
       <div class="row"><button class="btn red" type="button" id="cx-go">해지 신청하기</button><button class="btn line" type="button" id="cx-close">닫기</button></div>
       <p class="err" id="cx-err" role="alert"></p>
     </div>
-  </section>
+    </div>
+  </details>
 
   <section class="card" aria-labelledby="ac-h">
     <h2 id="ac-h">로그인 계정</h2>
@@ -368,6 +385,7 @@ footer{margin:36px 0 30px;font-size:12.5px;color:var(--mute);text-align:center}
     if (m.week) { var u = Math.min(m.week.used, m.week.limit); $('#w-used').textContent = m.week.limit + '건 중 ' + m.week.used + '건 송출'; $('#w-sub').textContent = '· ' + Math.max(0, m.week.limit - m.week.used) + '건 남음 (월요일에 다시 ' + m.week.limit + '건)'; $('#w-bar').style.width = (u / m.week.limit * 100) + '%'; }
     // 요금제
     $('#pl-name').textContent = m.plan;
+    $('#fold-sum').textContent = m.plan + (m.next ? ' · 다음 결제 ' + m.next : m.until ? ' · ' + m.until + '까지' : '');
     $('#pl-price').textContent = m.key === 'year' ? '660,000원 (VAT 포함) · 1년 한 번 결제' : '월 ' + won(m.amount) + ' (VAT 포함)';
     var gone = m.status === '해지';
     $('#pl-next-row').hidden = !(m.next || m.until);
