@@ -70,7 +70,7 @@ input.fld,select.fld,textarea.fld{width:100%;min-height:46px;border:2px solid va
 .sso{display:flex;align-items:center;justify-content:center;gap:10px;width:100%;min-height:50px;border-radius:12px;border:0;font-weight:800;font-size:16px;margin-top:10px}
 .sso.k{background:#FEE500;color:#191600}.sso.n{background:#03C75A;color:#fff}
 .sso[disabled]{opacity:.45;cursor:not-allowed}
-#g-btn{display:flex;justify-content:center;margin-top:10px;min-height:44px}
+.sso.gg{background:#fff;color:#1F1F1F;border:1.5px solid #DADCE0}
 .plans{display:grid;gap:10px}@media(min-width:640px){.plans{grid-template-columns:repeat(3,1fr)}}
 .pl{position:relative;display:block;width:100%;text-align:left;padding:16px;border-radius:14px;border:2px solid var(--line);text-decoration:none;background:#fff;font:inherit;color:inherit}
 .pl[aria-checked=true]{border-color:var(--g);box-shadow:0 0 0 3px rgba(11,107,58,.15)}
@@ -112,11 +112,10 @@ footer{margin:36px 0 30px;font-size:12.5px;color:var(--mute);text-align:center}
 <!-- 로그인 -->
 <main id="gate" class="wrap gate" hidden>
   <div class="card">
-    <h1 style="margin-top:0">내 기자실</h1>
-    <p class="sub">로그인하고 요금제를 고르면 바로 시작해요. 이미 회원이면 결제한 이메일·휴대폰과 같은 계정으로 로그인하면 바로 연결돼요.</p>
+    <h1 style="margin-top:0">간편 로그인</h1>
     <button class="sso k" type="button" id="kakao-btn"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path fill="#000" d="M12 3C6.48 3 2 6.58 2 11c0 2.86 1.88 5.37 4.71 6.79-.15.53-.97 3.4-1 3.62 0 0-.02.17.09.24.11.06.24.01.24.01.32-.04 3.7-2.43 4.28-2.84.55.08 1.11.12 1.68.12 5.52 0 10-3.58 10-8S17.52 3 12 3z" opacity=".85"/></svg><span>카카오로 시작하기</span></button>
     <button class="sso n" type="button" id="naver-btn"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path fill="#fff" d="M10.85 8.56 4.97 0H0v16h5.15V7.44L11.03 16H16V0h-5.15z"/></svg><span>네이버 로그인</span></button>
-    <div id="g-btn"></div>
+    <button class="sso gg" type="button" id="google-btn"><svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.8 2.4 30.3 0 24 0 14.6 0 6.6 5.4 2.7 13.3l7.9 6.1C12.5 13.6 17.8 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.7c-.6 3-2.3 5.5-4.8 7.2l7.6 5.9c4.4-4.1 7-10.1 7-17.6z"/><path fill="#FBBC05" d="M10.6 28.6c-.5-1.4-.8-3-.8-4.6s.3-3.2.8-4.6l-7.9-6.1C1 16.6 0 20.2 0 24s1 7.4 2.7 10.7l7.9-6.1z"/><path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7.6-5.9c-2.1 1.4-4.9 2.3-8.3 2.3-6.2 0-11.5-4.1-13.4-9.9l-7.9 6.1C6.6 42.6 14.6 48 24 48z"/></svg><span>Google로 시작하기</span></button>
     <p class="or"><span>또는 이메일로</span></p>
     <div class="tabs" role="tablist"><button type="button" class="tab on" data-tab="login" role="tab">로그인</button><button type="button" class="tab" data-tab="signup" role="tab">회원가입</button></div>
     <form id="f-login" class="ef" novalidate>
@@ -143,7 +142,7 @@ footer{margin:36px 0 30px;font-size:12.5px;color:var(--mute);text-align:center}
     </form>
     <p class="note" id="em-msg" role="status"></p>
     <p class="err" id="gate-err" role="alert"></p>
-    <p class="note" style="text-align:center;margin-top:14px">로그인이 안 되나요? <a href="/pay?p=month" style="color:var(--mute)">로그인 없이 결제하기</a></p>
+    <p class="note" style="text-align:center;margin-top:14px">로그인이 안 되면 010-7382-1097(전화·문자)로 알려 주세요.</p>
   </div>
 </main>
 
@@ -412,15 +411,25 @@ footer{margin:36px 0 30px;font-size:12.5px;color:var(--mute);text-align:center}
     view('#loading');
     api({ action: 'my_login', provider: 'google', credential: res.credential }).then(function (j) { if (!j.ok) { gate(errMsg(j)); return; } done(j); }).catch(function () { gate(ERR.server); });
   }
+  /* [2026-11-17 사장 지시] 구글도 '구글로 시작하기' 박스 버튼: 누르면 구글 창(팝업) → 받은 열쇠를 서버가 구글에 확인 */
+  var gTok = null;
   function gInit() {
-    if (gLoaded || /KAKAOTALK|Instagram|FBAN|FBAV|NAVER\(inapp|Line\/|Barcelona|DaumApps|; wv\)/i.test(navigator.userAgent || '')) return; gLoaded = true;
+    if (/KAKAOTALK|Instagram|FBAN|FBAV|NAVER\(inapp|Line\/|Barcelona|DaumApps|; wv\)/i.test(navigator.userAgent || '')) { $('#google-btn').hidden = true; return; }   // 앱 안 브라우저는 구글이 막음
+    if (gLoaded) return; gLoaded = true;
     var sc = document.createElement('script'); sc.src = 'https://accounts.google.com/gsi/client'; sc.async = true;
     sc.onload = function () { try {
-      google.accounts.id.initialize({ client_id: G_CLIENT, callback: gDone, ux_mode: 'popup', use_fedcm_for_button: true });
-      google.accounts.id.renderButton($('#g-btn'), { theme: 'outline', size: 'large', text: 'continue_with', shape: 'pill', locale: 'ko', width: 300 });
+      gTok = google.accounts.oauth2.initTokenClient({ client_id: G_CLIENT, scope: 'openid email profile', callback: function (r) {
+        if (!r || !r.access_token) { $('#gate-err').textContent = '구글 로그인을 마치지 않았어요.'; return; }
+        view('#loading');
+        api({ action: 'my_login', provider: 'google_at', access_token: r.access_token }).then(function (j) { if (!j.ok) { gate(errMsg(j)); return; } done(j); }).catch(function () { gate(ERR.server); });
+      } });
     } catch (e) {} };
     document.head.appendChild(sc);
   }
+  $('#google-btn').addEventListener('click', function () {
+    if (DEMO) { toast('미리보기에서는 로그인하지 않아요.'); return; }
+    if (gTok) gTok.requestAccessToken({ prompt: '' }); else toast('구글 로그인을 불러오는 중이에요. 잠시 뒤 다시 눌러 주세요.');
+  });
   function oauth(kind) {
     var st = kind.charAt(0) + '_' + Math.random().toString(36).slice(2) + Date.now().toString(36);
     ss('bx:oauth', st);
@@ -440,11 +449,16 @@ footer{margin:36px 0 30px;font-size:12.5px;color:var(--mute);text-align:center}
     $('#f-login').hidden = t !== 'login'; $('#f-signup').hidden = t !== 'signup'; $('#f-reset').hidden = t !== 'reset'; $('#em-msg').textContent = ''; $('#gate-err').textContent = '';
   }
   Array.prototype.forEach.call(document.querySelectorAll('[data-tab]'), function (b) { b.addEventListener('click', function () { tab(b.getAttribute('data-tab')); }); });
+  /* [2026-11-17 사장 지시] 확인 번호를 보낸 뒤 버튼은 '재발송하기'(30초 뒤 다시 누를 수 있음) — 두 번 누르지 않게 */
+  function sentBtn(b) {
+    if (!b) return; var n = 30; b.classList.add('line'); b.disabled = true;
+    (function t() { if (n <= 0) { b.disabled = false; b.textContent = '재발송하기'; return; } b.textContent = '재발송하기 (' + n + '초)'; n--; setTimeout(t, 1000); })();
+  }
   function emCall(data, btn, then) {
     if (DEMO) { toast('미리보기에서는 보내지 않아요.'); return; }
-    $('#gate-err').textContent = ''; if (btn) btn.disabled = true;
-    api(data).then(function (j) { if (btn) btn.disabled = false; if (!j.ok) { $('#gate-err').textContent = errMsg(j); return; } then(j); })
-      .catch(function () { if (btn) btn.disabled = false; $('#gate-err').textContent = ERR.server; });
+    $('#gate-err').textContent = ''; var old = btn ? btn.textContent : ''; if (btn) { btn.disabled = true; if (/확인 번호|재발송/.test(old)) btn.textContent = '보내는 중…'; }
+    api(data).then(function (j) { if (btn) { btn.disabled = false; btn.textContent = old; } if (!j.ok) { $('#gate-err').textContent = errMsg(j); return; } then(j); })
+      .catch(function () { if (btn) { btn.disabled = false; btn.textContent = old; } $('#gate-err').textContent = ERR.server; });
   }
   $('#s-phone').addEventListener('input', function () { var d = this.value.replace(/\D/g, '').slice(0, 11); this.value = d.length < 4 ? d : d.length < 8 ? d.slice(0, 3) + '-' + d.slice(3) : d.slice(0, 3) + '-' + d.slice(3, 7) + '-' + d.slice(7); });
   $('#f-login').addEventListener('submit', function (e) { e.preventDefault(); var b = this.querySelector('[type=submit]');
@@ -452,14 +466,13 @@ footer{margin:36px 0 30px;font-size:12.5px;color:var(--mute);text-align:center}
   $('#f-signup').addEventListener('submit', function (e) { e.preventDefault();
     if (!$('#s-agree').checked) { $('#gate-err').textContent = ERR.agree; return; }
     emCall({ action: 'my_signup_send', name: $('#s-name').value, phone: $('#s-phone').value, email: $('#s-email').value, pw: $('#s-pw').value, agree: 'Y' }, $('#s-send'), function (j) {
-      $('#s-step2').hidden = false; $('#em-msg').textContent = j.to + ' 으로 확인 번호를 보냈어요(10분 안에). 메일이 안 보이면 스팸함도 봐 주세요.'; $('#s-code').focus(); }); });
+      $('#s-step2').hidden = false; sentBtn($('#s-send')); $('#em-msg').textContent = '✓ ' + j.to + ' 으로 확인 번호를 보냈어요. 메일함에서 6자리 번호를 확인해 아래에 넣어 주세요(10분 안에). 메일이 안 보이면 스팸함도 봐 주세요.'; $('#s-code').focus(); }); });
   $('#s-go').addEventListener('click', function () { emCall({ action: 'my_signup', email: $('#s-email').value, code: $('#s-code').value.replace(/\D/g, '') }, this, function (j) { done(j); toast('가입했어요. 환영해요!'); }); });
   $('#f-reset').addEventListener('submit', function (e) { e.preventDefault(); var b = this.querySelector('[type=submit]');
-    emCall({ action: 'my_reset_send', email: $('#r-email').value }, b, function (j) { $('#r-step2').hidden = false; $('#em-msg').textContent = '가입된 이메일이면 ' + j.to + ' 으로 확인 번호를 보냈어요.'; $('#r-code').focus(); }); });
+    emCall({ action: 'my_reset_send', email: $('#r-email').value }, b, function (j) { $('#r-step2').hidden = false; sentBtn(b); $('#em-msg').textContent = '가입된 이메일이면 ' + j.to + ' 으로 확인 번호를 보냈어요.'; $('#r-code').focus(); }); });
   $('#r-go').addEventListener('click', function () { emCall({ action: 'my_reset', email: $('#r-email').value, code: $('#r-code').value.replace(/\D/g, ''), pw: $('#r-pw').value }, this, function (j) { done(j); toast('비밀번호를 바꿨어요.'); }); });
   function gate(msg) {
     view('#gate'); $('#gate-err').textContent = msg || ''; gInit();
-    if (ss('bx:next')) { var h = document.querySelector('#gate h1'); if (h) h.textContent = '로그인하고 결제하기'; var sb = document.querySelector('#gate .sub'); if (sb) sb.textContent = '로그인하면 이름·연락처가 채워진 결제 화면으로 바로 이어져요.'; }
   }
 
   /* [2026-11-17 사장 지시] 요금제를 누르면 바로 결제하지 않고 상세 내용 → 아래 [결제하기] */
@@ -492,7 +505,7 @@ footer{margin:36px 0 30px;font-size:12.5px;color:var(--mute);text-align:center}
     var b = this; b.disabled = true; $('#lk-msg').textContent = '';
     api({ action: 'my_link_send', phone: $('#lk-ph').value }).then(function (j) { b.disabled = false;
       if (!j.ok) { $('#lk-msg').textContent = errMsg(j); return; }
-      $('#lk-step2').hidden = false; $('#lk-msg').textContent = j.to + ' 으로 확인 번호를 보냈어요(10분 안에 넣어 주세요). 메일이 안 보이면 스팸함도 봐 주세요.'; $('#lk-code').focus();
+      $('#lk-step2').hidden = false; sentBtn(b); $('#lk-msg').textContent = j.to + ' 으로 확인 번호를 보냈어요(10분 안에 넣어 주세요). 메일이 안 보이면 스팸함도 봐 주세요.'; $('#lk-code').focus();
     }).catch(function () { b.disabled = false; $('#lk-msg').textContent = ERR.server; });
   });
   $('#lk-go').addEventListener('click', function () {
@@ -575,7 +588,10 @@ footer{margin:36px 0 30px;font-size:12.5px;color:var(--mute);text-align:center}
     if (!$('#a-name').value) $('#a-name').value = m.name || (WHO && WHO.n) || '';
     $('#a-phone-w').hidden = !!A.hasPhone; $('#a-email-w').hidden = !!A.email;
     if (!$('#a-id1').value && A.idHint && /^[a-z][a-z0-9]{3,11}$/.test(A.idHint)) { $('#a-id1').value = A.idHint; $('#a-id2').value = A.idHint.slice(0, 11) + '1'; }
-    if (A.birth && !$('#a-birth').value) $('#a-birth').value = A.birth;
+    var bb = A.birth || (WHO && WHO.b) || '', gg = A.gender || (WHO && WHO.g) || '';   // [2026-11-17] 네이버·카카오가 준 생일·성별로 자동 입력
+    if (bb && !$('#a-birth').value) $('#a-birth').value = bb;
+    if (gg && !document.querySelector('input[name=a-g]:checked')) { var gr = document.querySelector('input[name=a-g][value="' + gg + '"]'); if (gr) gr.checked = true; }
+    if (/^(19|20)\d{6}$/.test(bb)) { var by = +bb.slice(0, 4), bm = +bb.slice(4, 6), bd = +bb.slice(6, 8), nw = new Date(), age = nw.getFullYear() - by - ((nw.getMonth() + 1 < bm || (nw.getMonth() + 1 === bm && nw.getDate() < bd)) ? 1 : 0); if (age >= 19) $('#a-adult').checked = true; }
     $('#a-addr-w').hidden = !A.wantAddr; $('#a-mall').hidden = !A.wantAddr;
     if (A.zip && !$('#a-zip').value) { $('#a-zip').value = A.zip; $('#a-addr1').value = A.addr1 || ''; $('#a-addr2').value = A.addr2 || ''; }
   }
