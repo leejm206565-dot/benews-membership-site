@@ -147,7 +147,7 @@ h1,h2,h3{word-break:keep-all;text-wrap:balance;letter-spacing:-.02em}
       <input type="checkbox" id="terms-agree" class="mt-1 w-5 h-5 shrink-0 accent-[#0B6B3A]">
       <span class="text-[15px] leading-relaxed"><b>[필수] 이용약관·환불정책 동의</b> — <a href="terms.html" target="_blank" rel="noopener" class="underline">이용약관</a>과 <a href="refund.html" target="_blank" rel="noopener" class="underline">환불정책</a>을 확인했으며 동의합니다.</span>
     </label>
-    <p id="pay-policy" class="mt-4 text-[13px] text-mute leading-relaxed"><a href="terms.html" target="_blank" rel="noopener" class="underline">이용약관</a>·<a href="refund.html" target="_blank" rel="noopener" class="underline">환불정책</a>이 적용됩니다. 희망 아이디 등은 결제 후 회원 등록 화면에서 받습니다.</p>
+    <p id="pay-policy" class="mt-4 text-[13px] text-mute leading-relaxed"><a href="terms.html" target="_blank" rel="noopener" class="underline">이용약관</a>·<a href="refund.html" target="_blank" rel="noopener" class="underline">환불정책</a>이 적용됩니다.</p>
     <p id="kb-note" style="margin-top:16px;border-radius:12px;background:#FFF4E5;border:1px solid #F2C98B;padding:10px 12px;font-size:14px;font-weight:700;color:#7A4B00;line-height:1.6" hidden>국민(KB)카드는 자동결제 승인 진행 중이라 아직 등록할 수 없어요. 다른 카드로 등록해 주세요.</p>
     <button id="pay-btn" type="button" class="mt-4 w-full min-h-[56px] rounded-xl bg-rep hover:bg-rep-dark disabled:bg-[#9DB8A8] disabled:cursor-not-allowed text-white text-[18px] font-extrabold" disabled>결제하기</button>
     <p id="pay-hint" class="mt-2 text-[14px] font-bold text-mute" hidden>위의 [필수] 동의에 체크하면 결제 버튼이 켜집니다.</p>
@@ -430,7 +430,7 @@ const WIDGET_VARIANT = 'BRGD_YEAR';   // 1년 결제 UI variantKey (사장이 op
     var bs = $('#bill-box section'); if (bs && $('#bill-keywait').hidden) bs.style.display = 'none';   // 빈 칸이 남지 않게(연결 준비 안내가 뜰 때만 보임)
     var T = '<a href="terms.html" target="_blank" rel="noopener" class="underline">이용약관</a>·<a href="refund.html" target="_blank" rel="noopener" class="underline">환불정책</a>';
     $('#all-agree-txt').innerHTML = bill
-      ? '<b>[필수] 이용약관·환불정책·카드 CMS 결제 동의</b> — ' + T + '을 확인했으며, 매월 <b>' + seoulDay() + '일</b> <b>' + won(PLANS[pk].amount) + '</b>(VAT 포함)이 등록한 카드로 자동 결제되는 것에 동의합니다. 해지는 다음 결제일 3영업일 전까지 신청해 주세요.'
+      ? '<b>[필수] 이용약관·환불정책·카드 CMS 결제 동의</b> — ' + T + '을 확인했으며, 매월 ' + seoulDay() + '일 ' + won(PLANS[pk].amount) + '(VAT 포함)이 등록한 카드로 자동 결제되는 것에 동의합니다. 해지는 다음 결제일 3영업일 전까지 신청해 주세요.'
       : '<b>[필수] 이용약관·환불정책 동의</b> — ' + T + '을 확인했으며 동의합니다.';
     box.hidden = false; if (who) box.parentNode.insertBefore(box, who.nextSibling);
     $('#all-agree').addEventListener('change', function () { var v = this.checked; ['#terms-agree', '#bill-agree'].forEach(function (q) { var e = $(q); if (e) e.checked = v; }); sync(); });
@@ -498,7 +498,7 @@ const WIDGET_VARIANT = 'BRGD_YEAR';   // 1년 결제 UI variantKey (사장이 op
     if (KB_PENDING) $('#kb-note').hidden = false;   // 카드 자동결제(월간)에만. 1년 결제위젯은 국민카드 가능
     if (!isOM) $('#pay-lead').textContent = '카드 한 번 등록으로 매달 같은 날 자동으로 결제돼요. 결제가 끝나면 바로 회원 등록 화면이 열립니다.';
     // [2026-11-16] 월 상품: 해지는 다음 결제일 3영업일 전까지 → 다음 달부터
-    if (!isOM) $('#pay-policy').innerHTML = '<a href="terms.html#a8" target="_blank" rel="noopener" class="underline">이용약관</a>·<a href="refund.html#monthly" target="_blank" rel="noopener" class="underline">환불정책</a>이 적용됩니다. 다음 결제일 3영업일 전까지 해지하시면 다음 달부터 청구되지 않습니다. 희망 아이디 등은 결제 후 회원 등록 화면에서 받습니다.';
+    if (!isOM) $('#pay-policy').innerHTML = '<a href="terms.html#a8" target="_blank" rel="noopener" class="underline">이용약관</a>·<a href="refund.html#monthly" target="_blank" rel="noopener" class="underline">환불정책</a>이 적용됩니다. 다음 결제일 3영업일 전까지 해지하시면 다음 달부터 청구되지 않습니다.';
     BTN_LABEL = isOM ? '카드 등록하고 ' + won(plan.amount) + ' 결제하기' : won(plan.amount) + ' 결제하고 시작하기'; btn.textContent = BTN_LABEL;
     if (!billKeyOk) { $('#bill-keywait').hidden = false; S.lock = true; return; }
     if (/^test_/.test(BILLING_CLIENT_KEY)) $('#testband').hidden = false;

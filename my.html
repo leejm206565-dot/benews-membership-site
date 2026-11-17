@@ -184,7 +184,10 @@ footer{margin:36px 0 30px;font-size:12.5px;color:var(--mute);text-align:center}
     <div class="row" id="lk-step2" hidden><input class="fld" id="lk-code" inputmode="numeric" maxlength="6" placeholder="확인 번호 6자리" style="flex:1;min-width:150px"><button class="btn" type="button" id="lk-go">연결하기</button></div>
     <p class="note" id="lk-msg"></p>
   </details>
-  <div class="row" style="justify-content:center;margin-top:20px"><button class="btn line sm" type="button" data-logout>로그아웃</button></div>
+  <section class="card" aria-label="로그인 계정">
+    <h2>로그인 계정</h2>
+    <div class="line-item"><div><b class="ac-sso"></b><small class="ac-mail"></small></div><button class="btn line sm" type="button" data-logout>로그아웃</button></div>
+  </section>
 </main>
 
 <!-- 내 기자실 -->
@@ -309,7 +312,7 @@ footer{margin:36px 0 30px;font-size:12.5px;color:var(--mute);text-align:center}
 
   <section class="card" aria-labelledby="ac-h">
     <h2 id="ac-h">로그인 계정</h2>
-    <div class="line-item"><div><b id="ac-sso"></b><small id="ac-mail"></small></div><button class="btn line sm" type="button" data-logout>로그아웃</button></div>
+    <div class="line-item"><div><b class="ac-sso" id="ac-sso"></b><small class="ac-mail" id="ac-mail"></small></div><button class="btn line sm" type="button" data-logout>로그아웃</button></div>
   </section>
   <footer>브랜드경제신문 기자단 · 운영 주식회사 오픈엑스 · 문의 010-7382-1097(전화·문자)</footer>
 </main>
@@ -409,8 +412,9 @@ footer{margin:36px 0 30px;font-size:12.5px;color:var(--mute);text-align:center}
   function who() {
     var n = (ME && ME.name) || (WHO && WHO.n) || '';
     $('#who').hidden = !n; $('#who-name').textContent = n; $('#av').textContent = n.charAt(0) || '·';
-    $('#ac-sso').textContent = WHO ? ({ google: 'Google', kakao: '카카오', naver: '네이버', email: '이메일' }[WHO.p] || WHO.p) + ' 로그인' : '';
-    $('#ac-mail').textContent = WHO && WHO.e ? WHO.e : '';
+    var acS = WHO ? ({ google: 'Google', kakao: '카카오', naver: '네이버', email: '이메일' }[WHO.p] || WHO.p) + ' 로그인' : '', acM = WHO && WHO.e ? WHO.e : '';   // [2026-11-17] 로그인 계정 칸(회원·결제 전 화면 모두)
+    Array.prototype.forEach.call(document.querySelectorAll('.ac-sso'), function (e) { e.textContent = acS; });
+    Array.prototype.forEach.call(document.querySelectorAll('.ac-mail'), function (e) { e.textContent = acM; });
   }
   function done(j) {
     if (j.token) { TOKEN = j.token; ls('bx:my', TOKEN); }
@@ -645,10 +649,10 @@ footer{margin:36px 0 30px;font-size:12.5px;color:var(--mute);text-align:center}
     if (!$('#a-adult').checked) { er.textContent = '만 19세 이상 본인 확인에 체크해 주세요.'; return; }
     var d = { action: 'my_account', name: $('#a-name').value.trim(), phone: $('#a-phone').value, email: $('#a-email').value.trim(), loginId: $('#a-id1').value.trim().toLowerCase(), loginId2: $('#a-id2').value.trim().toLowerCase(), birth: birth, gender: g.value, adult: 'Y' };
     if (!$('#a-addr-w').hidden) { d.zip = $('#a-zip').value.replace(/\D/g, ''); d.addr1 = $('#a-addr1').value.trim(); d.addr2 = $('#a-addr2').value.trim(); }
-    var b = $('#a-go'); b.disabled = true; b.textContent = '만드는 중…';
+    var b = $('#a-go'); b.disabled = true; b.textContent = '기자 계정을 만드는 중… (30초 정도)';
     api(d).then(function (j) { b.disabled = false; b.textContent = '기자 계정 만들기';
       if (!j.ok) { er.textContent = ACC_ERR[j.error] || errMsg(j); return; }
-      done(j); toast('계정을 만들고 있어요. 몇 분 안에 아이디가 나와요.'); setTimeout(function () { if (ME && !ME.id) load(); }, 90000);
+      done(j); if (ME && ME.id) toast('기자 계정이 만들어졌어요!'); else { toast('조금만 기다려 주세요. 곧 아이디가 나와요.'); var tries = 0; (function poll() { if (!ME || ME.id || ++tries > 12) return; setTimeout(function () { api({ action: 'my_me' }).then(function (k) { if (k.ok) done(k); poll(); }).catch(poll); }, 15000); })(); }
     }).catch(function () { b.disabled = false; b.textContent = '기자 계정 만들기'; er.textContent = ERR.server; });
   });
   function b64n(u) { var b = u.split(',')[1] || ''; return Math.floor(b.length * 3 / 4); }
