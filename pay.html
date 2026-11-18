@@ -46,7 +46,7 @@ h1,h2,h3{word-break:keep-all;text-wrap:balance;letter-spacing:-.02em}
 <main class="max-w-2xl mx-auto px-4 sm:px-6 pt-6 pb-14 md:pt-10">
   <p id="pay-kicker" class="text-[13px] md:text-[14px] font-bold text-rep">브랜드경제신문 기자단 · 결제</p>
   <h1 id="pay-h1" class="mt-1 text-[26px] md:text-[34px] font-extrabold leading-tight">기자단 멤버십 결제</h1>
-  <p id="pay-lead" class="mt-2 text-[15px] text-mute">결제가 끝나면 바로 회원 등록 화면(이름·연락처·아이디)이 열립니다.</p>
+  <p id="pay-lead" class="mt-2 text-[15px] text-mute">결제가 끝나면 내 기자실에서 기자 아이디가 바로 나와요.</p>
   <!-- [2026-11-04 사장 지시] 메인 가격표를 뺐으므로 결제 화면에서 상품을 고른다 -->
   <nav id="plan-sw" aria-label="요금제 비교·고르기" hidden class="pgrid">
     <a href="/pay?p=standard" data-sw="standard" class="pcard"><span class="pc-tag">기사만 꾸준히</span><b class="pc-name">Standard</b><span class="pc-price"><b>2만원</b> / 월<small>VAT 별도</small></span><ul><li><i>✓</i><span>기사 송출 <b>주 2회</b></span></li><li><i>✓</i><span>300+ 제휴 언론사 동시 보도</span></li><li><i>✓</i><span>AI 기사 작성 프롬프트 팩</span></li><li class="pc-no"><i>–</i><span>실물 기자증</span></li><li class="pc-no"><i>–</i><span>공연 티켓 2매 (가입 선물)</span></li><li class="pc-no"><i>–</i><span>오픈엑스 복지몰</span></li><li class="pc-no"><i>–</i><span>헬로벨 렌탈 회원 혜택</span></li></ul><span class="pc-pay">매월 카드 CMS</span><span class="pc-go">이 요금제로 결제</span></a>
@@ -496,7 +496,7 @@ const WIDGET_VARIANT = 'BRGD_YEAR';   // 1년 결제 UI variantKey (사장이 op
     $('#bill-day').textContent = day; $('#bill-day2').textContent = day;
     $('#bill-box').hidden = false;
     if (KB_PENDING) $('#kb-note').hidden = false;   // 카드 자동결제(월간)에만. 1년 결제위젯은 국민카드 가능
-    if (!isOM) $('#pay-lead').textContent = '카드 한 번 등록으로 매달 같은 날 자동으로 결제돼요. 결제가 끝나면 바로 회원 등록 화면이 열립니다.';
+    if (!isOM) $('#pay-lead').textContent = '카드 한 번 등록으로 매달 같은 날 자동으로 결제돼요. 결제가 끝나면 내 기자실에서 기자 아이디가 바로 나와요.';
     // [2026-11-16] 월 상품: 해지는 다음 결제일 3영업일 전까지 → 다음 달부터
     if (!isOM) $('#pay-policy').innerHTML = '<a href="terms.html#a8" target="_blank" rel="noopener" class="underline">이용약관</a>·<a href="refund.html#monthly" target="_blank" rel="noopener" class="underline">환불정책</a>이 적용됩니다. 다음 결제일 3영업일 전까지 해지하시면 다음 달부터 청구되지 않습니다.';
     BTN_LABEL = isOM ? '카드 등록하고 ' + won(plan.amount) + ' 결제하기' : won(plan.amount) + ' 결제하고 시작하기'; btn.textContent = BTN_LABEL;
