@@ -145,9 +145,15 @@
   function loop(ms) { raf = 0; if (!on) return; var dt = Math.min((ms - last) / 1e3, .05); last = ms; step(dt, (ms - t0) / 1e3);
     if (ms - lastDraw > 33) { lastDraw = ms; draw((ms - t0) / 1e3); }   // [11-10] 필름은 초당 30번만 그려도 같아 보임(가볍게)
     raf = requestAnimationFrame(loop); }
-  function start() { if (on) return; on = true; last = performance.now(); sizeFoil(); raf = requestAnimationFrame(loop); }
+  /* [2026-11-19] 약한 기기·데이터 절약이면 움직이지 않는 카드로 한 번만 그린다(스크롤 멈춤 방지) */
+  var weak = (function () { var n = navigator, c = n.connection || {};
+    return !!(c.saveData || /(^|-)2g$/.test(c.effectiveType || '') || (n.deviceMemory && n.deviceMemory < 4) || (n.hardwareConcurrency && n.hardwareConcurrency < 4)); })();
+  var still = false, inView = false;
+  function start() { if (on) return;
+    if (weak) { if (!still) { still = true; sizeFoil(); try { step(0, 0); draw(0); } catch (e) {} } return; }
+    on = true; last = performance.now(); sizeFoil(); raf = requestAnimationFrame(loop); }
   function stop() { on = false; }
-  if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { (es[0].isIntersecting && !document.hidden) ? start() : stop(); }, { rootMargin: '80px' }).observe(root); else start();
-  document.addEventListener('visibilitychange', function () { if (document.hidden) stop(); });
+  if ('IntersectionObserver' in window) new IntersectionObserver(function (es) { inView = es[0].isIntersecting; (inView && !document.hidden) ? start() : stop(); }, { rootMargin: '80px' }).observe(root); else { inView = true; start(); }
+  document.addEventListener('visibilitychange', function () { if (document.hidden) stop(); else if (inView) start(); });   // [2026-11-19] 탭에 돌아오면 다시 움직이게
   addEventListener('resize', sizeFoil);
 })();

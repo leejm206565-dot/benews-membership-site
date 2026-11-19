@@ -46,9 +46,21 @@
     });
   });
   /* [11-10] 첫 화면이 다 그려진 뒤(한가할 때) 3D 를 붙인다. 그동안은 같은 모양의 가벼운 버튼이 보인다 */
-  function later() { (window.requestIdleCallback || function (f) { setTimeout(f, 300); })(mountAll, { timeout: 1500 }); }
+  /* [2026-11-19] 속도: 약한 기기·데이터 절약·움직임 줄이기 설정이면 3D를 붙이지 않는다(같은 모양의 가벼운 버튼 그대로).
+     3D는 화면이 다 뜨고 2.5초 뒤, 한가할 때 붙인다(첫 화면을 보는 동안 멈춤 방지) */
+  function weak() {
+    var n = navigator, c = n.connection || {};
+    if (c.saveData || /(^|-)2g$/.test(c.effectiveType || '')) return true;
+    if (window.matchMedia && matchMedia('(prefers-reduced-motion: reduce)').matches) return true;
+    if (n.deviceMemory && n.deviceMemory < 4) return true;
+    if (n.hardwareConcurrency && n.hardwareConcurrency < 4) return true;
+    return false;
+  }
+  function later() { if (weak()) return; setTimeout(function () { (window.requestIdleCallback || function (f) { setTimeout(f, 300); })(mountAll, { timeout: 2000 }); }, 2500); }
   if (document.readyState === 'complete') later(); else addEventListener('load', later);
-  /* 결제 서버를 미리 깨워 둔다(버튼에 손이 가면) */
+  /* 결제 서버를 미리 깨워 둔다: 화면이 다 뜬 뒤 한 번 + 버튼에 손이 가면 한 번 [2026-11-19 모바일은 마우스가 없어 미리 깨우기가 안 됐음] */
+  function wake() { try { fetch('https://script.google.com/macros/s/AKfycbxPac_qwfiW7pf0NvfCQr4Vyr9bLXWjq4KYFwclAmy2buZFajcD9AKsBcbd5BD0SCu9zA/exec?action=ping', { credentials: 'omit', keepalive: true }).catch(function () {}); } catch (x) {} }
+  addEventListener('load', function () { setTimeout(wake, 4000); });
   var warmed = 0; document.addEventListener('pointerover', function (e) { if (warmed || !e.target.closest || !e.target.closest('.hp-join,.pay-go')) return; warmed = 1;
     try { fetch('https://script.google.com/macros/s/AKfycbxPac_qwfiW7pf0NvfCQr4Vyr9bLXWjq4KYFwclAmy2buZFajcD9AKsBcbd5BD0SCu9zA/exec?action=ping', { credentials: 'omit', keepalive: true }).catch(function () {}); } catch (x) {} }, { passive: true });
 })();
