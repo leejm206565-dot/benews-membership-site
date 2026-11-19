@@ -116,6 +116,11 @@ footer{margin:36px 0 30px;font-size:12.5px;color:var(--mute);text-align:center}
 <!-- 로그인 -->
 <main id="gate" class="wrap gate" hidden>
   <div class="card">
+    <div id="pay-intro" hidden style="margin:-4px 0 18px;padding:16px 18px;border-radius:12px;background:#F6F2E9;border:1.5px solid #E3DBC9">
+      <p style="margin:0;font-size:13px;font-weight:700;color:#0B6B3A">선택한 요금제</p>
+      <p style="margin:4px 0 0;font-size:20px;font-weight:800;letter-spacing:-.02em"><span id="pi-name">Pro</span> <span id="pi-price" style="font-size:16px;font-weight:700;color:#57544D">월 5만원 · VAT 별도</span></p>
+      <p style="margin:10px 0 0;font-size:13.5px;line-height:1.7;color:#57544D">로그인하면 입력할 칸 없이 바로 결제 화면으로 이어져요.<br>✓ 최소 이용 기간 없음 · ✓ 가입 1분<br>✓ 결제 후 기자 계정 바로 발급</p>
+    </div>
     <h1 style="margin-top:0">간편 로그인</h1>
     <button class="sso k" type="button" id="kakao-btn"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path fill="#000" d="M12 3C6.48 3 2 6.58 2 11c0 2.86 1.88 5.37 4.71 6.79-.15.53-.97 3.4-1 3.62 0 0-.02.17.09.24.11.06.24.01.24.01.32-.04 3.7-2.43 4.28-2.84.55.08 1.11.12 1.68.12 5.52 0 10-3.58 10-8S17.52 3 12 3z" opacity=".85"/></svg><span>카카오로 시작하기</span></button>
     <button class="sso n" type="button" id="naver-btn"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path fill="#fff" d="M10.85 8.56 4.97 0H0v16h5.15V7.44L11.03 16H16V0h-5.15z"/></svg><span>네이버 로그인</span></button>
@@ -342,6 +347,10 @@ footer{margin:36px 0 30px;font-size:12.5px;color:var(--mute);text-align:center}
     var nq = new URLSearchParams(); qs.forEach(function (v, k) { if (k !== 'next' && k !== 'code' && k !== 'state') nq.set(k, v); });
     if (!/^(standard|month|year)$/.test(nq.get('p') || '')) nq.set('p', 'month');
     ss('bx:next', '/pay?' + nq.toString());
+    try {   // [2026-11-19] 로그인 화면에 고른 요금제·가격을 보여 준다(무엇을 위해 로그인하는지)
+      var PI = { standard: ['Standard', '월 2만원 · VAT 별도'], month: ['Pro', '월 5만원 · VAT 별도'], year: ['Max', '1년 60만원 · VAT 별도'] }[nq.get('p')];
+      if (PI) { $('#pi-name').textContent = PI[0]; $('#pi-price').textContent = PI[1]; $('#pay-intro').hidden = false; }
+    } catch (e) {}
   }
   function goNext() {   // 결제할 곳이 적혀 있으면 이동. 이미 이용 중인 회원은 결제하지 않고 내 기자실
     var to = ss('bx:next'); if (!to) return false;
@@ -722,5 +731,6 @@ footer{margin:36px 0 30px;font-size:12.5px;color:var(--mute);text-align:center}
   start();
 })();
 </script>
+<script src="js/bxvis.js" defer data-page="my"></script>
 </body>
 </html>
