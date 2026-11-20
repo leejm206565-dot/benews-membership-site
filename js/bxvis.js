@@ -36,6 +36,14 @@
   var rq = String(qs.get('ref') || '').toLowerCase(), rcode = '';
   try { if (/^[a-z0-9]{2,16}$/.test(rq)) sessionStorage.setItem('bx:ref', rq); rcode = sessionStorage.getItem('bx:ref') || ''; } catch (e) { rcode = /^[a-z0-9]{2,16}$/.test(rq) ? rq : ''; }
   window.BXREF = function () { return rcode; };
+  // [2026-11-20 사장 지시] 처음 들어온 경로는 이 브라우저에 오래 기억(직원 링크로 와서 나중에 다른 창에서 가입·결제해도 그 직원으로). 로그인할 때 my.html 이 서버로 보냄
+  try {
+    var F0 = JSON.parse(ls('bx:first') || 'null'), okR = /^[a-z0-9]{2,16}$/.test(rq);
+    if (!F0 || (!F0.ref && okR)) {
+      var rh = ''; try { rh = document.referrer && new URL(document.referrer).hostname !== location.hostname ? new URL(document.referrer).hostname : ''; } catch (e) {}
+      ls('bx:first', JSON.stringify({ ref: (F0 && F0.ref) || (okR ? rq : ''), src: (F0 && F0.src) || srcQ() || (rh ? '?src=' + rh : 'direct'), at: (F0 && F0.at) || Date.now() }));
+    }
+  } catch (e) {}
   // 세션(탭)마다 + 페이지마다 한 줄
   var sid = '';
   try { sid = sessionStorage.getItem('bx:sid') || ''; if (!sid) { sid = Date.now().toString(36) + Math.random().toString(36).slice(2, 8); sessionStorage.setItem('bx:sid', sid); } } catch (e) { sid = rnd().slice(0, 12); }

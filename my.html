@@ -394,6 +394,7 @@ footer{margin:36px 0 30px;font-size:12.5px;color:var(--mute);text-align:center}
   function api(data) {
     data.website = '';
     if (TOKEN && !data.token) data.token = TOKEN;
+    try { var F = JSON.parse(ls('bx:first') || 'null'); if (F) { data.fref = F.ref || ''; data.fsrc = F.src || ''; } } catch (e) {}   // [2026-11-20] 처음 들어온 경로(bxvis.js) → 가입 회원 '유입 경로·추천 직원'
     return fetch(EP, { method: 'POST', body: new URLSearchParams(data) }).then(function (r) { return r.json(); });
   }
   var ERR = { login: '로그인이 끝났어요. 다시 로그인해 주세요.', busy: '잠시 뒤 다시 시도해 주세요.', rate: '너무 여러 번 시도했어요. 1시간 뒤 다시 해 주세요.',
