@@ -97,6 +97,11 @@ input.fld,select.fld,textarea.fld{width:100%;min-height:46px;border:2px solid va
 .sub-blk{border-top:1px solid var(--line);margin-top:14px;padding-top:12px}.h3{font-size:15px;margin:0 0 6px}
 .lnk{border:0;background:none;color:var(--mute);font-size:13.5px;text-decoration:underline;padding:6px 0}
 .chk{display:flex;gap:8px;align-items:flex-start;font-size:13.5px;line-height:1.5}.chk input{margin-top:3px;width:18px;height:18px;flex:none;accent-color:#0B6B3A}
+/* [2026-11-20] 자동 로그인 · 리뷰 별점 · 메이저 송출 칸 */
+.chk.auto{font-weight:700;font-size:14px;margin:-4px 0 14px}
+.stars{display:flex;gap:4px;margin:6px 0 10px}.stars button{width:44px;height:44px;border:0;background:none;font-size:32px;line-height:1;color:#D9D3C4;cursor:pointer;padding:0}.stars button.on{color:#F2B705}
+.rv-cheer{margin:0 0 6px;font-weight:800;color:var(--g)}
+.mj-hl{background:var(--g2);border-radius:12px;padding:12px 14px;margin:10px 0 12px;font-size:14px;line-height:1.6}
 .loading{display:flex;justify-content:center;align-items:center;gap:10px;margin:60px 0;color:var(--mute);font-weight:700}
 .spin{width:22px;height:22px;border-radius:50%;border:3px solid #CFE3D7;border-top-color:var(--g);animation:sp .8s linear infinite}
 @keyframes sp{to{transform:rotate(360deg)}}
@@ -117,6 +122,7 @@ footer{margin:36px 0 30px;font-size:12.5px;color:var(--mute);text-align:center}
 <main id="gate" class="wrap gate" hidden>
   <div class="card">
     <h1 style="margin-top:0">간편 로그인</h1>
+    <label class="chk auto"><input type="checkbox" id="auto-login" checked> <span>자동 로그인 <small class="sub" style="font-weight:500">(공용 컴퓨터에서는 꺼 주세요)</small></span></label>
     <button class="sso k" type="button" id="kakao-btn"><svg width="20" height="20" viewBox="0 0 24 24" aria-hidden="true"><path fill="#000" d="M12 3C6.48 3 2 6.58 2 11c0 2.86 1.88 5.37 4.71 6.79-.15.53-.97 3.4-1 3.62 0 0-.02.17.09.24.11.06.24.01.24.01.32-.04 3.7-2.43 4.28-2.84.55.08 1.11.12 1.68.12 5.52 0 10-3.58 10-8S17.52 3 12 3z" opacity=".85"/></svg><span>카카오로 시작하기</span></button>
     <button class="sso n" type="button" id="naver-btn"><svg width="16" height="16" viewBox="0 0 16 16" aria-hidden="true"><path fill="#fff" d="M10.85 8.56 4.97 0H0v16h5.15V7.44L11.03 16H16V0h-5.15z"/></svg><span>네이버 로그인</span></button>
     <button class="sso gg" type="button" id="google-btn"><svg width="18" height="18" viewBox="0 0 48 48" aria-hidden="true"><path fill="#EA4335" d="M24 9.5c3.5 0 6.6 1.2 9.1 3.6l6.8-6.8C35.8 2.4 30.3 0 24 0 14.6 0 6.6 5.4 2.7 13.3l7.9 6.1C12.5 13.6 17.8 9.5 24 9.5z"/><path fill="#4285F4" d="M46.5 24.5c0-1.6-.1-3.1-.4-4.5H24v9h12.7c-.6 3-2.3 5.5-4.8 7.2l7.6 5.9c4.4-4.1 7-10.1 7-17.6z"/><path fill="#FBBC05" d="M10.6 28.6c-.5-1.4-.8-3-.8-4.6s.3-3.2.8-4.6l-7.9-6.1C1 16.6 0 20.2 0 24s1 7.4 2.7 10.7l7.9-6.1z"/><path fill="#34A853" d="M24 48c6.5 0 11.9-2.1 15.9-5.8l-7.6-5.9c-2.1 1.4-4.9 2.3-8.3 2.3-6.2 0-11.5-4.1-13.4-9.9l-7.9 6.1C6.6 42.6 14.6 48 24 48z"/></svg><span>Google로 시작하기</span></button>
@@ -276,6 +282,32 @@ footer{margin:36px 0 30px;font-size:12.5px;color:var(--mute);text-align:center}
     <p class="note" id="pc-note"></p>
   </section>
 
+  <!-- [2026-11-20 사장 지시] Pro·Max 전용: 네이버 메이저 언론사 송출 안내(노션) -->
+  <section class="card" id="major-card" hidden aria-labelledby="mj-h">
+    <h2 id="mj-h">네이버 메이저 언론사 기사 송출하기</h2>
+    <p class="sub">네이버 뉴스에 실리는 메이저 언론사에 내 보도자료를 낼 수 있어요. <b>Pro·Max 회원 전용</b>이에요.</p>
+    <div class="mj-hl">① 언론사 고르기 → ② 보도자료 작성 요청서(필수)와 사진 1~2장을 메일로 → ③ 입금<br>언론사별 이용료(VAT 별도) · 네이버 뉴스 송출까지 1 영업일</div>
+    <a class="btn full" href="https://www.notion.so/41ec7506c83081f38e8df9892b5855ba" target="_blank" rel="noopener" data-cta="my-major">송출 가이드·단가표 보기</a>
+  </section>
+
+  <!-- [2026-11-20 사장 지시] 모든 요금제: 리뷰 쓰기(별점·내용만, 아이디는 가려서 공개) -->
+  <section class="card" id="rv-card" hidden aria-labelledby="rv-h">
+    <h2 id="rv-h">리뷰 쓰기</h2>
+    <p class="rv-cheer">리뷰는 큰 힘이 됩니다!</p>
+    <p class="sub">기자단 활동은 어떠셨나요? 좋았던 점도, 아쉬운 점도 편하게 남겨 주세요.</p>
+    <form class="ef" id="f-rv" novalidate>
+      <div class="fl">별점</div>
+      <div class="stars" role="radiogroup" aria-label="별점">
+        <button type="button" role="radio" aria-checked="false" aria-label="1점" data-s="1">★</button><button type="button" role="radio" aria-checked="false" aria-label="2점" data-s="2">★</button><button type="button" role="radio" aria-checked="false" aria-label="3점" data-s="3">★</button><button type="button" role="radio" aria-checked="false" aria-label="4점" data-s="4">★</button><button type="button" role="radio" aria-checked="false" aria-label="5점" data-s="5">★</button>
+      </div>
+      <label class="fl">내용<textarea class="fld" id="rv-text" rows="4" maxlength="1000" placeholder="예: 메모만 적어도 기사 초안이 나와서 편했어요."></textarea></label>
+      <button class="btn full" type="submit" id="rv-go">리뷰 남기기</button>
+      <p class="note">남긴 리뷰는 기자단 아이디 일부를 가려(예: hon***) 홈페이지와 SNS에 소개될 수 있어요.</p>
+      <p class="err" id="rv-err" role="alert"></p>
+    </form>
+    <p id="rv-done" hidden style="margin:0;font-weight:700">✓ 리뷰를 남겨 주셔서 고맙습니다! 큰 힘이 돼요.</p>
+  </section>
+
   <section class="card" id="docs" aria-labelledby="docs-h">
     <h2 id="docs-h">기자 자료</h2>
     <div class="line-item"><div><b>기사 송출 가이드</b><small>로그인부터 기사 등록·게재 확인까지 6단계, 검색에 보이는 방식</small></div><a class="btn line sm" href="/guide.html">보기</a></div>
@@ -334,7 +366,14 @@ footer{margin:36px 0 30px;font-size:12.5px;color:var(--mute);text-align:center}
   function ls(k, v) { try { if (v === undefined) return localStorage.getItem(k); if (v === null) localStorage.removeItem(k); else localStorage.setItem(k, v); } catch (e) {} return null; }
   function ss(k, v) { try { if (v === undefined) return sessionStorage.getItem(k); if (v === null) sessionStorage.removeItem(k); else sessionStorage.setItem(k, v); } catch (e) {} return null; }
   function view(id) { ['#loading', '#gate', '#none', '#app'].forEach(function (s) { $(s).hidden = s !== id; }); }
-  var qs = new URLSearchParams(location.search), DEMO = qs.get('as');
+  var qs = new URLSearchParams(location.search);
+  /* [2026-11-20 사장 지시] 자동 로그인 체크박스: 끄고 로그인하면 브라우저를 닫았다 열 때 로그아웃(창을 닫으면 사라지는 쿠키로 확인) */
+  function alive() { document.cookie = 'bx_alive=1; path=/; SameSite=Lax' + (location.protocol === 'https:' ? '; Secure' : ''); }
+  if (ls('bx:auto') === '0' && !/(?:^|; )bx_alive=1/.test(document.cookie)) { ls('bx:my', null); ls('bx:mywho', null); ls('bx:demo', null); }
+  /* [2026-11-20 사장 지시] 사장 확인용 Pro 계정: 로그인 화면에서 아래 이메일·비밀번호를 넣으면 서버에 묻지 않고 미리보기(Pro)로 연다.
+     서버·시트에 로그인 기록이 남지 않고, 방문 통계도 내부(bx:team)로 빠진다. shortcut: 미리보기 데이터만 보이므로 해시를 화면 코드에 둠, 실제 회원 정보가 붙으면 서버 확인으로 바꿀 것 */
+  var TEST_H = 'a7130395d8bc3143a8b494547711a52322ef5dc4d77a67603a06b92f1ad1a05b';
+  var TEST = !qs.get('as') && !!ls('bx:demo'), DEMO = qs.get('as') || (TEST ? 'pro' : null);
   var TOKEN = ls('bx:my') || '', ME = null, WHO = null;
   /* [2026-11-17 사장 지시] 홈의 '브경단 가입하기' → my.html?next=pay&p=… : 로그인 뒤 바로 결제 화면(이름·이메일·휴대폰 자동 입력).
      카카오·네이버는 다른 사이트에 다녀오므로 가려던 곳을 이 탭에 적어 둔다 */
@@ -378,6 +417,8 @@ footer{margin:36px 0 30px;font-size:12.5px;color:var(--mute);text-align:center}
     $('#todo-card').hidden = !(m.todo || []).length;
     acctForm(m); cardForm(m);
     $('#docs').hidden = m.status === '해지';
+    $('#major-card').hidden = m.status === '해지' || m.key === 'standard';   // [2026-11-20] Pro·Max만
+    $('#rv-card').hidden = m.status === '해지';                                // [2026-11-20] 모든 요금제
     // 기자 계정
     $('#id-ok').hidden = !m.id; $('#id-wait').hidden = !!m.id;
     if (m.id) { $('#bx-id').textContent = m.id; $('#bx-pw').textContent = '●●●●●●●●●●'; $('#pw-show').textContent = '보기'; }
@@ -416,14 +457,17 @@ footer{margin:36px 0 30px;font-size:12.5px;color:var(--mute);text-align:center}
     Array.prototype.forEach.call(document.querySelectorAll('.ac-sso'), function (e) { e.textContent = acS; });
     Array.prototype.forEach.call(document.querySelectorAll('.ac-mail'), function (e) { e.textContent = acM; });
   }
+  $('#auto-login').checked = ls('bx:autopick') !== '0';   // 카카오·네이버에 다녀와도 고른 값 유지
+  $('#auto-login').addEventListener('change', function () { ls('bx:autopick', this.checked ? null : '0'); });
+  function keepPref() { ls('bx:auto', $('#auto-login').checked ? null : '0'); alive(); }
   function done(j) {
-    if (j.token) { TOKEN = j.token; ls('bx:my', TOKEN); }
+    if (j.token) { if (!TOKEN) keepPref(); TOKEN = j.token; ls('bx:my', TOKEN); }
     if (j.who) { WHO = j.who; ls('bx:mywho', JSON.stringify(WHO)); }
     ME = j.me || null;
     if (goNext()) { view('#loading'); return; }
     render();
   }
-  function logout() { ls('bx:my', null); ls('bx:mywho', null); TOKEN = ''; ME = null; WHO = null; if (DEMO) { location.href = '?as=out'; return; } gate(); }
+  function logout() { ls('bx:my', null); ls('bx:mywho', null); ls('bx:demo', null); TOKEN = ''; ME = null; WHO = null; if (TEST) { location.href = '/my.html'; return; } if (DEMO) { location.href = '?as=out'; return; } gate(); }
   Array.prototype.forEach.call(document.querySelectorAll('[data-logout]'), function (b) { b.addEventListener('click', logout); });
 
   /* ---------- 로그인 ---------- */
@@ -483,8 +527,12 @@ footer{margin:36px 0 30px;font-size:12.5px;color:var(--mute);text-align:center}
       .catch(function () { if (btn) { btn.disabled = false; btn.textContent = old; } $('#gate-err').textContent = ERR.server; });
   }
   $('#s-phone').addEventListener('input', function () { var d = this.value.replace(/\D/g, '').slice(0, 11); this.value = d.length < 4 ? d : d.length < 8 ? d.slice(0, 3) + '-' + d.slice(3) : d.slice(0, 3) + '-' + d.slice(3, 7) + '-' + d.slice(7); });
-  $('#f-login').addEventListener('submit', function (e) { e.preventDefault(); var b = this.querySelector('[type=submit]');
-    emCall({ action: 'my_pwlogin', email: $('#l-email').value, pw: $('#l-pw').value }, b, function (j) { done(j); }); });
+  function sha(s) { try { return crypto.subtle.digest('SHA-256', new TextEncoder().encode(s)).then(function (d) { return Array.prototype.map.call(new Uint8Array(d), function (x) { return ('0' + x.toString(16)).slice(-2); }).join(''); }); } catch (e) { return Promise.resolve(''); } }
+  $('#f-login').addEventListener('submit', function (e) { e.preventDefault(); var b = this.querySelector('[type=submit]'), em = $('#l-email').value.trim().toLowerCase(), pw = $('#l-pw').value;
+    sha(em + '|' + pw).then(function (h) {
+      if (h === TEST_H) { keepPref(); ls('bx:demo', '1'); ls('bx:team', '1'); location.replace('/my.html'); return; }   // 사장 확인용 Pro(서버 기록 없음)
+      emCall({ action: 'my_pwlogin', email: em, pw: pw }, b, function (j) { done(j); });
+    }); });
   $('#f-signup').addEventListener('submit', function (e) { e.preventDefault();
     if (!$('#s-agree').checked) { $('#gate-err').textContent = ERR.agree; return; }
     emCall({ action: 'my_signup_send', name: $('#s-name').value, phone: $('#s-phone').value, email: $('#s-email').value, pw: $('#s-pw').value, agree: 'Y' }, $('#s-send'), function (j) {
@@ -680,6 +728,25 @@ footer{margin:36px 0 30px;font-size:12.5px;color:var(--mute);text-align:center}
       done(j); $('#card-done').hidden = false; toast('기자증 신청을 받았어요.');
     }).catch(function () { b.disabled = false; b.textContent = '기자증 신청하기'; er.textContent = ERR.server; });
   });
+  /* ---------- [2026-11-20] 리뷰 쓰기 ---------- */
+  var rvStars = 0;
+  Array.prototype.forEach.call(document.querySelectorAll('.stars button'), function (b) { b.addEventListener('click', function () {
+    rvStars = +b.getAttribute('data-s');
+    Array.prototype.forEach.call(document.querySelectorAll('.stars button'), function (x) { var on = +x.getAttribute('data-s') <= rvStars; x.classList.toggle('on', on); x.setAttribute('aria-checked', +x.getAttribute('data-s') === rvStars ? 'true' : 'false'); });
+  }); });
+  var RV_ERR = { stars: '별점을 골라 주세요.', text: '내용을 5자 이상 적어 주세요.', noid: '기자 계정을 만든 뒤 리뷰를 남길 수 있어요.', rvrate: '리뷰를 여러 번 남겼어요. 잠시 뒤 다시 남겨 주세요.' };
+  $('#f-rv').addEventListener('submit', function (e) {
+    e.preventDefault(); var er = $('#rv-err'), tx = $('#rv-text').value.trim(); er.textContent = '';
+    if (!rvStars) { er.textContent = RV_ERR.stars; return; }
+    if (tx.length < 5) { er.textContent = RV_ERR.text; return; }
+    if (DEMO) { toast('미리보기라 저장하지 않아요.'); return; }
+    var b = $('#rv-go'); b.disabled = true; b.textContent = '보내는 중…';
+    api({ action: 'my_review', stars: rvStars, text: tx }).then(function (j) { b.disabled = false; b.textContent = '리뷰 남기기';
+      if (!j.ok) { er.textContent = RV_ERR[j.error] || errMsg(j); return; }
+      $('#f-rv').hidden = true; $('#rv-done').hidden = false; toast('리뷰를 남겼어요. 고맙습니다!');
+    }).catch(function () { b.disabled = false; b.textContent = '리뷰 남기기'; er.textContent = ERR.server; });
+  });
+
   /* ---------- 시작 ---------- */
   function start() {
     if (DEMO) { demo(); return; }
@@ -705,6 +772,7 @@ footer{margin:36px 0 30px;font-size:12.5px;color:var(--mute);text-align:center}
   /* ---------- 미리보기 데이터 ---------- */
   function demo() {
     $('#demo').hidden = qs.get('shot') === '1';   // shot=1: 심사용 화면 캡처(미리보기 띠 숨김)
+    if (TEST) $('#demo .wrap').firstChild.textContent = '사장님 확인용 계정 · 서버에 기록되지 않아요 · 다른 요금제 화면: ';
     Array.prototype.forEach.call(document.querySelectorAll('.demo a'), function (a) { if (a.getAttribute('href') === '?as=' + DEMO) a.setAttribute('aria-current', 'true'); });
     if (DEMO === 'out') { gate(''); return; }
     WHO = { n: '홍길동', e: 'hong@gmail.com', p: 'google' };
