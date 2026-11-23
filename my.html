@@ -93,6 +93,7 @@ input.fld,select.fld,textarea.fld{width:100%;min-height:46px;border:2px solid va
 .ef{display:grid;gap:8px;margin-top:10px;text-align:left}
 .fl{display:block;font-weight:700;font-size:14px}.fl .fld{margin-top:4px}
 .g2{display:grid;gap:8px}@media(min-width:560px){.g2{grid-template-columns:1fr 1fr}}
+.ctype{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px}.ctype label{display:block;border:2px solid var(--line);border-radius:12px;padding:6px;cursor:pointer;text-align:center;font-weight:800;font-size:14px}.ctype label:has(input:checked){border-color:var(--g);background:var(--g2)}.ctype img{display:block;width:100%;height:auto;border-radius:8px;margin-bottom:4px}.ctype input{margin-right:4px}
 .seg{display:flex;gap:8px;margin-top:4px}.seg label{flex:1;display:flex;align-items:center;justify-content:center;gap:6px;min-height:46px;border:2px solid var(--line);border-radius:12px;font-weight:700;cursor:pointer}.seg label:has(input:checked){border-color:var(--g);background:var(--g2)}
 .zipbox{height:420px;border:1px solid var(--line);border-radius:12px;overflow:hidden;margin-top:8px}
 .fold summary{list-style:none;cursor:pointer;display:flex;align-items:center;justify-content:space-between;gap:10px}.fold summary::-webkit-details-marker{display:none}
@@ -274,6 +275,14 @@ footer{margin:36px 0 30px;font-size:12.5px;color:var(--mute);text-align:center}
     <p class="sub">실물 기자증을 만들어 보내 드려요. 정보를 받으면 제작을 시작해요.</p>
     <form class="ef" id="f-card" novalidate>
       <label class="fl">영문 이름 <small class="sub">(여권과 같게, 예: HONG GILDONG)</small><input class="fld" id="c-en" autocapitalize="characters" maxlength="50"></label>
+      <!-- [2026-11-23 사장 지시] 기자증 유형 A·B·C·D (고르지 않으면 A) -->
+      <div class="fl">기자증 유형 <small class="sub">(고르지 않으면 A 타입으로 만들어요)</small></div>
+      <div class="ctype" role="radiogroup" aria-label="기자증 유형">
+        <label><img src="img/v7/presscard_A.webp" alt="A 타입 앞면·뒷면" width="472" height="334" loading="lazy"><input type="radio" name="c-t" value="A" checked>A 타입</label>
+        <label><img src="img/v7/presscard_B.webp" alt="B 타입 앞면·뒷면" width="472" height="334" loading="lazy"><input type="radio" name="c-t" value="B">B 타입</label>
+        <label><img src="img/v7/presscard_C.webp" alt="C 타입 앞면·뒷면" width="472" height="334" loading="lazy"><input type="radio" name="c-t" value="C">C 타입</label>
+        <label><img src="img/v7/presscard_D.webp" alt="D 타입 앞면·뒷면" width="472" height="334" loading="lazy"><input type="radio" name="c-t" value="D">D 타입</label>
+      </div>
       <div class="fl">증명사진 <small class="sub">(얼굴이 잘 보이는 정면 사진)</small></div>
       <div class="row" style="margin-top:4px"><img id="c-img" alt="" hidden style="width:72px;height:96px;object-fit:cover;border-radius:8px;border:1px solid var(--line)"><label class="btn line sm" style="cursor:pointer">사진 고르기<input type="file" id="c-file" accept="image/*" hidden></label><span class="note" id="c-info" style="margin:0">JPG·PNG, 보낼 때 자동으로 줄여요</span></div>
       <div class="fl">받는 방법</div>
@@ -739,7 +748,8 @@ footer{margin:36px 0 30px;font-size:12.5px;color:var(--mute);text-align:center}
     if (!/^[A-Z][A-Z .,'\-]{1,49}$/.test(en)) { er.textContent = ACC_ERR.nameEn; return; }
     if (!cardPhoto) { er.textContent = ACC_ERR.photo; return; }
     var dv = document.querySelector('input[name=c-d]:checked').value;
-    var d = { action: 'my_card_apply', nameEn: en, delivery: dv, photoMode: 'now', photo: cardPhoto, zip: $('#c-zip').value.replace(/\D/g, ''), addr1: $('#c-addr1').value.trim(), addr2: $('#c-addr2').value.trim() };
+    var ct = document.querySelector('input[name=c-t]:checked');
+    var d = { action: 'my_card_apply', nameEn: en, delivery: dv, photoMode: 'now', photo: cardPhoto, cardType: ct ? ct.value : 'A', zip: $('#c-zip').value.replace(/\D/g, ''), addr1: $('#c-addr1').value.trim(), addr2: $('#c-addr2').value.trim() };
     var b = $('#c-go'); b.disabled = true; b.textContent = '보내는 중…';
     api(d).then(function (j) { b.disabled = false; b.textContent = '기자증 신청하기';
       if (!j.ok) { er.textContent = ACC_ERR[j.error] || errMsg(j); return; }
