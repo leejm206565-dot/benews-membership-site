@@ -67,9 +67,9 @@ details>summary::-webkit-details-marker{display:none}
     <p class="rc-none mt-4 rounded-xl border border-line bg-white px-4 py-3 text-[14px] text-mute" hidden>접수번호가 없어도 괜찮습니다. 이름·휴대폰으로 신청 내역을 찾아 연결합니다.</p>
 
     <ul class="mt-4 rounded-2xl bg-white p-4 md:p-5 shadow-soft space-y-3 text-[14px] md:text-[15px]">
-      <li class="flex gap-3"><span class="shrink-0 grid place-items-center w-8 h-8 rounded-lg bg-rep-soft text-rep"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span><span><b>비밀번호는 받지 않습니다.</b> 아이디·임시 비밀번호와 기사 송출 방법을 아래 <b>이메일</b>로 보내드립니다. 첫 로그인 후 비밀번호를 바꿔 주세요.</span></li>
+      <li class="flex gap-3"><span class="shrink-0 grid place-items-center w-8 h-8 rounded-lg bg-rep-soft text-rep"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="4" y="11" width="16" height="10" rx="2"/><path d="M8 11V7a4 4 0 0 1 8 0v4"/></svg></span><span><b>비밀번호는 받지 않습니다.</b> 아이디·임시 비밀번호와 기사 송출 방법은 <b>내 기자실</b>에서 바로 확인하실 수 있어요. 첫 로그인 후 비밀번호를 바꿔 주세요.</span></li>
       <li class="flex gap-3"><span class="shrink-0 grid place-items-center w-8 h-8 rounded-lg bg-rep-soft text-rep"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9l1.5-5h15L21 9"/><path d="M4 9v11h16V9"/><path d="M10 20v-5h4v5"/></svg></span><span>같은 아이디로 <b>오픈엑스 복지몰 계정</b>도 만들어 드립니다. <span class="text-mute">(모든 기자단 회원)</span></span></li>
-      <li class="flex gap-3"><span class="shrink-0 grid place-items-center w-8 h-8 rounded-lg bg-rep-soft text-rep"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></span><span>결제·등록이 끝나면 <b>바로</b> 아이디 안내 메일을 보내드립니다(담당자 확인이 필요한 경우 1일 이내).</span></li>
+      <li class="flex gap-3"><span class="shrink-0 grid place-items-center w-8 h-8 rounded-lg bg-rep-soft text-rep"><svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><rect x="3" y="5" width="18" height="14" rx="2"/><path d="m3 7 9 6 9-6"/></svg></span><span>결제·등록이 끝나면 <b>바로</b> 내 기자실에 아이디가 나와요(담당자 확인이 필요한 경우 1일 이내).</span></li>
     </ul>
 
     <form id="f-acct" onsubmit="if(!window.__formReady){alert('화면을 불러오는 중 문제가 생겼습니다. 새로고침하거나 010-7382-1097로 연락 주세요.');}return false;" class="mt-4 space-y-4" novalidate>
@@ -100,11 +100,8 @@ details>summary::-webkit-details-marker{display:none}
             <label class="block"><span class="text-[14px] font-bold">희망 아이디 <span class="font-normal text-mute">(2순위)</span></span><input name="loginId2" class="fld" required autocapitalize="none" spellcheck="false" maxlength="12" placeholder="예: honggd"><span class="ferr" data-for="loginId2"></span></label>
           </div>
           <p class="hint !mt-1">영문 소문자·숫자 4~12자. 1순위가 이미 쓰이고 있으면 2순위로 만듭니다.</p>
-          <div class="grid sm:grid-cols-2 gap-3 items-start">
-            <label class="block"><span class="text-[14px] font-bold">이메일</span><input name="email" class="fld" type="email" required autocomplete="email" autocapitalize="none" spellcheck="false" maxlength="100" placeholder="name@example.com"><span class="ferr" data-for="email"></span></label>
-            <label class="block"><span class="text-[14px] font-bold">이메일 확인 <span class="font-normal text-mute">(한 번 더)</span></span><input name="email2" class="fld" type="email" required autocomplete="off" autocapitalize="none" spellcheck="false" maxlength="100" placeholder="같은 주소를 한 번 더"><span class="ferr" data-for="email2"></span></label>
-          </div>
-          <p class="hint !mt-1">아이디·임시 비밀번호와 기사 송출 방법을 이 주소로 보내드립니다. 틀리면 안내를 받을 수 없으니 두 칸을 똑같이 적어 주세요.</p>
+          <label class="block"><span class="text-[14px] font-bold">이메일</span><input name="email" class="fld" type="email" required autocomplete="email" autocapitalize="none" spellcheck="false" maxlength="100" placeholder="name@example.com"><span class="ferr" data-for="email"></span></label>
+          <p class="hint !mt-1">연락받으실 이메일이에요. 아이디·임시 비밀번호는 로그인 후 내 기자실에서 바로 확인하실 수 있어요.</p>
         </div>
       </section>
 
@@ -153,7 +150,7 @@ details>summary::-webkit-details-marker{display:none}
             <table><tbody>
               <tr><th scope="row">수집자</th><td>주식회사 오픈엑스</td></tr>
               <tr><th scope="row">항목</th><td>이름, 휴대폰 번호, 이메일, 희망 아이디(1·2순위), 생년월일, 성별, 주소, 결제한 상품</td></tr>
-              <tr><th scope="row">목적</th><td>회원 확인과 연락(결제·이용 안내), 기자단 홈페이지 계정 발급과 안내(아이디·임시 비밀번호·기사 송출 방법 이메일 안내), 기자단 회원의 복지몰(주식회사 오픈엑스 운영) 계정 생성, 실물 기자증 발송, 복지몰 주문 시 배송</td></tr>
+              <tr><th scope="row">목적</th><td>회원 확인과 연락(결제·이용 안내), 기자단 홈페이지 계정 발급과 안내(아이디·임시 비밀번호·기사 송출 방법은 내 기자실에 표시), 기자단 회원의 복지몰(주식회사 오픈엑스 운영) 계정 생성, 실물 기자증 발송, 복지몰 주문 시 배송</td></tr>
               <tr><th scope="row">보유 기간</th><td>멤버십 해지(계약 종료) 시까지. 관계 법령에 따라 보존해야 하는 정보는 그 기간 동안 보관합니다.</td></tr>
             </tbody></table>
             <p>비밀번호는 받지 않습니다. 동의를 거부할 수 있으나, 거부하면 기자단 계정을 발급할 수 없습니다. 자세한 내용은 <a href="privacy.html" target="_blank" rel="noopener" class="underline font-bold">개인정보처리방침</a>을 확인해 주세요.</p>
@@ -185,8 +182,8 @@ details>summary::-webkit-details-marker{display:none}
       <h3 class="mt-5 text-[16px] font-bold">다음 단계</h3>
       <ol class="mt-2 space-y-3 text-[15px]">
         <li class="flex gap-3"><span class="sec-no !w-7 !h-7 !text-[13px]">1</span><span>담당자가 결제를 확인합니다.</span></li>
-        <li class="flex gap-3"><span class="sec-no !w-7 !h-7 !text-[13px]">2</span><span><b>1~2분 안에</b> <b class="ok-mail-to">적어 주신 이메일</b>로 <b>아이디·임시 비밀번호·기사 송출 방법</b>을 한 번에 보내드립니다. <b>메일이 안 보이면 스팸함도 꼭 확인해 주세요.</b></span></li>
-        <li class="flex gap-3"><span class="sec-no !w-7 !h-7 !text-[13px]">3</span><span>브랜드경제신문 홈페이지에 로그인한 뒤 비밀번호를 직접 바꾸고, 메일 안내대로 기사를 송출하시면 됩니다.</span></li>
+        <li class="flex gap-3"><span class="sec-no !w-7 !h-7 !text-[13px]">2</span><span><b>1~2분 안에</b> 홈페이지 위쪽 메뉴의 <a href="/my.html" class="underline font-bold">내 기자실</a>에서 <b>아이디·임시 비밀번호·기사 송출 방법</b>을 확인하실 수 있어요.</span></li>
+        <li class="flex gap-3"><span class="sec-no !w-7 !h-7 !text-[13px]">3</span><span>브랜드경제신문 홈페이지에 로그인한 뒤 비밀번호를 직접 바꾸고, 내 기자실 안내대로 기사를 송출하시면 됩니다.</span></li>
         <li class="ok-year flex gap-3"><span class="sec-no !w-7 !h-7 !text-[13px]">4</span><span>오픈엑스 복지몰 가입은 기자증 정보(생년월일·성별·주소)를 입력하시면 같은 아이디로 승인돼요. <span class="text-mute">(모든 기자단 회원)</span></span></li>
       </ol>
       <div class="ok-cms mt-5 rounded-xl border border-rep bg-rep-soft p-4" hidden>
@@ -198,8 +195,8 @@ details>summary::-webkit-details-marker{display:none}
     <div class="mt-4 rounded-2xl bg-white p-5 md:p-7 shadow-soft">
       <p class="text-[13px] font-bold text-rep">2단계 · 추가 정보</p>
       <h3 class="mt-1 text-[19px] md:text-[21px] font-extrabold leading-snug">실물 기자증 정보</h3>
-      <p class="mt-2 text-[15px] font-bold">기자증 신청 링크는 아이디 안내 메일과 함께 바로 보내 드려요.</p>
-      <p class="mt-1 text-[14px]">메일의 링크로 기자증 정보를 보내 주시면 주말·공휴일 빼고 14일 이내에 보내 드려요. 기자증은 기자단 활동 시작과 별개예요.</p>
+      <p class="mt-2 text-[15px] font-bold">기자증 신청은 내 기자실에서 할 수 있어요. 신청 링크도 메일로 보내 드려요.</p>
+      <p class="mt-1 text-[14px]">기자증 정보를 보내 주시면 주말·공휴일 빼고 14일 이내에 보내 드려요. 기자증은 기자단 활동 시작과 별개예요.</p>
       <p class="mt-1 text-[13px] text-mute">필요한 것: 영문 이름, 증명사진, 받는 방법(택배·방문), 주소</p>
           </div>
   </section>
@@ -531,9 +528,7 @@ const SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxPac_qwfiW7pf0N
     if (!ID_RE.test(id1)) k.bad('loginId', '영문 소문자·숫자 4~12자로 적어 주세요.', A.loginId);
     if (!ID_RE.test(id2)) k.bad('loginId2', '영문 소문자·숫자 4~12자로 적어 주세요.', A.loginId2);
     else if (id1 === id2) k.bad('loginId2', '1순위와 다른 아이디를 적어 주세요.', A.loginId2);
-    if (!EMAIL_RE.test(A.email.value.trim())) k.bad('email', '이메일 주소를 확인해 주세요.', A.email);
-    else if (A.email2.value.trim().toLowerCase() !== A.email.value.trim().toLowerCase()) k.bad('email2', '위 이메일과 똑같이 적어 주세요.', A.email2);
-    // [2026-11-03] 생년월일·성별·주소는 기자증 단계에서 확인
+    if (!EMAIL_RE.test(A.email.value.trim())) k.bad('email', '이메일 주소를 확인해 주세요.', A.email);    // [2026-11-03] 생년월일·성별·주소는 기자증 단계에서 확인
     if (!A.agree.checked) k.bad('agree', '홈페이지 가입 정보 수집·이용에 동의해 주세요.', A.agree);
     if (!A.adult.checked) k.bad('adult', '만 19세 이상·본인 명의 신청에 체크해 주세요.', A.adult);
     return k.end();
@@ -559,7 +554,6 @@ const SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxPac_qwfiW7pf0N
       $('.ok-no').textContent = r || '';
       $('.ok-rc').hidden = !r; $('.ok-norc').hidden = !!r;
       $('.ok-who').textContent = maskName(data.name) + ' 님 · ' + maskPhone(d) + ' · ' + plan + ' · 희망 아이디 ' + data.loginId;
-      $('.ok-mail-to').textContent = data.email;
       $('.ok-year').hidden = false;   // [2026-10-27] 복지몰 = 모든 회원
       $('.ok-cms').hidden = plan !== '월간';
       $('#stp1').removeAttribute('aria-current'); $('#stp1').classList.add('ok');
