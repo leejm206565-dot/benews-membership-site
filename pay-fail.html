@@ -43,7 +43,7 @@ h1,h2,h3{word-break:keep-all;text-wrap:balance;letter-spacing:-.02em}
   </div>
   <a id="f-again" href="/#reporter" class="mt-4 flex items-center justify-center w-full min-h-[52px] rounded-xl bg-rep hover:bg-rep-dark text-white text-[17px] font-extrabold">다시 결제하기</a>
   <a href="/#reporter" class="mt-2 inline-flex items-center min-h-[44px] text-[14px] text-mute underline">상품 화면으로 돌아가기</a>
-  <p class="mt-3 text-[14px] text-mute">문의 <a class="underline font-bold text-ink" href="tel:010-7382-1097">010-7382-1097</a></p>
+  <p class="mt-3 text-[14px] text-mute">문의 <a class="underline font-bold text-ink" href="https://open.kakao.com/o/sMTQwzTi" target="_blank" rel="noopener">카카오톡 상담 채널</a></p>
 </main>
 
 <footer class="bg-white text-[13px] text-mute border-t border-line">
@@ -52,7 +52,7 @@ h1,h2,h3{word-break:keep-all;text-wrap:balance;letter-spacing:-.02em}
     <p class="font-bold text-ink">주식회사 오픈엑스</p>
     <p>대표이사 김미진 · 사업자등록번호 310-81-34293 · 통신판매업신고 제 2024-서울마포-0817호 · 호스팅 서비스 제공자 GitHub, Inc.</p>
     <p>서울특별시 마포구 성암로 330, 8층 808호 (상암동, DMC첨단산업센터)</p>
-    <p>기자단 문의 010-7382-1097</p>
+    <p>기자단 문의 <a href="https://open.kakao.com/o/sMTQwzTi" target="_blank" rel="noopener" style="text-decoration:underline">카카오톡 상담 채널</a> · 이메일 leejm205050@openxgroup.co.kr</p>
     <p>고객 문의 이메일 <a class="underline" href="mailto:leejm205050@openxgroup.co.kr">leejm205050@openxgroup.co.kr</a></p>
     <p>브랜드경제신문은 주식회사 오픈엑스가 운영하는 언론사입니다.</p>
   </div>
@@ -72,7 +72,7 @@ h1,h2,h3{word-break:keep-all;text-wrap:balance;letter-spacing:-.02em}
   if (bill) { $('#f-title').textContent = '카드 등록이 완료되지 않았습니다'; $('#f-msg').textContent = '카드 등록 중 문제가 생겨 등록과 결제가 진행되지 않았습니다.'; $('#f-again').textContent = '다시 카드 등록하기'; }
   if (code === 'PAY_PROCESS_CANCELED' || code === 'USER_CANCEL') { $('#f-title').textContent = bill ? '카드 등록을 취소하셨습니다' : '결제를 취소하셨습니다'; $('#f-msg').textContent = (bill ? '카드 등록과 결제가' : '결제가') + ' 진행되지 않았습니다. 준비되시면 다시 진행해 주세요.'; }
   else if (code === 'REJECT_CARD_COMPANY') { $('#f-msg').textContent = '카드사에서 카드 정보를 승인하지 않았습니다. 카드 번호·유효기간·생년월일을 확인하거나 다른 카드로 다시 시도해 주세요.' + (msg ? ' (' + msg + ')' : ''); }
-  else if (code === 'PAY_PROCESS_ABORTED') { $('#f-msg').textContent = (msg || '처리 중 문제가 생겼습니다.') + ' 잠시 뒤 다시 시도해 주세요. 계속되면 010-7382-1097로 알려 주세요.'; }
+  else if (code === 'PAY_PROCESS_ABORTED') { $('#f-msg').textContent = (msg || '처리 중 문제가 생겼습니다.') + ' 잠시 뒤 다시 시도해 주세요. 계속되면 카카오톡 상담 채널로 알려 주세요.'; }
   else if (msg) $('#f-msg').textContent = msg;   // 토스가 보낸 사유 (글자로만 표시)
   var KB_PENDING = false;   // [2026-11-16] 국민카드 자동결제 승인 전(pay.html 과 같이 바꿈)
   if (bill && KB_PENDING && code !== 'PAY_PROCESS_CANCELED' && code !== 'USER_CANCEL') $('#f-msg').textContent += ' 국민(KB)카드는 자동결제 승인 진행 중이라 아직 등록할 수 없어요. 다른 카드로 등록해 주세요.';

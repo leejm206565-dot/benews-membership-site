@@ -1191,10 +1191,10 @@ html{scroll-padding-top:112px}
               <details><summary>전문 보기</summary><p>수집자: 주식회사 오픈엑스 / 수집 항목: 이름, 휴대폰 번호 / 이용 목적: 상담 연락 / 보유 기간: 목적 달성 후 지체 없이 파기(관계 법령에 따른 보존 기간 제외) / 동의를 거부할 수 있으나 거부 시 신청이 제한됩니다.</p></details>
             </div>
             <p class="err" role="alert"></p>
-            <div class="fail" role="alert" hidden><p class="t">접수가 확인되지 않았습니다.</p><p class="fail-msg">입력하신 내용은 그대로 있습니다. 다시 보내거나 전화로 알려 주세요.</p><div class="bs"><button type="button" class="retry">다시 보내기</button><a href="tel:010-7382-1097">전화 010-7382-1097</a></div></div>
+            <div class="fail" role="alert" hidden><p class="t">접수가 확인되지 않았습니다.</p><p class="fail-msg">입력하신 내용은 그대로 있습니다. 다시 보내거나 카카오톡 상담 채널로 알려 주세요.</p><div class="bs"><button type="button" class="retry">다시 보내기</button><a href="https://open.kakao.com/o/sMTQwzTi" target="_blank" rel="noopener">카카오톡 상담</a></div></div>
             <div class="g2">
               <button type="submit" class="btn btn-om" style="white-space:nowrap;padding:0 8px" data-cta="om-form-submit">상담 신청하기</button>
-              <a href="tel:010-7382-1097" class="btn btn-om-line" style="padding:0 8px" data-link="tel-om-form">전화 상담</a>
+              <a href="https://open.kakao.com/o/sMTQwzTi" target="_blank" rel="noopener" class="btn btn-om-line" style="padding:0 8px" data-link="kakao-om-form">카카오톡 상담</a>
             </div>
             <p class="done b" style="color:var(--om)" role="status"></p>
           </form>
@@ -1206,7 +1206,7 @@ html{scroll-padding-top:112px}
             <p style="margin-top:4px;font-size:14px">인터넷신문 창간 상담을 신청하셨습니다.</p>
             <p style="margin-top:12px;font-size:15px;font-weight:800">다음 순서</p>
             <ol>
-              <li>담당자가 빠른 시일 내에 입력하신 번호로 연락드립니다. (발신 010-7382-1097)</li>
+              <li>담당자가 빠른 시일 내에 입력하신 번호로 연락드립니다.</li>
               <li>상담에서 이용 기간과 비용 구조를 자세히 안내드립니다.</li>
             </ol>
             <p class="small mute" style="margin-top:12px">운영 시간 평일 10:00~17:30 (주말·공휴일 휴무)</p>
@@ -1260,7 +1260,7 @@ html{scroll-padding-top:112px}
       <a href="#om-start" class="btn btn-lime" data-om-mode="consult" data-cta="om-cta-consult">창간 상담 받기</a>
       <a href="#om-start" class="btn btn-ghost" data-om-mode="pay" data-cta="om-cta-pay">월간 정기결제</a>
     </div>
-    <a href="tel:010-7382-1097" class="tel u" data-link="tel-om-cta">전화 문의 010-7382-1097</a>
+    <a href="https://open.kakao.com/o/sMTQwzTi" target="_blank" rel="noopener" class="tel u" data-link="kakao-om-cta">카카오톡 상담 채널로 문의</a>
   </div>
 </section>
 
@@ -1287,7 +1287,7 @@ html{scroll-padding-top:112px}
     <p class="co">주식회사 오픈엑스</p>
     <p>대표이사 김미진 · 사업자등록번호 310-81-34293 · 통신판매업신고 제 2024-서울마포-0817호 · 호스팅 서비스 제공자 GitHub, Inc.</p>
     <p>서울특별시 마포구 성암로 330, 8층 808호 (상암동, DMC첨단산업센터)</p>
-    <p>기자단·오픈미디어 문의 010-7382-1097 (평일 10:00~17:30, 주말·공휴일 휴무)</p>
+    <p>기자단·오픈미디어 문의 <a href="https://open.kakao.com/o/sMTQwzTi" target="_blank" rel="noopener" style="text-decoration:underline">카카오톡 상담 채널</a> · 이메일 leejm205050@openxgroup.co.kr</p>
     <p>고객 문의 이메일 <a class="u" href="mailto:leejm205050@openxgroup.co.kr">leejm205050@openxgroup.co.kr</a></p>
     <p>브랜드경제신문은 주식회사 오픈엑스가 운영하는 언론사입니다.</p>
   </div>
@@ -1304,7 +1304,7 @@ const SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxPac_qwfiW7pf0N
 (function () {
   /* v10 openmedia: 운영 중 페이지(v8)의 오픈미디어 접수·결제 스크립트를 그대로 옮김(입력 검사·허니팟·전송 주소 동일).
      결제는 /pay?p=om_month (+ 유입 경로 s). */
-  var PHONE = '010-7382-1097';
+  var PHONE = '카카오톡 상담 채널', KAKAO = 'https://open.kakao.com/o/sMTQwzTi';   // [2026-11-23] 사장 번호 대신
   var TIMEOUT = 10000, RETRY_WAIT = 2000, DUP_MS = 10 * 60 * 1000;
   var $ = function (s, r) { return (r || document).querySelector(s); };
   var $$ = function (s, r) { return Array.prototype.slice.call((r || document).querySelectorAll(s)); };
@@ -1504,7 +1504,7 @@ const SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxPac_qwfiW7pf0N
       var mem = memGet(track, d);
       if (mem && (mem.plan || '') === plan) { opt.done(f, { ok: true, receipt: mem.receipt, dup: true }, name, d, plan); return; }
     }
-    if (!SHEET_ENDPOINT) { err.textContent = '온라인 접수를 준비하고 있습니다. 전화 ' + PHONE + '로 연락 주세요.'; return; }
+    if (!SHEET_ENDPOINT) { err.textContent = '온라인 접수를 준비하고 있습니다. ' + PHONE + '로 연락 주세요.'; return; }
     var data = {};
     new FormData(f).forEach(function (v, k) { data[k] = v; });
     data.phone = fmtPhone(d);
@@ -1518,7 +1518,7 @@ const SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxPac_qwfiW7pf0N
       if (!j.ok) {
         if (j.error === 'phone') { err.textContent = ERR.phone; f.elements.phone.focus(); return; }
         if (j.error === 'required') { err.textContent = ERR.required; return; }
-        $('.fail-msg', fail).textContent = j.error === 'busy' ? ERR.busy : '입력하신 내용은 그대로 있습니다. 다시 보내거나 전화로 알려 주세요.';
+        $('.fail-msg', fail).textContent = j.error === 'busy' ? ERR.busy : '입력하신 내용은 그대로 있습니다. 다시 보내거나 카카오톡 상담 채널로 알려 주세요.';
         fail.hidden = false; return;
       }
       if (!j.receipt) return;   // 스팸칸 응답
@@ -1528,7 +1528,7 @@ const SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxPac_qwfiW7pf0N
       opt.done(f, j, name, d, plan);
     }).catch(function () {
       btn.disabled = false; btn.textContent = label;
-      $('.fail-msg', fail).textContent = '입력하신 내용은 그대로 있습니다. 다시 보내거나 전화로 알려 주세요.';
+      $('.fail-msg', fail).textContent = '입력하신 내용은 그대로 있습니다. 다시 보내거나 카카오톡 상담 채널로 알려 주세요.';
       fail.hidden = false;
       fail.scrollIntoView({ block: 'nearest' });
     });
