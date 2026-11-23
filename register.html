@@ -769,7 +769,7 @@ const SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxPac_qwfiW7pf0N
     if (el.tabIndex < 0 || el.hasAttribute('tabindex')) { try { el.focus({ preventScroll: true }); } catch (e) {} }
   }
 
-  if (qs.get('step') === 'card') openCard();
+  if (qs.get('step') === 'card') { location.replace('/my.html#cardf'); return; }   // [2026-11-23] 기자증 신청은 내 기자실 한 곳에서(유형 A·B·C·D, 300dpi·300px 안내)
   else { showRc($('#v-acct')); }
 })();
 </script>

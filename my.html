@@ -284,7 +284,8 @@ footer{margin:36px 0 30px;font-size:12.5px;color:var(--mute);text-align:center}
         <label><img src="img/v7/presscard_D.webp" alt="D 타입 앞면·뒷면" width="472" height="334" loading="lazy"><input type="radio" name="c-t" value="D">D 타입</label>
       </div>
       <div class="fl">증명사진 <small class="sub">(얼굴이 잘 보이는 정면 사진)</small></div>
-      <div class="row" style="margin-top:4px"><img id="c-img" alt="" hidden style="width:72px;height:96px;object-fit:cover;border-radius:8px;border:1px solid var(--line)"><label class="btn line sm" style="cursor:pointer">사진 고르기<input type="file" id="c-file" accept="image/*" hidden></label><span class="note" id="c-info" style="margin:0">JPG·PNG, 보낼 때 자동으로 줄여요</span></div>
+      <p class="note" style="margin:2px 0 0;color:var(--warn);font-weight:800">300dpi 이상 · 가로 최소 300px 이상</p>
+      <div class="row" style="margin-top:4px"><img id="c-img" alt="" hidden style="width:72px;height:96px;object-fit:cover;border-radius:8px;border:1px solid var(--line)"><label class="btn line sm" style="cursor:pointer">사진 고르기<input type="file" id="c-file" accept="image/*" hidden></label><span class="note" id="c-info" style="margin:0">JPG·PNG (가로 300px보다 작은 사진은 받지 않아요)</span></div>
       <div class="fl">받는 방법</div>
       <div class="seg"><label><input type="radio" name="c-d" value="택배" checked> 택배 (무료)</label><label><input type="radio" name="c-d" value="방문 수령"> 방문 수령</label></div>
       <div id="c-addr-w">
@@ -439,6 +440,7 @@ footer{margin:36px 0 30px;font-size:12.5px;color:var(--mute);text-align:center}
     $('#todo').innerHTML = ''; (m.todo || []).forEach(function (t) { var a = document.createElement('a'); a.href = t.href === '#card' ? '#cardf' : t.href; a.textContent = t.label; $('#todo').appendChild(a); });
     $('#todo-card').hidden = !(m.todo || []).length;
     acctForm(m); cardForm(m);
+    if (location.hash === '#cardf' && !$('#cardf').hidden) { history.replaceState(null, '', location.pathname + location.search); setTimeout(function () { $('#cardf').scrollIntoView({ block: 'start' }); }, 50); }   // [2026-11-23] 기자증 안내 메일 링크
     $('#docs').hidden = m.status === '해지';
     $('#major-card').hidden = m.status === '해지' || m.key === 'standard';   // [2026-11-20] Pro·Max만
     $('#rv-card').hidden = m.status === '해지';                                // [2026-11-20] 모든 요금제
@@ -731,12 +733,20 @@ footer{margin:36px 0 30px;font-size:12.5px;color:var(--mute);text-align:center}
     }).catch(function () { b.disabled = false; b.textContent = '기자 계정 만들기'; er.textContent = ERR.server; });
   });
   function b64n(u) { var b = u.split(',')[1] || ''; return Math.floor(b.length * 3 / 4); }
+  /* [2026-11-23 사장 지시] 기자증 사진 300dpi: JPEG 머리(JFIF)의 해상도 값을 300dpi로 적는다(그림은 그대로) */
+  function dpi300(d) {
+    try { var s = atob(d.split(',')[1]); if (s.charCodeAt(2) !== 0xFF || s.charCodeAt(3) !== 0xE0 || s.slice(6, 10) !== 'JFIF') return d;
+      return 'data:image/jpeg;base64,' + btoa(s.slice(0, 13) + String.fromCharCode(1, 1, 44, 1, 44) + s.slice(18)); } catch (e) { return d; }
+  }
   $('#c-file').addEventListener('change', function () {
     var f = this.files && this.files[0]; if (!f) return; $('#c-info').textContent = '사진을 줄이는 중…';
     var url = URL.createObjectURL(f), img = new Image();
-    img.onload = function () { try { var w = img.naturalWidth, h = img.naturalHeight, k = Math.min(1, 800 / Math.max(w, h)), c = document.createElement('canvas'); c.width = Math.round(w * k); c.height = Math.round(h * k);
+    img.onload = function () { try { var w = img.naturalWidth, h = img.naturalHeight;
+      if (w < 300) { cardPhoto = ''; $('#c-img').hidden = true; $('#c-info').textContent = '사진이 너무 작아요(가로 ' + w + 'px). 가로 300px 이상 사진을 골라 주세요.'; URL.revokeObjectURL(url); return; }   // [2026-11-23 사장 지시] 가로 최소 300px
+      var k = Math.min(1, 1600 / Math.max(w, h)), c = document.createElement('canvas'); c.width = Math.round(w * k); c.height = Math.round(h * k);   // 인쇄용: 긴 쪽 1600px까지(가로 300px 아래로는 줄이지 않음)
       var x = c.getContext('2d'); x.fillStyle = '#fff'; x.fillRect(0, 0, c.width, c.height); x.drawImage(img, 0, 0, c.width, c.height);
       var q = 0.88, dd = c.toDataURL('image/jpeg', q); while (b64n(dd) > 2097152 && q > 0.45) { q -= 0.12; dd = c.toDataURL('image/jpeg', q); }
+      dd = dpi300(dd);
       cardPhoto = dd; $('#c-img').src = dd; $('#c-img').hidden = false; $('#c-info').textContent = '준비됨 · ' + Math.round(b64n(dd) / 1024) + 'KB'; } catch (e) { $('#c-info').textContent = '이 사진을 열 수 없어요. 다른 사진을 골라 주세요.'; } URL.revokeObjectURL(url); };
     img.onerror = function () { URL.revokeObjectURL(url); $('#c-info').textContent = '이 사진을 열 수 없어요. JPG·PNG로 골라 주세요.'; };
     img.src = url;
