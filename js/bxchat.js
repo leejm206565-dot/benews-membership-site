@@ -1,16 +1,16 @@
 /* [2026-11-24 사장 지시] 홈페이지 미니 상담창(채널톡 형태): 첫 화면 = 인사 + 카카오톡 문의 카드 + 자주 묻는 질문 목록, 질문 누르면 답 화면(뒤로 가기).
- * 답변 문구는 카카오 챗봇(오픈빌더 '브경단' 봇)과 같게 유지한다(benews-membership/챗봇_자동응답_문구.md). 가격은 공개 규칙대로 "월 2만원부터(VAT 별도)"까지만. */
+ * 답변 문구는 카카오 챗봇(오픈빌더 '브경단' 봇)과 같게 유지한다(benews-membership/챗봇_자동응답_문구.md). [11-24] 가격은 로그인 없이 공개(사장 지시). */
 (function () {
   if (window.__bxchat) return; window.__bxchat = 1;
   var KAKAO = 'https://pf.kakao.com/_xkCxkNX/chat', HOME = 'https://membership.openxcorp.co.kr', MY = HOME + '/my.html', LOGO = '/img/favicon-512.png';
   var QA = [
-    ["요금이 얼마예요?", "한 달에 2만원부터예요. (VAT 별도)\n\n요금제는 3가지예요.\n정확한 가격은 로그인하면 보여요.\n\n언제든 그만둘 수 있어요.", ["로그인하고 가격 보기", MY]],
-    ["어떻게 가입해요?", "1. 카카오·네이버·구글로 로그인\n2. 요금제 고르고 결제\n3. 내 기자실에서 '기자 계정 만들기'\n\n끝나면 내 기자실에 아이디가 나와요.", ["내 기자실 가기", MY]],
-    ["기사는 어떻게 올려요?", "내 기자실에 나온 아이디로\n브랜드경제신문에 로그인해서 올리면 돼요.\n\n편집국이 확인하면 신문에 실려요.", ["내 기자실 가기", MY]],
-    ["기자증은 어떻게 받아요?", "Pro·Max 회원은 기자증을 택배로 받아요. (무료)\n\n내 기자실 '기자증 발급 신청'에\n사진과 주소를 보내 주세요.\n\n14일 안에 보내 드려요. (주말·공휴일 빼고)"],
-    ["네이버 뉴스에도 낼 수 있어요?", "Pro·Max 회원은 네이버 뉴스에 나오는\n큰 언론사에도 기사를 낼 수 있어요.\n\n언론사마다 비용이 따로 있어요.\n신청은 내 기자실에서 해요."],
-    ["해지는 어떻게 해요?", "내 기자실 → 요금제 → '해지 신청'을 누르세요.\n\n다음 결제일 3일 전까지 신청하면\n다음 달 요금이 안 나가요. (주말·공휴일 빼고 3일)", ["환불 기준 보기", HOME + '/refund.html']],
-    ["세금계산서 돼요?", "네, 발급해 드려요.\n\n사업자등록증과 받을 이메일을\n카카오톡으로 보내 주세요."]
+    ["요금제끼리 뭐가 달라요?", "Standard 월 2만원\n기사 주 2회 · 제휴 언론사 동시 보도\n\nPro 월 5만원\n기사 횟수 제한 없음 · 네이버 뉴스 큰 언론사 송출\n실물 기자증 · 공연 티켓 2매 · 복지몰\n\nMax 1년 60만원\nPro 혜택 모두 + 헬로벨 렌탈 혜택\n\n(모두 VAT 별도)", ["요금제 자세히 보기", HOME + '/pay?p=month']],
+    ["제휴 언론사는 어디예요?", "브랜드경제신문에 실린 기사가\n제휴 언론사 300여 곳에도 함께 실려요.\n\n예) AI부동산경제신문, 국민언론뉴스,\n한빛일보, 비즈셀미디어\n\n전체 목록은 상담원에게 물어봐 주세요."],
+    ["네이버 뉴스 탭에 내려면요?", "Pro·Max 회원은 네이버 뉴스에 나오는\n큰 언론사에도 기사를 낼 수 있어요.\n\n언론사마다 비용이 따로 있고,\n송출까지 1 영업일 걸려요.\n신청은 내 기자실에서 해요."],
+    ["기사는 어떻게 올려요?", "내 기자실에 나온 아이디로\n브랜드경제신문에 로그인해서 올리면 돼요.\n\n올리는 방법은 사진으로 정리해 뒀어요.", ["기사 송출 가이드 보기", HOME + '/guide.html']],
+    ["기자증 사진은 어떻게 보내요?", "내 기자실 '기자증 발급 신청'에서 보내요.\n\n사진: 증명사진, 가로 300px 이상\n디자인: A·B·C·D 중 선택\n(고르지 않으면 A로 만들어요)", ["내 기자실 가기", MY]],
+    ["결제 카드를 바꾸고 싶어요", "내 기자실 → 요금제에서\n'카드 변경'을 누르면 바꿀 수 있어요.", ["내 기자실 가기", MY]],
+    ["신문사 창간은 뭐예요?", "개인이나 회사가 내 인터넷 신문사를\n직접 만들어 운영하는 서비스예요.\n\n월 20만원 (VAT 별도)\n창간까지 약 7일 걸려요.", ["신문사 창간 알아보기", HOME + '/openmedia.html']]
   ];
   var F = '"Pretendard Variable",Pretendard,-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Malgun Gothic",sans-serif';
   var css = ''
@@ -53,12 +53,12 @@
     box.innerHTML = '<div class="bx-top"><span class="bx-sp"></span><button type="button" class="bx-ib bx-x" aria-label="상담창 닫기">' + I_X + '</button></div>'
       + '<div class="bx-view"><div class="bx-hi"><div class="bx-av">' + AV + '</div><h2>안녕하세요,<br>브경단입니다.</h2><p>궁금한 것을 눌러 보세요.</p></div>'
       + '<div class="bx-card"><h3>상담원에게 물어보기</h3><p class="bx-s"><span class="bx-dot"></span>평일 10:00~17:30 답변</p>' + KK + '</div>'
-      + '<div class="bx-card bx-list"><h3>자주 묻는 질문</h3>' + rows + '</div></div>';
+      + '<div class="bx-card bx-list"><h3>더 궁금한 것</h3>' + rows + '<a class="bx-row" href="' + HOME + '/#faq" data-cta="chat-faq"><span>기본 질문은 홈페이지 Q&amp;A에서 보기</span>' + I_R + '</a></div></div>';
     bind();
   }
   function answer(i) {
     var x = QA[i], go = x[2] ? '<a class="bx-go" href="' + x[2][1] + '" data-cta="chat-go' + (i + 1) + '">' + esc(x[2][0]) + I_R + '</a>' : '';
-    box.innerHTML = '<div class="bx-top"><button type="button" class="bx-ib bx-back" aria-label="질문 목록으로">' + I_BACK + '</button><b>자주 묻는 질문</b><span class="bx-sp"></span><button type="button" class="bx-ib bx-x" aria-label="상담창 닫기">' + I_X + '</button></div>'
+    box.innerHTML = '<div class="bx-top"><button type="button" class="bx-ib bx-back" aria-label="질문 목록으로">' + I_BACK + '</button><b>더 궁금한 것</b><span class="bx-sp"></span><button type="button" class="bx-ib bx-x" aria-label="상담창 닫기">' + I_X + '</button></div>'
       + '<div class="bx-view"><p class="bx-q">' + esc(x[0]) + '</p><div class="bx-msg"><div class="bx-av">' + AV + '</div><div style="flex:1;min-width:0"><p class="bx-nm">브경단</p><div class="bx-bub">' + esc(x[1]) + go + '</div></div></div>'
       + '<div class="bx-more"><button type="button" class="bx-back2">다른 질문 보기</button></div></div>'
       + '<div class="bx-ft">' + KK + '</div>';
@@ -66,7 +66,7 @@
   }
   function bind() {
     box.querySelector('.bx-x').addEventListener('click', function () { open(false); });
-    [].forEach.call(box.querySelectorAll('.bx-row'), function (r) { r.addEventListener('click', function () { answer(+r.dataset.i); }); });
+    [].forEach.call(box.querySelectorAll('button.bx-row'), function (r) { r.addEventListener('click', function () { answer(+r.dataset.i); }); });
     [].forEach.call(box.querySelectorAll('.bx-back,.bx-back2'), function (b) { b.addEventListener('click', function () { home(); var f = box.querySelector('.bx-row'); if (f) f.focus(); }); });
   }
   function open(on) {

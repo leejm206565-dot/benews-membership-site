@@ -314,7 +314,19 @@ const WIDGET_VARIANT = 'BRGD_YEAR';   // 1년 결제 UI variantKey (사장이 op
   /* [2026-11-17 사장 지시] 기자단 결제는 로그인한 사람만: 이름·휴대폰·이메일은 로그인 정보로 서버가 채운다(입력 칸 없음) */
   var LG = null; try { LG = JSON.parse(sessionStorage.getItem('bx:login') || 'null'); } catch (e) {}
   if (!LG || !LG.t) { try { var lt0 = localStorage.getItem('bx:my'), lw0 = JSON.parse(localStorage.getItem('bx:mywho') || 'null'); if (lt0) LG = { n: (lw0 && lw0.n) || '', e: (lw0 && lw0.e) || '', ph: (lw0 && lw0.ph) || '', t: lt0 }; } catch (e) {} }
-  if (!isOM && !renew && !demo && !(LG && LG.t)) { location.replace('/my.html?next=pay&' + location.search.replace(/^\?/, '')); return; }
+  if (!isOM && !renew && !demo && !(LG && LG.t)) {   // [2026-11-24 사장 지시] 가격은 로그인 없이 보이게. 주문 생성·결제만 로그인 후
+    var sw0 = $('#plan-sw'), toLogin = function (p) { return '/my.html?next=pay&p=' + encodeURIComponent(p || hintP || 'month'); };
+    sw0.hidden = false; $('#pay-load').hidden = true;
+    $('#pay-kicker').textContent = '브랜드경제신문 기자단 · 요금제';
+    $('#pay-h1').textContent = '요금제 안내';
+    $('#pay-lead').textContent = '요금제를 누르면 카카오·네이버·구글로 간편 로그인한 뒤 바로 가입할 수 있어요.';
+    [].forEach.call(sw0.querySelectorAll('a[data-sw]'), function (a) { a.href = toLogin(a.getAttribute('data-sw')); });
+    var go0 = document.createElement('a'); go0.href = toLogin(hintP); go0.textContent = '간편 로그인하고 가입하기';
+    go0.className = 'mt-6 flex items-center justify-center w-full min-h-[56px] rounded-xl bg-rep hover:bg-rep-dark text-white text-[18px] font-extrabold';
+    go0.setAttribute('data-cta', 'price-login');
+    $('#plan-desc').after(go0);
+    return;
+  }
   if (!isOM && LG && LG.t) needWho = false;
   function whoVal() {
     var d = String($('#w-phone').value || '').replace(/\D/g, '');
