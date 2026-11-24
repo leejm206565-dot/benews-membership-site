@@ -2399,7 +2399,7 @@ const SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxPac_qwfiW7pf0N
   $$('.pay-go').forEach(function (a) {
     var pl = a.getAttribute('data-plan') || '';
     var q = (location.search || '').slice(0, 200);
-    a.href = '/my.html?next=pay&p=' + pl + (q ? '&s=' + encodeURIComponent(q) : '');   // [2026-11-17 사장 지시] 로그인 먼저 → 결제 화면(정보 자동 입력)
+    a.href = '/pay?p=' + pl + (q ? '&s=' + encodeURIComponent(q) : '');   // [2026-11-24 사장 지시] 가격 먼저(로그인 없이), 결제 화면에서 로그인 안 했으면 로그인 안내
     a.addEventListener('click', function () { ev('pay_click', { plan: pl, cta: a.getAttribute('data-cta') || '' }); });
   });
   /* 위치별 버튼·메뉴 */

@@ -529,7 +529,7 @@ footer{margin:36px 0 30px;font-size:12.5px;color:var(--mute);text-align:center}
       : 'https://nid.naver.com/oauth2.0/authorize?response_type=code&client_id=' + encodeURIComponent(NAVER_ID) + '&redirect_uri=' + encodeURIComponent(REDIRECT) + '&state=' + st;
   }
   $('#kakao-btn').disabled = !KAKAO_REST && !DEMO; if (!KAKAO_REST) $('#kakao-btn span').textContent = '카카오로 시작하기 (준비 중)';
-  var NAVER_OPEN = false;   // [2026-11-17] 네이버 검수 끝나면 true. 그 전에는 ?nv=1 로 연 화면(심사 담당자)에서만 보임
+  var NAVER_OPEN = true;   // [2026-11-23] 네이버 검수 통과(서비스 적용) → 모두에게 보임. (11-17~ 검수 전에는 ?nv=1 에서만)
   if (!NAVER_OPEN && qs.get('nv') !== '1' && !DEMO) $('#naver-btn').hidden = true;
   $('#naver-btn').disabled = !NAVER_ID && !DEMO; if (!NAVER_ID) $('#naver-btn span').textContent = '네이버 로그인 (준비 중)';
   $('#kakao-btn').addEventListener('click', function () { if (DEMO) { toast('미리보기에서는 로그인하지 않아요.'); return; } oauth('kakao'); });
