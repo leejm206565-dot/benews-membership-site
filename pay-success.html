@@ -88,14 +88,14 @@ h1,h2,h3{word-break:keep-all;text-wrap:balance;letter-spacing:-.02em}
 const SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxPac_qwfiW7pf0NvfCQr4Vyr9bLXWjq4KYFwclAmy2buZFajcD9AKsBcbd5BD0SCu9zA/exec';
 (function () {
   var PHONE = '카카오톡 상담 채널', KAKAO = 'https://pf.kakao.com/_xkCxkNX/chat';   // [2026-11-23] 사장 번호 대신
-  var PLAN = { month: { amount: 55000, label: '기자단 멤버십 · 월간' }, year: { amount: 660000, label: '기자단 멤버십 · 1년 일시불' } };
+  var PLAN = { month: { amount: 55000, label: '기자단 멤버십 · 월간' }, year: { amount: 550000, label: '기자단 멤버십 · 1년 일시불' } };
   var $ = function (s) { return document.querySelector(s); };
   var won = function (n) { return Number(n).toLocaleString('ko-KR') + '원'; };
   var qs = new URLSearchParams(location.search);
   var paymentKey = String(qs.get('paymentKey') || ''), orderId = String(qs.get('orderId') || ''), amount = String(qs.get('amount') || '');
   var m = /^(BE-\d{4}-\d{4})-(?:R\d{2}-)?[A-Za-z0-9]{6}$/.exec(orderId);
   var rc = m ? m[1] : '';
-  var guessP = Number(amount) === 55000 ? 'month' : (Number(amount) === 660000 ? 'year' : '');
+  var guessP = Number(amount) === 55000 ? 'month' : (Number(amount) === 550000 || Number(amount) === 660000 ? 'year' : '');
   var last = {}; try { last = JSON.parse(sessionStorage.getItem('bx:lastpay') || '{}') || {}; } catch (e) {}
   function payAgain(p) { return rc && (p || last.p) ? 'pay.html?r=' + encodeURIComponent(rc) + '&p=' + (p || last.p) + (last.renew ? '&renew=1' : '') : '/#reporter'; }
   var MYGO = (function () { try { return !!localStorage.getItem('bx:my'); } catch (e) { return false; } })();   // [2026-11-17] 로그인하고 결제했으면 내 기자실로
