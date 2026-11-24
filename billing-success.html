@@ -53,7 +53,7 @@ h1,h2,h3{word-break:keep-all;text-wrap:balance;letter-spacing:-.02em}
         <dt class="text-mute">다음 결제일</dt><dd class="font-bold" id="o-next"></dd>
         <dt class="text-mute">접수번호</dt><dd class="font-bold tracking-wide" id="o-rc"></dd>
       </dl>
-      <p class="mt-3 text-[13px] text-mute">매월 같은 날 자동 결제됩니다. 해지는 언제든 내 기자실 또는 <a href="https://open.kakao.com/o/sMTQwzTi" target="_blank" rel="noopener">카카오톡 상담 채널</a>로 알려 주세요.</p>
+      <p class="mt-3 text-[13px] text-mute">매월 같은 날 자동 결제됩니다. 해지는 언제든 내 기자실 또는 <a href="https://pf.kakao.com/_xkCxkNX/chat" target="_blank" rel="noopener">카카오톡 상담 채널</a>로 알려 주세요.</p>
       <div class="mt-5 rounded-xl bg-rep-soft p-4">
         <p class="text-[16px] font-extrabold">다음: 회원 등록 1단계 (필수)</p>
         <p class="mt-1 text-[14px]">이름·휴대폰·이메일·희망 아이디를 한 번에 적으면 아이디 발급이 진행됩니다. 1분이면 끝납니다.</p>
@@ -114,7 +114,7 @@ h1,h2,h3{word-break:keep-all;text-wrap:balance;letter-spacing:-.02em}
     </div>
     <button type="button" id="ng-retry" class="mt-4 flex items-center justify-center w-full min-h-[52px] rounded-xl bg-rep hover:bg-rep-dark text-white text-[17px] font-extrabold" hidden>같은 카드로 다시 결제하기</button>
     <a id="ng-main" href="/#reporter" class="mt-2 flex items-center justify-center w-full min-h-[48px] rounded-xl border-2 border-rep bg-white text-rep text-[16px] font-bold">다른 카드로 다시 등록하기</a>
-    <p class="mt-3 text-[14px] text-mute">문의 <a class="underline font-bold text-ink" href="https://open.kakao.com/o/sMTQwzTi" target="_blank" rel="noopener">카카오톡 상담 채널</a> (접수번호를 알려 주세요)</p>
+    <p class="mt-3 text-[14px] text-mute">문의 <a class="underline font-bold text-ink" href="https://pf.kakao.com/_xkCxkNX/chat" target="_blank" rel="noopener">카카오톡 상담 채널</a> (접수번호를 알려 주세요)</p>
   </div>
 </main>
 
@@ -124,8 +124,8 @@ h1,h2,h3{word-break:keep-all;text-wrap:balance;letter-spacing:-.02em}
     <p class="font-bold text-ink">주식회사 오픈엑스</p>
     <p>대표이사 김미진 · 사업자등록번호 310-81-34293 · 통신판매업신고 제 2024-서울마포-0817호 · 호스팅 서비스 제공자 GitHub, Inc.</p>
     <p>서울특별시 마포구 성암로 330, 8층 808호 (상암동, DMC첨단산업센터)</p>
-    <p>기자단 문의 <a href="https://open.kakao.com/o/sMTQwzTi" target="_blank" rel="noopener" style="text-decoration:underline">카카오톡 상담 채널</a> · 이메일 leejm205050@openxgroup.co.kr</p>
-    <p>고객 문의 이메일 <a class="underline" href="mailto:leejm205050@openxgroup.co.kr">leejm205050@openxgroup.co.kr</a></p>
+    <p>기자단 문의 <a href="https://pf.kakao.com/_xkCxkNX/chat" target="_blank" rel="noopener" style="text-decoration:underline">카카오톡 상담 채널</a> · 이메일 leejm205050@benews.co.kr</p>
+    <p>고객 문의 이메일 <a class="underline" href="mailto:leejm205050@benews.co.kr">leejm205050@benews.co.kr</a></p>
     <p>브랜드경제신문은 주식회사 오픈엑스가 운영하는 언론사입니다.</p>
   </div>
 </footer>
@@ -136,7 +136,7 @@ h1,h2,h3{word-break:keep-all;text-wrap:balance;letter-spacing:-.02em}
    authKey 는 일회성이라 읽은 뒤 주소창에서 지운다(이 탭 sessionStorage 에만 잠시 둠). */
 const SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxPac_qwfiW7pf0NvfCQr4Vyr9bLXWjq4KYFwclAmy2buZFajcD9AKsBcbd5BD0SCu9zA/exec';
 (function () {
-  var PHONE = '카카오톡 상담 채널', KAKAO = 'https://open.kakao.com/o/sMTQwzTi';   // [2026-11-23] 사장 번호 대신
+  var PHONE = '카카오톡 상담 채널', KAKAO = 'https://pf.kakao.com/_xkCxkNX/chat';   // [2026-11-23] 사장 번호 대신
   var $ = function (s) { return document.querySelector(s); };
   var qs = new URLSearchParams(location.search);
   var ck = String(qs.get('customerKey') || ''), ak = String(qs.get('authKey') || '');
