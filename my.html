@@ -170,7 +170,7 @@ footer{margin:36px 0 30px;font-size:12.5px;color:var(--mute);text-align:center}
     <div class="plans" role="radiogroup" aria-label="요금제">
       <button type="button" class="pl" role="radio" data-plan="standard"><b>Standard</b><span class="pr">월 2만원</span><small>기사 주 2회 송출</small></button>
       <button type="button" class="pl rec" role="radio" data-plan="month"><i>추천</i><b>Pro</b><span class="pr">월 5만원</span><small>송출 횟수 제한 없이 + 기자증·혜택</small></button>
-      <button type="button" class="pl" role="radio" data-plan="year"><b>Max</b><span class="pr">1년 50만원</span><small>Pro 혜택 + 헬로벨 렌탈</small></button>
+      <button type="button" class="pl" role="radio" data-plan="year"><b>Max</b><span class="pr">1년 50만원</span><small>Pro 혜택 + 명함 500장·헬로벨 렌탈</small></button>
     </div>
     <div class="pd" id="pl-detail" aria-live="polite">
       <h3 id="pd-name"></h3>
@@ -577,7 +577,7 @@ footer{margin:36px 0 30px;font-size:12.5px;color:var(--mute);text-align:center}
     year: { name: 'Max · 1년 50만원 (VAT 별도)', amt: '550,000원 (VAT 포함) 한 번', way: '1년 한 번 결제 · 자동 갱신 없음', note: '이용 기간이 끝나기 전에 안내해 드려요.', send: '기사 송출 횟수 제한 없이' }
   };
   var FEAT = [['300+ 제휴 언론사 동시 보도', 1, 1, 1], ['AI 기사 작성 프롬프트 팩', 1, 1, 1], ['내 기자실: 기자 계정·요금제·카드 관리', 1, 1, 1],
-    ['실물 기자증', 0, 1, 1], ['공연 티켓 2매 (가입 선물)', 0, 1, 1], ['오픈엑스 복지몰', 0, 1, 1], ['헬로벨 렌탈 회원 혜택', 0, 0, 1]];
+    ['실물 기자증', 0, 1, 1], ['공연 티켓 2매 (가입 선물)', 0, 1, 1], ['오픈엑스 복지몰', 0, 1, 1], ['기자 명함 500장 (최초 가입)', 0, 0, 1], ['헬로벨 렌탈 회원 혜택', 0, 0, 1]];
   function pick(k) {
     var d = PD[k], col = { standard: 1, month: 2, year: 3 }[k];
     Array.prototype.forEach.call(document.querySelectorAll('.pl'), function (b) { b.setAttribute('aria-checked', b.getAttribute('data-plan') === k ? 'true' : 'false'); });
@@ -630,7 +630,7 @@ footer{margin:36px 0 30px;font-size:12.5px;color:var(--mute);text-align:center}
       h = '<div class="opt"><b>Standard로 내리기 · 월 22,000원</b><p>기사 주 2회 송출 · 기자증·공연 티켓·복지몰 혜택 없음</p><p>Pro는 최소 ' + (m.proMin || 3) + '개월(3번 결제) 이용한 뒤에 바꿀 수 있어요. 신청하시면 <b>' + (m.downFrom || m.next) + '</b>부터 바뀌고, 그때까지는 Pro 그대로 쓰세요.</p>' +   // [2026-11-25 사장 지시] Pro 3개월 약정
         (m.nextPlan ? '<p><b>이미 예약돼 있어요.</b></p>' : '<div class="row"><button class="btn line" type="button" id="down-go">' + (m.downFrom || m.next) + '부터 Standard로</button></div>') + '</div>';
     }
-    h += '<div class="opt"><b>Max · 1년 550,000원</b><p>Pro 혜택 모두 + 헬로벨 렌탈 회원 혜택. 1년 한 번 결제예요. 바꾸시려면 ' + PHONE + '로 연락 주세요(남은 기간을 계산해 드려요).</p></div><p class="err" id="pl-err" role="alert"></p>';
+    h += '<div class="opt"><b>Max · 1년 550,000원</b><p>Pro 혜택 모두 + 기자 명함 500장 + 헬로벨 렌탈 회원 혜택. 1년 한 번 결제예요. 바꾸시려면 ' + PHONE + '로 연락 주세요(남은 기간을 계산해 드려요).</p></div><p class="err" id="pl-err" role="alert"></p>';
     p.innerHTML = h; p.hidden = false;
   });
   document.addEventListener('click', function (e) {

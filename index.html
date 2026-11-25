@@ -434,6 +434,21 @@ details>summary{list-style:none}details>summary::-webkit-details-marker{display:
 .pc-grid figcaption{margin-top:8px;font-size:14px;font-weight:800}
 .pc-grid figcaption span{font-weight:400;color:#B9C3D6}
 
+/* [2026-11-25 사장 지시] 명함(Max 전용): 기자증 칸과 같은 모양, 딥 틸 */
+#namecard{margin-top:28px;border-radius:20px;background:#0E3B45;color:#fff;padding:28px 22px;overflow:hidden}
+@media (min-width:768px){#namecard{padding:44px 44px 40px}}
+#namecard .top{display:grid;gap:14px}
+@media (min-width:1024px){#namecard .top{grid-template-columns:1fr auto;align-items:start;gap:40px}}
+#namecard h3{font-size:clamp(24px,3.2vw,36px);font-weight:850}
+#namecard h3 .hl{color:var(--lime);background:none}
+#namecard p.d{margin-top:10px;font-size:16px;line-height:1.7;color:#E3E7EF;max-width:40em}
+#namecard p.n{margin-top:8px;font-size:14px;line-height:1.7;color:#B5CDD2}
+#namecard .ex{justify-self:start;font-size:12.5px;font-weight:800;color:var(--ink);background:var(--lime);padding:4px 10px;border-radius:4px}
+.nc-grid{margin:26px auto 0;display:grid;gap:18px;max-width:1040px}
+@media (min-width:640px){.nc-grid{grid-template-columns:1fr 1fr}}
+.nc-grid img{display:block;width:100%;height:auto;border-radius:8px;box-shadow:0 18px 36px -20px rgba(0,0,0,.7)}
+.nc-grid figcaption{margin-top:8px;font-size:14px;font-weight:800}
+
 /* 공연 티켓: 절취선 티켓 모양 */
 #ticket{margin-top:28px;position:relative;background:#fff;border:2px solid var(--ink);border-radius:20px;padding:26px 22px}
 @media (min-width:768px){#ticket{padding:36px 40px}}
@@ -1826,7 +1841,7 @@ a.rv-card:hover .rv-t{text-decoration:underline;text-underline-offset:3px}
         <article class="hp-c hp-one">
           <p class="hp-k">BRAND ECONOMY REPORTERS<span class="hp-soon">월 2만원부터 · VAT 별도</span></p>
           <p class="hp-t">브랜드경제신문 기자단</p>
-          <div class="hp-im" role="img" aria-label="기자단 혜택: 기자증, 공연 티켓, 복지몰, 헬로벨 렌탈(요금제에 따라 다름)"><img class="pc" src="img/v7/presscard_A_front.webp" alt="" width="204" height="318" loading="eager" decoding="async"><img class="tk" src="img/v7/ticket_mafia.webp" alt="" width="246" height="342" loading="eager" decoding="async"><img class="sq" src="img/v11/mall/cat_coffee_hd.webp" alt="" width="446" height="446" loading="eager" decoding="async"><img class="sq" src="img/v11/hb/massage.webp" alt="" width="200" height="200" loading="eager" decoding="async"></div>
+          <div class="hp-im" role="img" aria-label="기자단 혜택: 기자증, 명함, 공연 티켓, 복지몰, 헬로벨 렌탈(요금제에 따라 다름)"><img class="pc" src="img/v7/presscard_A_front.webp" alt="" width="204" height="318" loading="eager" decoding="async"><img class="tk" src="img/v7/ticket_mafia.webp" alt="" width="246" height="342" loading="eager" decoding="async"><img class="sq" src="img/v11/mall/cat_coffee_hd.webp" alt="" width="446" height="446" loading="eager" decoding="async"><img class="sq" src="img/v11/hb/massage.webp" alt="" width="200" height="200" loading="eager" decoding="async"></div>
           <p class="hp-plans">Standard · Pro · Max — 결제 화면에서 고를 수 있어요</p>
         </article>
         <div class="hp-join"><div class="hp-glass"><div class="threeui-background glass-ai-button" data-src="threeui/glass-ai-button-bx2.html#bg=none" data-href="/pay?p=month" data-label="브경단 가입하기" data-cta="hero-join"></div><a href="/pay?p=month" class="pay-go btn hp-glass-fb" data-plan="month" data-cta="hero-join">브경단 가입하기</a></div></div>
@@ -2023,8 +2038,8 @@ a.rv-card:hover .rv-t{text-decoration:underline;text-underline-offset:3px}
 <section id="benefits" class="sec" data-section="benefits" aria-labelledby="bn-h">
   <div class="wrap">
     <p class="kick rep">기자단</p>
-    <h2 id="bn-h" class="h2" style="margin-top:12px">기자단 <span class="hl">혜택 4가지</span></h2>
-    <p class="lead">혜택 1~3은 Pro·Max 회원이 받고, 혜택 4는 Max(1년 일시불) 회원 전용이에요.</p>
+    <h2 id="bn-h" class="h2" style="margin-top:12px">기자단 <span class="hl">혜택 5가지</span></h2>
+    <p class="lead">기자증·공연 티켓·복지몰은 Pro·Max 회원이 받고, 명함 500장과 헬로벨 렌탈은 Max(1년 일시불) 회원 전용이에요.</p>
 
     <!-- v11: 순서 = 기사 관련(article) → 덤(extra). A/B는 data-ab="perks_first"로 순서만 바뀜(기본 control) -->
     <div class="bn-order" id="bn-order" data-ab="control">
@@ -2047,12 +2062,28 @@ a.rv-card:hover .rv-t{text-decoration:underline;text-underline-offset:3px}
       </div>
     </div>
 
+    <p class="bn-no"><b>혜택 2</b>기자 명함 500장<small>Max 전용</small></p>
+    <div id="namecard">
+      <div class="top">
+        <div>
+          <h3>내 이름이 들어간 기자 명함 <span class="hl">500장</span></h3>
+          <p class="d">Max 회원에게 브랜드경제신문 기자 명함 500장을 만들어 드려요. 이름과 연락처를 넣어 앞면·뒷면으로 제작합니다.</p>
+          <p class="n">Max(1년 일시불) 최초 가입 때 1회 제작해 드려요.</p>
+        </div>
+        <p class="ex">디자인 예시 · 실제 제작본과 다를 수 있습니다</p>
+      </div>
+      <div class="nc-grid">
+        <figure><img src="img/v7/namecard_front.webp" alt="브랜드경제신문 기자 명함 앞면 디자인 예시" width="740" height="486" loading="lazy"><figcaption>앞면</figcaption></figure>
+        <figure><img src="img/v7/namecard_back.webp" alt="브랜드경제신문 기자 명함 뒷면 디자인 예시" width="740" height="486" loading="lazy"><figcaption>뒷면</figcaption></figure>
+      </div>
+    </div>
+
     </div><!-- /article -->
 
     <div data-ab-block="extra" data-section="benefits-extra">
     <!-- (사장 지시 10-27) 혜택 구조 변경: 복지몰 = 모든 기자단 회원(월간·1년 공통), 헬로벨 렌탈 = 1년 일시불 회원 전용.
          이미지: 복지몰 제안서(pptx)에서 추출 — 표지 배경·오픈엑스 로고·입점 완료 카테고리 3장(상품은 예시). 가격·할인율·수수료가 있는 슬라이드는 쓰지 않음 -->
-    <p class="bn-no"><b>혜택 2</b>공연 티켓 제공<small>Pro·Max 공통</small></p>
+    <p class="bn-no"><b>혜택 3</b>공연 티켓 제공<small>Pro·Max 공통</small></p>
     <div id="ticket">
       <div class="tk-top"><span class="tk-badge">신규 가입 혜택</span><span class="tk-meta">Pro·Max 공통 · 최초 가입 1회</span></div>
       <h3>가입을 환영하는 특별한 선물, <span class="hl">약 10만원 상당</span> 공연 티켓 2매</h3>
@@ -2070,7 +2101,7 @@ a.rv-card:hover .rv-t{text-decoration:underline;text-underline-offset:3px}
       <p class="tk-note">※ 공연 및 티켓은 랜덤으로 제공되며, 공연별 제공 조건과 재고에 따라 달라질 수 있습니다. 약 10만원은 티켓 2매의 정가 기준이며 공연에 따라 달라요. 라인업은 예시예요.</p>
     </div>
 
-    <p class="bn-no"><b>혜택 3</b>오픈엑스 복지몰<small>Pro·Max 공통</small></p>
+    <p class="bn-no"><b>혜택 4</b>오픈엑스 복지몰<small>Pro·Max 공통</small></p>
     <section id="mall" class="bk" aria-labelledby="mall-h" data-section="benefit-mall">
       <div class="tk-top"><span class="tk-badge">PREMIUM BRAND MALL</span><span class="tk-meta">Pro·Max 기자단 회원</span></div>
       <h3 id="mall-h">오픈엑스 복지몰</h3>
@@ -2081,7 +2112,7 @@ a.rv-card:hover .rv-t{text-decoration:underline;text-underline-offset:3px}
       <p class="tk-note">상품 사진은 예시예요. 입점 브랜드·상품 구성과 가격은 바뀔 수 있어요.</p>
     </section>
 
-    <p class="bn-no"><b>혜택 4</b>헬로벨 렌탈<small>1년 일시불 회원 전용</small></p>
+    <p class="bn-no"><b>혜택 5</b>헬로벨 렌탈<small>1년 일시불 회원 전용</small></p>
     <section id="perks" class="bk" aria-labelledby="hb-h" data-section="benefit-hellobell">
       <div class="tk-top"><span class="tk-badge">HELLOBELL RENTAL</span><span class="tk-meta">1년 일시불 회원 전용</span></div>
       <h3 id="hb-h">헬로벨 렌탈</h3>
@@ -2135,7 +2166,7 @@ a.rv-card:hover .rv-t{text-decoration:underline;text-underline-offset:3px}
   <div class="wrap">
     <p class="kick rep">기자단</p>
     <h2 id="rp-h" class="h2" style="margin-top:12px">상품 구성과 <span class="hl">가격</span></h2>
-    <p class="lead">월간과 1년 일시불의 기자 활동 혜택은 같아요. 다른 점은 결제 방식과 헬로벨 렌탈이에요.</p>
+    <p class="lead">월간과 1년 일시불의 기자 활동 혜택은 같아요. 다른 점은 결제 방식과 명함 500장·헬로벨 렌탈이에요.</p>
     <div class="vs" data-section="price-compare">
       <p class="vs-h">월 구독으로, 기사 송출 <span class="hl">횟수 제한 없이</span></p>
       <div class="vs-grid">
@@ -2172,7 +2203,7 @@ a.rv-card:hover .rv-t{text-decoration:underline;text-underline-offset:3px}
           <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>네이버·구글 등 검색엔진에서 기사 확인 가능</span></li>
           <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span>기자단 기자증 1개 · 공연 티켓 2매</span></li>
           <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span><b>오픈엑스 복지몰</b> 이용 <span class="s13">(월 1회 주문)</span></span></li>
-          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span><b>헬로벨 렌탈 회원 혜택</b> <span class="s13">(1년 회원 전용)</span></span></li>
+          <li><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" aria-hidden="true"><path d="M20 6 9 17l-5-5"/></svg><span><b>기자 명함 500장 · 헬로벨 렌탈 회원 혜택</b> <span class="s13">(1년 회원 전용)</span></span></li>
         </ul>
         <p class="pnote">한 번에 결제 · 자동 갱신 없음</p>
         <p class="pamt">실제 결제 금액 <b>550,000원</b> (VAT 포함)</p>
@@ -2244,6 +2275,7 @@ a.rv-card:hover .rv-t{text-decoration:underline;text-underline-offset:3px}
         <h3 class="sum-h">기자단 회원이 받는 것</h3>
         <div class="sum-g">
           <article class="sum-p"><h4>기자증 1개</h4><ol><li>내 기자실에서 기자증 신청을 눌러요</li><li>기자증 정보를 보내요</li><li>주말·공휴일 빼고 <b>14일 이내</b> 보내 드려요</li></ol><p>택배비 무료 · 방문 수령도 가능</p></article>
+          <article class="sum-p"><h4>기자 명함 500장 <small>1년 회원 전용</small></h4><ol><li>Max 최초 가입 때 1번 만들어 드려요</li><li>이름과 연락처를 넣어 제작해요</li><li>앞면·뒷면 모두 인쇄해요</li></ol></article>
           <article class="sum-p"><h4>공연 티켓 2매</h4><ol><li>신규 가입 때 1번 드려요</li><li><b>약 10만원 상당</b>, 랜덤 공연이에요</li><li>기자증을 보낼 때 함께 넣어 드려요</li></ol><p>공연별 제공 조건과 재고에 따라 달라질 수 있어요</p></article>
           <article class="sum-p"><h4>오픈엑스 복지몰</h4><ol><li>Pro·Max 회원이 이용해요</li><li>삼성·네스프레소 등 제품을 합리적인 가격으로 구매해요</li><li>가입 신청은 저희가 해 드려요</li></ol><p>월 1회 주문, 연 12회</p></article>
           <article class="sum-p"><h4>헬로벨 렌탈 <small>1년 회원 전용</small></h4><ol><li>오픈엑스가 운영하는 가전 렌탈이에요</li><li>영업자를 거치지 않고 직접 가입해요</li><li>월 렌탈료의 <b>약 7~10배 페이백</b>(상품·조건에 따라 다름)</li></ol><p>렌탈 이용료는 멤버십과 별도예요</p></article>
