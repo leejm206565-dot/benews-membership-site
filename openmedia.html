@@ -1188,7 +1188,7 @@ html{scroll-padding-top:112px}
             </div>
             <div class="ag">
               <div class="row"><label class="c"><input type="checkbox" name="agree" value="Y" required>개인정보 수집·이용 동의(필수)</label><a href="privacy.html" target="_blank" rel="noopener" class="u">개인정보처리방침</a></div>
-              <details><summary>전문 보기</summary><p>수집자: 주식회사 오픈엑스 / 수집 항목: 이름, 휴대폰 번호 / 이용 목적: 상담 연락 / 보유 기간: 목적 달성 후 지체 없이 파기(관계 법령에 따른 보존 기간 제외) / 동의를 거부할 수 있으나 거부 시 신청이 제한됩니다.</p></details>
+              <details><summary>전문 보기</summary><p>수집자: 주식회사 오픈엑스 / 수집 항목: 이름, 휴대폰 번호, 유입 경로(직원 안내 링크 포함) / 이용 목적: 상담 연락, 유입 경로·담당 직원 확인 / 보유 기간: 목적 달성 후 지체 없이 파기(관계 법령에 따른 보존 기간 제외) / 동의를 거부할 수 있으나 거부 시 신청이 제한됩니다.</p></details>
             </div>
             <p class="err" role="alert"></p>
             <div class="fail" role="alert" hidden><p class="t">접수가 확인되지 않았습니다.</p><p class="fail-msg">입력하신 내용은 그대로 있습니다. 다시 보내거나 카카오톡 상담 채널로 알려 주세요.</p><div class="bs"><button type="button" class="retry">다시 보내기</button><a href="https://pf.kakao.com/_xkCxkNX/chat" target="_blank" rel="noopener">카카오톡 상담</a></div></div>
@@ -1508,6 +1508,11 @@ const SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxPac_qwfiW7pf0N
     var data = {};
     new FormData(f).forEach(function (v, k) { data[k] = v; });
     data.phone = fmtPhone(d);
+    try {   // [2026-11-25] 어느 경로·어느 직원 링크로 왔는지 함께 보냄(bxvis.js 가 기억)
+      var F = JSON.parse(localStorage.getItem('bx:first') || 'null') || {};
+      data.rcode = sessionStorage.getItem('bx:ref') || F.ref || '';
+      if (F.src && !/[?&](src|utm_source|fbclid)=/.test(data.source)) data.source = F.src;
+    } catch (e) {}
     if (fix) { data.action = 'fix'; data.receipt = fix; data.oldphone = f.getAttribute('data-oldphone') || ''; }
     if (!f._cid || f._cidKey !== JSON.stringify(data)) { f._cid = newCid(); f._cidKey = JSON.stringify(data); }
     data.cid = f._cid;
