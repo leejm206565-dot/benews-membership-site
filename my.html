@@ -90,7 +90,7 @@ input.fld,select.fld,textarea.fld{width:100%;min-height:46px;border:2px solid va
 .sso svg{flex:none}
 .or{display:flex;align-items:center;gap:10px;margin:18px 0 10px;color:var(--mute);font-size:13px}.or::before,.or::after{content:"";flex:1;height:1px;background:var(--line)}
 .tabs{display:flex;gap:6px;background:var(--paper);padding:4px;border-radius:12px}.tab{flex:1;min-height:40px;border:0;border-radius:9px;background:transparent;font-weight:800;color:var(--mute)}.tab.on{background:#fff;color:var(--ink);box-shadow:0 1px 3px rgba(0,0,0,.08)}
-.ef{display:grid;gap:8px;margin-top:10px;text-align:left}
+#ncf,#cardf,#acct{scroll-margin-top:72px}.ef{display:grid;gap:8px;margin-top:10px;text-align:left}
 .fl{display:block;font-weight:700;font-size:14px}.fl .fld{margin-top:4px}
 .g2{display:grid;gap:8px}@media(min-width:560px){.g2{grid-template-columns:1fr 1fr}}
 .ctype{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:4px}.ctype label{display:block;border:2px solid var(--line);border-radius:12px;padding:6px;cursor:pointer;text-align:center;font-weight:800;font-size:14px}.ctype label:has(input:checked){border-color:var(--g);background:var(--g2)}.ctype img{display:block;width:100%;height:auto;border-radius:8px;margin-bottom:4px}.ctype input{margin-right:4px}
@@ -297,6 +297,25 @@ footer{margin:36px 0 30px;font-size:12.5px;color:var(--mute);text-align:center}
       <p class="err" id="c-err" role="alert"></p>
     </form>
   </section>
+  <!-- [2026-11-25 사장 지시] Max 전용: 명함에 들어갈 정보 받기 -->
+  <section class="card" id="ncf" hidden aria-labelledby="ncf-h">
+    <h2 id="ncf-h">기자 명함 500장</h2>
+    <div id="nc-done" hidden>
+      <p style="margin:0;font-weight:700" id="nc-state"></p>
+      <p class="note" id="nc-info" style="overflow-wrap:anywhere"></p>
+      <button class="btn line sm" type="button" id="nc-edit">명함 정보 고치기</button>
+    </div>
+    <form class="ef" id="f-nc" novalidate hidden>
+      <p class="sub">명함에 인쇄할 정보를 적어 주세요. 적은 그대로 인쇄되고, 보통 1~2주 안에 등록하신 주소로 보내 드려요.</p>
+      <label class="fl">이름<input class="fld" id="n-name" autocomplete="name" maxlength="20"></label>
+      <label class="fl">휴대폰 번호<input class="fld" id="n-phone" inputmode="tel" autocomplete="tel" maxlength="13" placeholder="010-0000-0000"></label>
+      <label class="fl">이메일<input class="fld" id="n-email" type="email" autocomplete="email" maxlength="60"></label>
+      <label class="chk"><input type="checkbox" id="n-agree"> <span>[필수] 개인정보 수집·이용 동의 — 이름·휴대폰·이메일을 명함 제작·발송에 쓰고, 해지 때까지 보관해요. 동의하지 않으면 명함을 만들 수 없어요. <a href="privacy.html" target="_blank" rel="noopener" style="text-decoration:underline">자세히</a></span></label>
+      <p class="note">제작을 시작하면 정보를 바꿀 수 없어요. 제작을 시작한 뒤 중간에 해지하면 환불액에서 명함 제작비 30,000원(VAT 별도)을 빼요.</p>
+      <button class="btn full" type="submit" id="n-go">명함 신청하기</button>
+      <p class="err" id="n-err" role="alert"></p>
+    </form>
+  </section>
   <section class="card" id="card-done" hidden><h2>기자증 발급 신청</h2><p style="margin:0;font-weight:700">✓ 신청을 받았어요. 제작이 시작되면 아래 '기자증'에서 진행 상황을 볼 수 있어요.</p></section>
   <section class="card" id="press-card" hidden aria-labelledby="pc-h">
     <h2 id="pc-h">기자증</h2>
@@ -439,7 +458,7 @@ footer{margin:36px 0 30px;font-size:12.5px;color:var(--mute);text-align:center}
     // 할 일
     $('#todo').innerHTML = ''; (m.todo || []).forEach(function (t) { var a = document.createElement('a'); a.href = t.href === '#card' ? '#cardf' : t.href; a.textContent = t.label; $('#todo').appendChild(a); });
     $('#todo-card').hidden = !(m.todo || []).length;
-    acctForm(m); cardForm(m);
+    acctForm(m); cardForm(m); ncForm(m);
     if (location.hash === '#cardf' && !$('#cardf').hidden) { history.replaceState(null, '', location.pathname + location.search); setTimeout(function () { $('#cardf').scrollIntoView({ block: 'start' }); }, 50); }   // [2026-11-23] 기자증 안내 메일 링크
     $('#docs').hidden = m.status === '해지';
     $('#major-card').hidden = m.status === '해지' || m.key === 'standard';   // [2026-11-20] Pro·Max만
@@ -577,7 +596,7 @@ footer{margin:36px 0 30px;font-size:12.5px;color:var(--mute);text-align:center}
     year: { name: 'Max · 1년 50만원 (VAT 별도)', amt: '550,000원 (VAT 포함) 한 번', way: '1년 한 번 결제 · 자동 갱신 없음', note: '이용 기간이 끝나기 전에 안내해 드려요.', send: '기사 송출 횟수 제한 없이' }
   };
   var FEAT = [['300+ 제휴 언론사 동시 보도', 1, 1, 1], ['AI 기사 작성 프롬프트 팩', 1, 1, 1], ['내 기자실: 기자 계정·요금제·카드 관리', 1, 1, 1],
-    ['실물 기자증', 0, 1, 1], ['공연 티켓 2매 (가입 선물)', 0, 1, 1], ['오픈엑스 복지몰', 0, 1, 1], ['기자 명함 500장 (최초 가입)', 0, 0, 1], ['헬로벨 렌탈 회원 혜택', 0, 0, 1]];
+    ['실물 기자증', 0, 1, 1], ['공연 티켓 2매 (가입 선물)', 0, 1, 1], ['오픈엑스 복지몰', 0, 1, 1], ['기자 명함 500장', 0, 0, 1], ['헬로벨 렌탈 회원 혜택', 0, 0, 1]];
   function pick(k) {
     var d = PD[k], col = { standard: 1, month: 2, year: 3 }[k];
     Array.prototype.forEach.call(document.querySelectorAll('.pl'), function (b) { b.setAttribute('aria-checked', b.getAttribute('data-plan') === k ? 'true' : 'false'); });
@@ -732,6 +751,39 @@ footer{margin:36px 0 30px;font-size:12.5px;color:var(--mute);text-align:center}
       done(j); if (ME && ME.id) toast('기자 계정이 만들어졌어요!'); else { toast('조금만 기다려 주세요. 곧 아이디가 나와요.'); var tries = 0; (function poll() { if (!ME || ME.id || ++tries > 12) return; setTimeout(function () { api({ action: 'my_me' }).then(function (k) { if (k.ok) done(k); poll(); }).catch(poll); }, 15000); })(); }
     }).catch(function () { b.disabled = false; b.textContent = '기자 계정 만들기'; er.textContent = ERR.server; });
   });
+  /* ---------- [2026-11-25 사장 지시] Max 기자 명함 정보 ---------- */
+  function ncForm(m, edit) {
+    var N = m.ncard, show = !!N && m.status !== '해지' && !(m.acct || {}).need, form = !!edit || !(N && N.done);
+    $('#ncf').hidden = !show; if (!show) return;
+    $('#f-nc').hidden = !form; $('#nc-done').hidden = form;
+    if (form) {
+      if (!$('#n-name').value) $('#n-name').value = N.name || m.name || '';
+      if (!$('#n-phone').value) $('#n-phone').value = N.phone || '';
+      if (!$('#n-email').value) $('#n-email').value = N.email || (m.acct || {}).email || '';
+      $('#n-go').textContent = N.done ? '고친 정보 저장하기' : '명함 신청하기';
+      return;
+    }
+    $('#nc-state').textContent = N.state === '발송 완료' ? '✓ 명함을 보내 드렸어요.' : N.state === '제작 신청 완료' ? '✓ 명함을 만들고 있어요. 곧 보내 드릴게요.' : '✓ 신청을 받았어요. 보통 1~2주 안에 보내 드려요.';
+    $('#nc-info').textContent = [N.name, N.phone, N.email].join(' · ');
+    $('#nc-edit').hidden = N.state !== '접수';
+  }
+  $('#nc-edit').addEventListener('click', function () { ncForm(ME, true); $('#n-name').focus(); });
+  $('#n-phone').addEventListener('input', function () { var d = this.value.replace(/\D/g, '').slice(0, 11); this.value = d.length < 4 ? d : d.length < 8 ? d.slice(0, 3) + '-' + d.slice(3) : d.slice(0, 3) + '-' + d.slice(3, 7) + '-' + d.slice(7); });
+  var NC_ERR = { ncname: '이름을 한글이나 영문으로 적어 주세요(20자까지).', ncphone: '휴대폰 번호를 확인해 주세요.', ncemail: '이메일 주소를 확인해 주세요.', ncagree: '개인정보 수집·이용에 동의해 주세요.',
+    ncmax: 'Max 회원만 신청할 수 있어요.', ncacct: '먼저 기자 계정을 만들어 주세요.', ncmade: '이미 명함을 만들고 있어서 바꿀 수 없어요.' };
+  $('#f-nc').addEventListener('submit', function (e) {
+    e.preventDefault(); var er = $('#n-err'); er.textContent = '';
+    if (!$('#n-name').value.trim()) { er.textContent = NC_ERR.ncname; return; }
+    if (!/^01\d{8,9}$/.test($('#n-phone').value.replace(/\D/g, ''))) { er.textContent = NC_ERR.ncphone; return; }
+    if (!$('#n-email').value.trim()) { er.textContent = NC_ERR.ncemail; return; }
+    if (!$('#n-agree').checked) { er.textContent = NC_ERR.ncagree; return; }
+    if (DEMO) { toast('미리보기라 보내지 않아요.'); return; }
+    var b = $('#n-go'); b.disabled = true;
+    api({ action: 'my_ncard', name: $('#n-name').value.trim(), phone: $('#n-phone').value, email: $('#n-email').value.trim(), agree: 'Y' }).then(function (j) { b.disabled = false;
+      if (!j.ok) { er.textContent = NC_ERR[j.error] || errMsg(j); return; }
+      done(j); toast('명함 정보를 받았어요.');
+    }).catch(function () { b.disabled = false; er.textContent = ERR.server; });
+  });
   function b64n(u) { var b = u.split(',')[1] || ''; return Math.floor(b.length * 3 / 4); }
   /* [2026-11-23 사장 지시] 기자증 사진 300dpi: JPEG 머리(JFIF)의 해상도 값을 300dpi로 적는다(그림은 그대로) */
   function dpi300(d) {
@@ -820,7 +872,7 @@ footer{margin:36px 0 30px;font-size:12.5px;color:var(--mute);text-align:center}
       pro: { plan: 'Pro(월)', key: 'month', amount: 55000, pressCard: '제작 중', downFrom: '2027-02-16', proMin: 3 },
       new: { plan: 'Pro(월)', key: 'month', amount: 55000, id: '', pw: '', idState: '정보 필요', pressCard: '정보 입력 전', acct: { need: true, idHint: 'hong', email: 'hong@gmail.com', hasPhone: false, wantAddr: true }, card0: { done: false }, todo: [{ label: '기자 계정 만들기 (1분)', href: '#acct' }] },
       card: { plan: 'Pro(월)', key: 'month', amount: 55000, pressCard: '정보 입력 전', card0: { done: false }, todo: [{ label: '기자증 발급 신청 (영문 이름·사진·받는 방법)', href: '#card' }] },
-      max: { plan: 'Max(1년)', key: 'year', amount: 550000, monthly: false, next: '', until: '2027-11-15', card: '', pressCard: '발송 완료 2026-11-20' }
+      max: { plan: 'Max(1년)', key: 'year', amount: 550000, monthly: false, next: '', until: '2027-11-15', card: '', pressCard: '발송 완료 2026-11-20', ncard: { done: false }, todo: [{ label: '기자 명함 정보 입력 (이름·휴대폰·이메일)', href: '#ncf' }] }
     };
     ME = D[DEMO] ? Object.assign({}, base, D[DEMO]) : null;
     render();
