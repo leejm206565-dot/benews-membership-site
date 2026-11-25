@@ -113,7 +113,7 @@ h1,h2,h3{word-break:keep-all;text-wrap:balance;letter-spacing:-.02em}
       <p class="mt-2 text-[13px] text-mute" id="ng-code"></p>
     </div>
     <button type="button" id="ng-retry" class="mt-4 flex items-center justify-center w-full min-h-[52px] rounded-xl bg-rep hover:bg-rep-dark text-white text-[17px] font-extrabold" hidden>같은 카드로 다시 결제하기</button>
-    <a id="ng-main" href="/#reporter" class="mt-2 flex items-center justify-center w-full min-h-[48px] rounded-xl border-2 border-rep bg-white text-rep text-[16px] font-bold">다른 카드로 다시 등록하기</a>
+    <a id="ng-main" href="/pay?p=month" class="mt-2 flex items-center justify-center w-full min-h-[48px] rounded-xl border-2 border-rep bg-white text-rep text-[16px] font-bold">다른 카드로 다시 등록하기</a>
     <p class="mt-3 text-[14px] text-mute">문의 <a class="underline font-bold text-ink" href="https://pf.kakao.com/_xkCxkNX/chat" target="_blank" rel="noopener">카카오톡 상담 채널</a> (접수번호를 알려 주세요)</p>
   </div>
 </main>
@@ -151,7 +151,7 @@ const SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxPac_qwfiW7pf0N
   // [fix1019b] 로컬 미리보기 전용(localhost·127.0.0.1): demo=1&r=접수번호 → 서버 호출 없이 완료 화면만
   var demo = qs.get('demo') === '1' && /^(localhost|127\.0\.0\.1)$/.test(location.hostname);
   if (demo && /^(BE|OM)-\d{4}-\d{4}$/.test(String(qs.get('r') || '').toUpperCase())) rc = String(qs.get('r')).toUpperCase();
-  var isOM = /^OM-/.test(rc), TRACK = isOM ? 'openmedia' : 'reporter', HOME = isOM ? '/#om-start' : '/#reporter';
+  var isOM = /^OM-/.test(rc), TRACK = isOM ? 'openmedia' : 'reporter', HOME = isOM ? '/#om-start' : '/pay?p=month';
   if (isOM) { $('#bs-kicker').textContent = '오픈미디어 · 카드 자동결제'; $('#bs-kicker').className = 'text-[13px] md:text-[14px] font-bold text-om'; document.title = '오픈미디어 결제 완료 | 주식회사 오픈엑스'; }
   var again = 'pay.html?r=' + encodeURIComponent(rc) + '&p=' + (isOM ? 'om_month' : 'month');
   var MYGO = (function () { try { return !!localStorage.getItem('bx:my'); } catch (e) { return false; } })();   // [2026-11-17] 로그인하고 결제했으면 내 기자실로

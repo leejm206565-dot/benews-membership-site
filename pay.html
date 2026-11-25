@@ -63,7 +63,7 @@ h1,h2,h3{word-break:keep-all;text-wrap:balance;letter-spacing:-.02em}
   <div id="pay-bad" class="mt-6 rounded-2xl bg-white p-5 shadow-soft" hidden>
     <p class="text-[17px] font-bold" id="bad-title">결제할 신청 정보를 찾지 못했습니다.</p>
     <p class="mt-1 text-[15px] text-mute" id="bad-msg">상품 화면에서 [시작하기]를 눌러 주세요.</p>
-    <a id="bad-go" href="/#reporter" class="mt-4 flex items-center justify-center w-full min-h-[48px] rounded-xl bg-rep hover:bg-rep-dark text-white text-[16px] font-bold">상품 화면으로 가기</a>
+    <a id="bad-go" href="/pay?p=month" class="mt-4 flex items-center justify-center w-full min-h-[48px] rounded-xl bg-rep hover:bg-rep-dark text-white text-[16px] font-bold">상품 화면으로 가기</a>
     <a id="bad-alt" href="/pay?p=year" class="mt-2 flex items-center justify-center w-full min-h-[48px] rounded-xl border-2 border-rep bg-white text-rep text-[16px] font-bold" hidden></a>
     <button type="button" id="bad-retry" class="mt-2 flex items-center justify-center w-full min-h-[48px] rounded-xl border-2 border-rep bg-white text-rep text-[16px] font-bold" hidden>다시 시도</button>
     <p class="mt-3 text-[14px] text-mute">도움이 필요하시면 <a class="underline font-bold text-ink" href="https://pf.kakao.com/_xkCxkNX/chat" target="_blank" rel="noopener">카카오톡 상담 채널</a>로 알려 주세요.</p>
@@ -210,7 +210,7 @@ const WIDGET_VARIANT = 'BRGD_YEAR';   // 1년 결제 UI variantKey (사장이 op
   var isOM = rc ? /^OM-/.test(rc) : hintP === 'om_month';   // [fix1019b] 오픈미디어 월간 정기결제
   if (isOM && rc && hintP !== 'om_month') hintP = 'om_month';
   if (!isOM && hintP === 'om_month') hintP = '';
-  var TRACK = isOM ? 'openmedia' : 'reporter', HOME = isOM ? '/#om-start' : '/#reporter';
+  var TRACK = isOM ? 'openmedia' : 'reporter', HOME = isOM ? '/#om-start' : '/pay?p=month';
   var renew = qs.get('renew') === '1';
   var SOURCE = String(qs.get('s') || '').slice(0, 200) || 'direct';   // 랜딩 유입 경로(랜딩 주소의 ?뒤)
   var SRC = 'direct';
@@ -672,7 +672,7 @@ const WIDGET_VARIANT = 'BRGD_YEAR';   // 1년 결제 UI variantKey (사장이 op
     b.setAttribute('role', 'status');
     b.style.cssText = 'position:sticky;top:0;z-index:9999;display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap;padding:10px 44px 10px 16px;background:#0B6B3A;color:#fff;font-size:15px;font-weight:800;line-height:1.4;text-align:center';
     var t = document.createElement('span'); t.textContent = '결제는 끝났어요. 기자단 정보 입력을 마저 해 주세요';
-    var a = document.createElement('a'); a.href = 'register.html?r=' + encodeURIComponent(p.r) + (p.p ? '&p=' + encodeURIComponent(p.p) : '');
+    var a = document.createElement('a'); a.href = localStorage.getItem('bx:my') ? '/my.html' : 'register.html?r=' + encodeURIComponent(p.r) + (p.p ? '&p=' + encodeURIComponent(p.p) : '');
     a.textContent = '이어서 입력하기 →'; a.style.cssText = 'display:inline-flex;align-items:center;min-height:36px;padding:0 14px;border-radius:999px;background:#FFE070;color:#191919;text-decoration:none';
     a.setAttribute('data-cta', 'pending-register');
     var x = document.createElement('button'); x.type = 'button'; x.setAttribute('aria-label', '닫기'); x.textContent = '×';

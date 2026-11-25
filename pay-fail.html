@@ -41,8 +41,8 @@ h1,h2,h3{word-break:keep-all;text-wrap:balance;letter-spacing:-.02em}
     <p class="mt-2 text-[13px] text-mute" id="f-code"></p>
     <p class="mt-2 text-[13px] text-mute">결제가 완료되지 않았으므로 요금은 청구되지 않습니다.</p>
   </div>
-  <a id="f-again" href="/#reporter" class="mt-4 flex items-center justify-center w-full min-h-[52px] rounded-xl bg-rep hover:bg-rep-dark text-white text-[17px] font-extrabold">다시 결제하기</a>
-  <a href="/#reporter" class="mt-2 inline-flex items-center min-h-[44px] text-[14px] text-mute underline">상품 화면으로 돌아가기</a>
+  <a id="f-again" href="/pay?p=month" class="mt-4 flex items-center justify-center w-full min-h-[52px] rounded-xl bg-rep hover:bg-rep-dark text-white text-[17px] font-extrabold">다시 결제하기</a>
+  <a href="/pay?p=month" class="mt-2 inline-flex items-center min-h-[44px] text-[14px] text-mute underline">상품 화면으로 돌아가기</a>
   <p class="mt-3 text-[14px] text-mute">문의 <a class="underline font-bold text-ink" href="https://pf.kakao.com/_xkCxkNX/chat" target="_blank" rel="noopener">카카오톡 상담 채널</a></p>
 </main>
 
@@ -68,7 +68,7 @@ h1,h2,h3{word-break:keep-all;text-wrap:balance;letter-spacing:-.02em}
   var rc = m ? m[1] : (last.r || '');
   var bill = !m && (last.p === 'month' || last.p === 'om_month');   // [fix1019b] 오픈미디어 월간 정기결제도 카드 등록(빌링)
   var isOM = /^OM-/.test(rc) || last.p === 'om_month';
-  if (isOM) { Array.prototype.forEach.call(document.querySelectorAll('a[href="/#reporter"]'), function (a) { a.href = '/#om-start'; }); var k = document.querySelector('main > p'); if (k) { k.textContent = '오픈미디어 · 결제'; k.className = 'text-[13px] md:text-[14px] font-bold text-om'; } }   // 월간 카드 등록(빌링) 실패: orderId 없이 code·message 만 온다
+  if (isOM) { Array.prototype.forEach.call(document.querySelectorAll('a[href="/pay?p=month"]'), function (a) { a.href = '/#om-start'; }); var k = document.querySelector('main > p'); if (k) { k.textContent = '오픈미디어 · 결제'; k.className = 'text-[13px] md:text-[14px] font-bold text-om'; } }   // 월간 카드 등록(빌링) 실패: orderId 없이 code·message 만 온다
   if (bill) { $('#f-title').textContent = '카드 등록이 완료되지 않았습니다'; $('#f-msg').textContent = '카드 등록 중 문제가 생겨 등록과 결제가 진행되지 않았습니다.'; $('#f-again').textContent = '다시 카드 등록하기'; }
   if (code === 'PAY_PROCESS_CANCELED' || code === 'USER_CANCEL') { $('#f-title').textContent = bill ? '카드 등록을 취소하셨습니다' : '결제를 취소하셨습니다'; $('#f-msg').textContent = (bill ? '카드 등록과 결제가' : '결제가') + ' 진행되지 않았습니다. 준비되시면 다시 진행해 주세요.'; }
   else if (code === 'REJECT_CARD_COMPANY') { $('#f-msg').textContent = '카드사에서 카드 정보를 승인하지 않았습니다. 카드 번호·유효기간·생년월일을 확인하거나 다른 카드로 다시 시도해 주세요.' + (msg ? ' (' + msg + ')' : ''); }
