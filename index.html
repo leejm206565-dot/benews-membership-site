@@ -434,20 +434,18 @@ details>summary{list-style:none}details>summary::-webkit-details-marker{display:
 .pc-grid figcaption{margin-top:8px;font-size:14px;font-weight:800}
 .pc-grid figcaption span{font-weight:400;color:#B9C3D6}
 
-/* [2026-11-25 사장 지시] 명함(Max 전용): 기자증 칸과 같은 모양, 딥 틸 */
-#namecard{margin-top:28px;border-radius:20px;background:#0E3B45;color:#fff;padding:28px 22px;overflow:hidden}
-@media (min-width:768px){#namecard{padding:44px 44px 40px}}
-#namecard .top{display:grid;gap:14px}
-@media (min-width:1024px){#namecard .top{grid-template-columns:1fr auto;align-items:start;gap:40px}}
-#namecard h3{font-size:clamp(24px,3.2vw,36px);font-weight:850}
+/* [2026-11-25 사장 지시] 명함(Max 전용): 딥 틸, 기자증 칸보다 작게(PC 는 글 왼쪽·명함 오른쪽) */
+#namecard{margin-top:28px;border-radius:20px;background:#0E3B45;color:#fff;padding:22px;overflow:hidden}
+#namecard .top{display:grid;gap:12px}
+#namecard h3{font-size:clamp(20px,2.2vw,26px);font-weight:850}
 #namecard h3 .hl{color:var(--lime);background:none}
-#namecard p.d{margin-top:10px;font-size:16px;line-height:1.7;color:#E3E7EF;max-width:40em}
-#namecard p.n{margin-top:8px;font-size:14px;line-height:1.7;color:#B5CDD2}
-#namecard .ex{justify-self:start;font-size:12.5px;font-weight:800;color:var(--ink);background:var(--lime);padding:4px 10px;border-radius:4px}
-.nc-grid{margin:26px auto 0;display:grid;gap:18px;max-width:1040px}
-@media (min-width:640px){.nc-grid{grid-template-columns:1fr 1fr}}
-.nc-grid img{display:block;width:100%;height:auto;border-radius:8px;box-shadow:0 18px 36px -20px rgba(0,0,0,.7)}
-.nc-grid figcaption{margin-top:8px;font-size:14px;font-weight:800}
+#namecard p.d{margin-top:8px;font-size:15px;line-height:1.65;color:#E3E7EF}
+#namecard p.n{margin-top:6px;font-size:14px;line-height:1.65;color:#B5CDD2}
+#namecard .ex{justify-self:start;font-size:12px;font-weight:800;color:var(--ink);background:var(--lime);padding:3px 9px;border-radius:4px}
+.nc-grid{margin-top:18px;display:grid;grid-template-columns:1fr 1fr;gap:12px;max-width:520px}
+.nc-grid img{display:block;width:100%;height:auto;border-radius:6px;box-shadow:0 12px 24px -16px rgba(0,0,0,.7)}
+.nc-grid figcaption{margin-top:6px;font-size:13px;font-weight:800}
+@media (min-width:1024px){#namecard{padding:28px 36px;display:grid;grid-template-columns:1fr 500px;gap:40px;align-items:center}.nc-grid{margin-top:0}}
 
 /* 공연 티켓: 절취선 티켓 모양 */
 #ticket{margin-top:28px;position:relative;background:#fff;border:2px solid var(--ink);border-radius:20px;padding:26px 22px}
