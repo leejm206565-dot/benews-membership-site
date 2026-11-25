@@ -459,10 +459,10 @@ footer{margin:36px 0 30px;font-size:12.5px;color:var(--mute);text-align:center}
     var gone = m.status === '해지';
     $('#pl-next-row').hidden = !(m.next || m.until);
     $('#pl-next-k').textContent = m.key === 'year' ? '이용 기간 끝' : '다음 결제일';
-    $('#pl-next').textContent = (m.key === 'year' ? m.until : m.next + ' (' + won(m.nextPlan === 'Standard(월)' ? 22000 : m.amount) + ')');
+    $('#pl-next').textContent = (m.key === 'year' ? m.until : m.next + ' (' + won(m.nextPlan === 'Standard(월)' && (m.downFrom || m.next) === m.next ? 22000 : m.amount) + ')');
     $('#pl-btn').hidden = gone || !m.monthly;
     $('#pl-reserve').hidden = !m.nextPlan;
-    if (m.nextPlan) $('#pl-reserve').innerHTML = '<b>' + m.next + '</b>부터 <b>' + m.nextPlan + '</b>로 바뀌어요. <button class="btn line sm" type="button" id="pl-keep">예약 취소</button>';
+    if (m.nextPlan) $('#pl-reserve').innerHTML = '<b>' + (m.downFrom || m.next) + '</b>부터 <b>' + m.nextPlan + '</b>로 바뀌어요. <button class="btn line sm" type="button" id="pl-keep">예약 취소</button>';
     $('#pl-panel').hidden = true;
     // 결제 수단
     $('#pay-card').hidden = !m.monthly || gone;
@@ -627,8 +627,8 @@ footer{margin:36px 0 30px;font-size:12.5px;color:var(--mute);text-align:center}
         (q ? '<p>지금 바로 바뀌어요. 오늘은 남은 ' + q.days + '일만큼 <b>' + won(q.amount) + '</b>만 결제되고, ' + q.next + '부터 매월 55,000원이에요.</p><div class="row"><button class="btn" type="button" id="up-go" data-amt="' + q.amount + '">' + won(q.amount) + ' 결제하고 Pro로 올리기</button></div>'
            : '<p>결제일 정보를 확인할 수 없어요. ' + PHONE + '로 문의해 주세요.</p>') + '</div>';
     } else if (m.key === 'month') {
-      h = '<div class="opt"><b>Standard로 내리기 · 월 22,000원</b><p>기사 주 2회 송출 · 기자증·공연 티켓·복지몰 혜택 없음</p><p>다음 결제일(' + m.next + ')부터 바뀌어요. 그때까지는 Pro 그대로 쓰세요.</p>' +
-        (m.nextPlan ? '<p><b>이미 예약돼 있어요.</b></p>' : '<div class="row"><button class="btn line" type="button" id="down-go">다음 결제일부터 Standard로</button></div>') + '</div>';
+      h = '<div class="opt"><b>Standard로 내리기 · 월 22,000원</b><p>기사 주 2회 송출 · 기자증·공연 티켓·복지몰 혜택 없음</p><p>Pro는 최소 ' + (m.proMin || 3) + '개월(3번 결제) 이용한 뒤에 바꿀 수 있어요. 신청하시면 <b>' + (m.downFrom || m.next) + '</b>부터 바뀌고, 그때까지는 Pro 그대로 쓰세요.</p>' +   // [2026-11-25 사장 지시] Pro 3개월 약정
+        (m.nextPlan ? '<p><b>이미 예약돼 있어요.</b></p>' : '<div class="row"><button class="btn line" type="button" id="down-go">' + (m.downFrom || m.next) + '부터 Standard로</button></div>') + '</div>';
     }
     h += '<div class="opt"><b>Max · 1년 550,000원</b><p>Pro 혜택 모두 + 헬로벨 렌탈 회원 혜택. 1년 한 번 결제예요. 바꾸시려면 ' + PHONE + '로 연락 주세요(남은 기간을 계산해 드려요).</p></div><p class="err" id="pl-err" role="alert"></p>';
     p.innerHTML = h; p.hidden = false;
@@ -646,7 +646,7 @@ footer{margin:36px 0 30px;font-size:12.5px;color:var(--mute);text-align:center}
     api({ action: 'my_plan', to: to, amount: amt || '' }).then(function (j) {
       btn.disabled = false;
       if (!j.ok) { var el = $('#pl-err'); if (el) el.textContent = j.error === 'quote' ? '금액이 바뀌었어요. 다시 열어 확인해 주세요.' : j.error === 'charge' ? '카드 결제가 승인되지 않았어요: ' + (j.message || '') : errMsg(j); else toast(errMsg(j)); return; }
-      done(j); toast(j.done === 'up' ? 'Pro로 올렸어요. 담당자가 기자증·혜택 안내를 드려요.' : j.done === 'down' ? '다음 결제일부터 Standard로 바뀌어요.' : '예약을 취소했어요.');
+      done(j); toast(j.done === 'up' ? 'Pro로 올렸어요. 담당자가 기자증·혜택 안내를 드려요.' : j.done === 'down' ? ((ME && (ME.downFrom || ME.next) || '다음 결제일') + '부터 Standard로 바뀌어요.') : '예약을 취소했어요.');
     }).catch(function () { btn.disabled = false; toast(ERR.server); });
   }
 
@@ -817,7 +817,7 @@ footer{margin:36px 0 30px;font-size:12.5px;color:var(--mute);text-align:center}
     var base = { name: '홍길동', status: '이용 중', monthly: true, id: 'hong2026', pw: 'Xk7mPq2Rta', idState: '발급', card: '현대 4330-12**-****-123*', next: '2026-12-16', nextPlan: '', todo: [], acct: { need: false, idHint: 'hong', email: 'hong@gmail.com', hasPhone: true, wantAddr: true }, card0: { done: true } };
     var D = {
       standard: { plan: 'Standard(월)', key: 'standard', amount: 22000, week: { used: 1, limit: 2 }, upQuote: { amount: 33000, days: 30, next: '2026-12-16' } },
-      pro: { plan: 'Pro(월)', key: 'month', amount: 55000, pressCard: '제작 중' },
+      pro: { plan: 'Pro(월)', key: 'month', amount: 55000, pressCard: '제작 중', downFrom: '2027-02-16', proMin: 3 },
       new: { plan: 'Pro(월)', key: 'month', amount: 55000, id: '', pw: '', idState: '정보 필요', pressCard: '정보 입력 전', acct: { need: true, idHint: 'hong', email: 'hong@gmail.com', hasPhone: false, wantAddr: true }, card0: { done: false }, todo: [{ label: '기자 계정 만들기 (1분)', href: '#acct' }] },
       card: { plan: 'Pro(월)', key: 'month', amount: 55000, pressCard: '정보 입력 전', card0: { done: false }, todo: [{ label: '기자증 발급 신청 (영문 이름·사진·받는 방법)', href: '#card' }] },
       max: { plan: 'Max(1년)', key: 'year', amount: 550000, monthly: false, next: '', until: '2027-11-15', card: '', pressCard: '발송 완료 2026-11-20' }
