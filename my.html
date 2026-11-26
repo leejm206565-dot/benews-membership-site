@@ -219,6 +219,7 @@ footer{margin:36px 0 30px;font-size:12.5px;color:var(--mute);text-align:center}
   <section class="card" id="acct" hidden aria-labelledby="acct-h">
     <h2 id="acct-h">기자 계정 만들기</h2>
     <p class="sub">브랜드경제신문 기자 계정(<span id="a-mall">과 복지몰 계정</span>)을 만들어요. 적고 나면 몇 분 안에 아이디·비밀번호가 이 화면에 나와요.</p>
+    <p class="note" style="color:var(--warn);font-weight:800">⚠ 브랜드경제신문 홈페이지에서 따로 회원가입하지 마세요. 직접 가입한 계정은 기자 권한이 없어 기사를 올릴 수 없어요. 기자 계정은 여기서만 만들어요.</p>
     <form class="ef" id="f-acct" novalidate>
       <label class="fl">실명<input class="fld" id="a-name" autocomplete="name" maxlength="30"></label>
       <label class="fl" id="a-phone-w" hidden>휴대폰<input class="fld" id="a-phone" inputmode="numeric" autocomplete="tel" placeholder="010-0000-0000" maxlength="13"></label>
@@ -259,7 +260,8 @@ footer{margin:36px 0 30px;font-size:12.5px;color:var(--mute);text-align:center}
 
   <section class="card" id="bnews-card" aria-labelledby="bn-h">
     <h2 id="bn-h">브랜드경제신문</h2>
-    <p class="sub">위 아이디·비밀번호로 로그인해 기사를 써요.</p>
+    <p class="sub">위 아이디·비밀번호로 <b>로그인만</b> 하면 바로 기사를 쓸 수 있어요.</p>
+    <p class="note" style="color:var(--warn);font-weight:800">⚠ 브랜드경제신문 홈페이지에서 회원가입·기자증 신청을 하지 마세요. 직접 가입한 계정은 기자 권한이 없고, 그쪽 기자증 신청은 처리되지 않아요. 이미 직접 가입하셨다면 카카오톡 상담(@브경단)으로 알려 주세요.</p>
     <div class="row"><a class="btn" href="https://www.benews.co.kr/?r=s162343&amp;m=member&amp;front=login" target="_blank" rel="noopener">로그인 · 기사 쓰기</a><a class="btn line" href="https://www.benews.co.kr" target="_blank" rel="noopener">홈페이지 가기</a></div>
   </section>
 
@@ -273,6 +275,7 @@ footer{margin:36px 0 30px;font-size:12.5px;color:var(--mute);text-align:center}
   <section class="card" id="cardf" hidden aria-labelledby="cardf-h">
     <h2 id="cardf-h">기자증 발급 신청</h2>
     <p class="sub">실물 기자증을 만들어 보내 드려요. 정보를 받으면 제작을 시작해요.</p>
+    <p class="note" style="color:var(--warn);font-weight:800">⚠ 기자증은 반드시 이 내 기자실에서 신청해 주세요. 브랜드경제신문 홈페이지의 기자증 신청으로 보내면 처리되지 않아요.</p>
     <form class="ef" id="f-card" novalidate>
       <label class="fl">영문 이름 <small class="sub">(여권과 같게, 예: HONG GILDONG)</small><input class="fld" id="c-en" autocapitalize="characters" maxlength="50"></label>
       <!-- [2026-11-23 사장 지시] 기자증 유형 A·B·C·D (고르지 않으면 A) -->
@@ -319,16 +322,17 @@ footer{margin:36px 0 30px;font-size:12.5px;color:var(--mute);text-align:center}
   <section class="card" id="card-done" hidden><h2>기자증 발급 신청</h2><p style="margin:0;font-weight:700">✓ 신청을 받았어요. 제작이 시작되면 아래 '기자증'에서 진행 상황을 볼 수 있어요.</p></section>
   <section class="card" id="press-card" hidden aria-labelledby="pc-h">
     <h2 id="pc-h">기자증</h2>
-    <div class="steps" id="pc-steps"><span>정보 입력</span><span>제작 중</span><span>발송</span></div>
+    <div class="steps" id="pc-steps"><span>정보 입력</span><span>신청 완료</span><span>발송</span></div>
     <p class="note" id="pc-note"></p>
   </section>
 
-  <!-- [2026-11-20 사장 지시] Pro·Max 전용: 네이버 메이저 언론사 송출 안내(노션) -->
-  <section class="card" id="major-card" hidden aria-labelledby="mj-h">
-    <h2 id="mj-h">네이버 메이저 언론사 기사 송출하기</h2>
-    <p class="sub">네이버 뉴스에 실리는 메이저 언론사에 내 보도자료를 낼 수 있어요. <b>Pro·Max 회원 전용</b>이에요.</p>
-    <div class="mj-hl">① 언론사 고르기 → ② 보도자료 작성 요청서(필수)와 사진 1~2장을 메일로 → ③ 입금<br>언론사별 이용료(VAT 별도) · 네이버 뉴스 송출까지 1 영업일</div>
-    <a class="btn full" href="https://hazel-vein-8df.notion.site/41ec7506c83081f38e8df9892b5855ba" target="_blank" rel="noopener" data-cta="my-major">송출 가이드·단가표 보기</a>
+  <!-- [2026-11-26 사장 지시] 네이버 기사 송출 칸을 기자 자료로 합침, 가이드 이름 구분, 리뷰 쓰기는 기자 자료 아래로 -->
+  <section class="card" id="docs" aria-labelledby="docs-h">
+    <h2 id="docs-h">기자 자료</h2>
+    <div class="line-item"><div><b>브랜드경제신문 기사 송출 가이드</b><small>브랜드경제신문 로그인부터 기사 등록·게재 확인까지 6단계 (모든 요금제)</small></div><a class="btn line sm" href="/guide.html">보기</a></div>
+    <div class="line-item" id="major-card" hidden><div><b>네이버 뉴스 탭 기사 송출 가이드</b><small>Pro·Max 전용 · 네이버 뉴스에 실리는 메이저 언론사에 내 보도자료 내기 · 언론사 고르기 → 작성 요청서·사진 메일 → 입금 · 언론사별 이용료(VAT 별도) · 송출까지 1 영업일</small></div><a class="btn line sm" href="https://hazel-vein-8df.notion.site/41ec7506c83081f38e8df9892b5855ba" target="_blank" rel="noopener" data-cta="my-major">보기</a></div>
+    <div class="line-item"><div><b>AI 기사 작성 프롬프트 팩</b><small>메모 3줄로 기사 초안을 만드는 6가지 틀</small></div><a class="btn line sm" href="/kit.html">보기</a></div>
+    <div class="line-item"><div><b>동시 보도 언론사 리스트</b><small>내 기사가 함께 실리는 제휴 언론사 목록</small></div><a class="btn line sm" href="https://omlist.openxcorp.co.kr/" target="_blank" rel="noopener" data-cta="my-omlist">보기</a></div><!-- [2026-11-20 사장 지시] -->
   </section>
 
   <!-- [2026-11-20 사장 지시] 모든 요금제: 리뷰 쓰기(별점·내용만, 아이디는 가려서 공개) -->
@@ -347,13 +351,6 @@ footer{margin:36px 0 30px;font-size:12.5px;color:var(--mute);text-align:center}
       <p class="err" id="rv-err" role="alert"></p>
     </form>
     <p id="rv-done" hidden style="margin:0;font-weight:700">✓ 리뷰를 남겨 주셔서 고맙습니다! 큰 힘이 돼요.</p>
-  </section>
-
-  <section class="card" id="docs" aria-labelledby="docs-h">
-    <h2 id="docs-h">기자 자료</h2>
-    <div class="line-item"><div><b>기사 송출 가이드</b><small>로그인부터 기사 등록·게재 확인까지 6단계, 검색에 보이는 방식</small></div><a class="btn line sm" href="/guide.html">보기</a></div>
-    <div class="line-item"><div><b>AI 기사 작성 프롬프트 팩</b><small>메모 3줄로 기사 초안을 만드는 6가지 틀</small></div><a class="btn line sm" href="/kit.html">보기</a></div>
-    <div class="line-item"><div><b>동시 보도 언론사 리스트</b><small>내 기사가 함께 실리는 제휴 언론사 목록</small></div><a class="btn line sm" href="https://omlist.openxcorp.co.kr/" target="_blank" rel="noopener" data-cta="my-omlist">보기</a></div><!-- [2026-11-20 사장 지시] -->
   </section>
 
   <details class="card fold" id="plan-box">
@@ -489,9 +486,9 @@ footer{margin:36px 0 30px;font-size:12.5px;color:var(--mute);text-align:center}
     $('#pm-card').textContent = m.card || '등록된 카드 정보 없음';
     // 기자증
     $('#press-card').hidden = !m.pressCard;
-    if (m.pressCard) { var st = /발송/.test(m.pressCard) ? 3 : m.pressCard === '제작 중' ? 2 : 1, sp = $('#pc-steps').children;
+    if (m.pressCard) { var st = /발송/.test(m.pressCard) ? 3 : (m.pressCard === '신청 완료' || m.pressCard === '제작 중') ? 2 : 1, sp = $('#pc-steps').children;
       for (var i = 0; i < sp.length; i++) sp[i].className = i < st ? 'on' : '';
-      $('#pc-note').textContent = m.pressCard === '정보 입력 전' ? '위 "남은 할 일"에서 기자증 정보를 넣으면 제작을 시작해요.' : m.pressCard; }
+      $('#pc-note').textContent = m.pressCard === '정보 입력 전' ? '위 "남은 할 일"에서 기자증 정보를 넣으면 제작을 시작해요.' : (m.pressCard === '신청 완료' || m.pressCard === '제작 중') ? '신청을 받았어요. 정보를 확인한 뒤 영업일 14일 안에 보내 드려요. 보내면 여기에 발송일이 떠요.' : m.pressCard; }
     // 해지
     $('#cx-card').hidden = gone || m.key === 'year';
   }
