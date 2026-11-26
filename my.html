@@ -221,7 +221,7 @@ footer{margin:36px 0 30px;font-size:12.5px;color:var(--mute);text-align:center}
     <p class="sub">브랜드경제신문 기자 계정(<span id="a-mall">과 복지몰 계정</span>)을 만들어요. 적고 나면 몇 분 안에 아이디·비밀번호가 이 화면에 나와요.</p>
     <p class="note" style="color:var(--warn);font-weight:800">⚠ 브랜드경제신문 홈페이지에서 따로 회원가입하지 마세요. 직접 가입한 계정은 기자 권한이 없어 기사를 올릴 수 없어요. 기자 계정은 여기서만 만들어요.</p>
     <form class="ef" id="f-acct" novalidate>
-      <label class="fl">실명<input class="fld" id="a-name" autocomplete="name" maxlength="30"></label>
+      <label class="fl">실명 <small class="sub">(기사에 기자 이름으로 나가요 · 예: 홍길동)</small><input class="fld" id="a-name" autocomplete="name" maxlength="30" placeholder="주민등록상 이름"></label>
       <label class="fl" id="a-phone-w" hidden>휴대폰<input class="fld" id="a-phone" inputmode="numeric" autocomplete="tel" placeholder="010-0000-0000" maxlength="13"></label>
       <label class="fl" id="a-email-w" hidden>이메일<input class="fld" id="a-email" type="email" autocomplete="email" maxlength="100"></label>
       <div class="g2"><label class="fl">희망 아이디 (1순위)<input class="fld" id="a-id1" autocapitalize="none" spellcheck="false" maxlength="12" placeholder="영문 소문자·숫자 4~12자"></label>
@@ -617,7 +617,7 @@ footer{margin:36px 0 30px;font-size:12.5px;color:var(--mute);text-align:center}
     var b = this; b.disabled = true; $('#lk-msg').textContent = '';
     api({ action: 'my_link_send', phone: $('#lk-ph').value }).then(function (j) { b.disabled = false;
       if (!j.ok) { $('#lk-msg').textContent = errMsg(j); return; }
-      $('#lk-step2').hidden = false; sentBtn(b); $('#lk-msg').textContent = j.to + ' 으로 확인 번호를 보냈어요(10분 안에 넣어 주세요). 메일이 안 보이면 스팸함도 봐 주세요.'; $('#lk-code').focus();
+      $('#lk-step2').hidden = false; sentBtn(b); $('#lk-msg').textContent = j.kakao ? '회원 휴대폰 카카오톡(알림톡)으로 확인 번호를 보냈어요(10분 안에 넣어 주세요).' : j.to + ' 으로 확인 번호를 보냈어요(10분 안에 넣어 주세요). 메일이 안 보이면 스팸함도 봐 주세요.'; $('#lk-code').focus();
     }).catch(function () { b.disabled = false; $('#lk-msg').textContent = ERR.server; });
   });
   $('#lk-go').addEventListener('click', function () {
@@ -701,7 +701,7 @@ footer{margin:36px 0 30px;font-size:12.5px;color:var(--mute);text-align:center}
     $('#acct').hidden = !show; if (!show) return;
     var pop = $('#acct-pop');   // [2026-11-23 사장 지시] 계정 안 만든 회원: 들어올 때마다 한 번 안내 창
     if (!acctPopped && pop.showModal) { acctPopped = true; try { pop.showModal(); } catch (e) {} }
-    if (!$('#a-name').value) $('#a-name').value = m.name || (WHO && WHO.n) || '';
+    if (!$('#a-name').value) $('#a-name').value = realName(m.name) || realName(WHO && WHO.n);   // [2026-11-26] 'j.lee' 같은 로그인 별명은 채우지 않음
     $('#a-phone-w').hidden = !!A.hasPhone; $('#a-email-w').hidden = !!A.email;
     if (!$('#a-id1').value && A.idHint && /^[a-z][a-z0-9]{3,11}$/.test(A.idHint)) { $('#a-id1').value = A.idHint; $('#a-id2').value = A.idHint.slice(0, 11) + '1'; }
     var bb = A.birth || (WHO && WHO.b) || '', gg = A.gender || (WHO && WHO.g) || '';   // [2026-11-17] 네이버·카카오가 준 생일·성별로 자동 입력
@@ -730,7 +730,8 @@ footer{margin:36px 0 30px;font-size:12.5px;color:var(--mute);text-align:center}
         $('#' + k + '-zip').value = d.zonecode || ''; $('#' + k + '-addr1').value = a || ''; box.hidden = true; $('#' + k + '-addr2').focus(); } }).embed(box);
     }).catch(function () { toast('주소 검색을 불러오지 못했어요. 직접 적어 주세요.'); });
   }); });
-  var ACC_ERR = { loginId: '희망 아이디(1순위)는 영문 소문자·숫자 4~12자로 적어 주세요.', loginId2: '희망 아이디(2순위)는 1순위와 다르게, 영문 소문자·숫자 4~12자로 적어 주세요.',
+  function realName(n) { n = String(n || '').trim().replace(/\s+/g, ' '); return /^[가-힣]{2,10}$/.test(n) || /^[A-Za-z]{2,20}( [A-Za-z]{1,20}){1,3}$/.test(n) ? n : ''; }   // [2026-11-26] 서버 realName_ 과 같은 규칙
+  var ACC_ERR = { realname: '실명을 적어 주세요(한글 2~10자, 외국인은 영문 이름과 성을 띄어서). 기사에 기자 이름으로 나가요.', loginId: '희망 아이디(1순위)는 영문 소문자·숫자 4~12자로 적어 주세요.', loginId2: '희망 아이디(2순위)는 1순위와 다르게, 영문 소문자·숫자 4~12자로 적어 주세요.',
     birthA: '생년월일 8자리를 확인해 주세요(예: 19900101).', birth: '생년월일 8자리를 확인해 주세요(예: 19900101).', gender: '성별을 골라 주세요.', addrA: '우편번호·주소·상세 주소를 모두 적어 주세요.', address: '우편번호·주소·상세 주소를 모두 적어 주세요.',
     nameEn: '영문 이름을 여권과 같게 대문자로 적어 주세요.', photo: '증명사진을 골라 주세요.', photoSize: '사진이 너무 커요. 다른 사진을 골라 주세요.', photoType: '사진은 JPG·PNG만 받아요.',
     owner: '등록된 정보와 이름이 달라요. ' + PHONE + '로 문의해 주세요.', mismatch: '결제 정보와 휴대폰 번호가 달라요. ' + PHONE + '로 문의해 주세요.', unpaid: '결제가 확인되지 않았어요. ' + PHONE + '로 문의해 주세요.', plan: '요금제를 확인하지 못했어요. ' + PHONE + '로 문의해 주세요.' };
@@ -738,6 +739,7 @@ footer{margin:36px 0 30px;font-size:12.5px;color:var(--mute);text-align:center}
     e.preventDefault(); var er = $('#a-err'); er.textContent = '';
     if (DEMO) { toast('미리보기라 보내지 않아요.'); return; }
     var g = document.querySelector('input[name=a-g]:checked'), birth = $('#a-birth').value.replace(/\D/g, '');
+    if (!realName($('#a-name').value)) { er.textContent = ACC_ERR.realname; $('#a-name').focus(); return; }
     if (!/^(19|20)\d{6}$/.test(birth)) { er.textContent = ACC_ERR.birthA; return; }
     if (!g) { er.textContent = ACC_ERR.gender; return; }
     if (!$('#a-adult').checked) { er.textContent = '만 19세 이상 본인 확인에 체크해 주세요.'; return; }
