@@ -508,6 +508,7 @@ const SHEET_ENDPOINT = 'https://script.google.com/macros/s/AKfycbxPac_qwfiW7pf0N
         }
         if (j.error === 'mismatch' || j.error === 'phone' || j.error === 'name' || j.error === 'owner') { showFail('접수번호와 이름·휴대폰이 맞지 않습니다. 홈페이지 가입 정보를 보낼 때 적은 이름·휴대폰인지 확인해 주세요.'); return; }
         if (j.error === 'rate') { showFail('짧은 시간에 요청이 많았습니다. 잠시 뒤 다시 보내거나 전화로 알려 주세요.'); return; }
+        if (j.error === 'proof') { showFail('보안을 위해 결제한 기기·브라우저에서만 이 정보를 고칠 수 있어요. 내 기자실(로그인)에서 고치시거나 ' + PHONE + '로 연락 주세요.'); return; }   // [2026-11-27 보안 점검]
         if (j.error === 'unpaid') { showFail('결제가 확인되지 않은 접수번호입니다. 결제를 먼저 마쳐 주세요. 결제하셨다면 ' + PHONE + '로 접수번호를 알려 주세요.'); return; }
         showFail(j.error === 'busy' ? '등록이 잠시 몰렸습니다. [다시 보내기]를 눌러 주세요.' : '');
         return;
